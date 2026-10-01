@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizy Flash</title>
+    <link rel="stylesheet" href="theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
+    <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="theme/lucky-draw/ld.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+</head>
+<body class="ld-page">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <div class="box-wrapper mx-auto text-center position-relative">
+                <a href="index.html" class="page-header-back"><span class="qf-icon-back"></span></a>
+                Lucky Draw
+            </div>
+        </div>
+
+        <div class="container box-wrapper" id="ld-root"></div>
+
+        <div class="bottom-spacer" style="height: 65px;"></div>
+        <div class="bottom-nav">
+            <div class="bottom-nav-bg row gx-0 box-wrapper mx-auto container-fluid">
+                <div class="col"><div class="nav-box"><a href="index.html" class="nav-box-ico"><span class="qf-icon-home"></span></a></div></div>
+                <div class="col active"><div class="nav-box"><a href="lucky-draw.html" class="nav-box-ico"><svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7M12 8v13M12 8S10.6 3.4 7.9 3.7C5.9 4 6.2 7.5 9 8M12 8s1.4-4.6 4.1-4.3c2 .3 1.7 3.8-1.1 4.3"/></svg></a></div></div>
+                <div class="col"><div class="nav-box"><a href="leaderboard.html" class="nav-box-ico"><span class="qf-icon-leaderboard"></span></a></div></div>
+                <div class="col"><div class="nav-box"><a href="profile.html" class="nav-box-ico"><span class="qf-icon-profile"></span></a></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prototype review panel (not part of the product UI) -->
+    <button class="ld-review-btn" id="ld-review-btn"><span class="fa fa-sliders"></span> Review</button>
+    <div class="ld-panel" id="ld-panel">
+        <button class="ld-panel-close" id="ld-panel-close" aria-label="Close"><span class="qf-icon-close"></span></button>
+        <h6>Screen state</h6>
+        <div class="ld-chips" id="ld-states"></div>
+        <h6>Ticket rule preview <span class="ld-flag" style="display:inline">not confirmed</span></h6>
+        <div>
+            <input type="number" id="ld-r-tickets" min="1"> ticket(s) for every
+            <input type="number" id="ld-r-every" min="1">
+            <select id="ld-r-basis">
+                <option value="answered">questions answered</option>
+                <option value="correct">correct answers</option>
+            </select>
+        </div>
+        <h6>Draw method <span class="ld-flag" style="display:inline">not confirmed</span></h6>
+        <select id="ld-method">
+            <option value="weighted">Weighted – 1 ticket = 1 entry</option>
+            <option value="one-per-user">One entry per eligible user</option>
+        </select>
+        <h6>Annotations</h6>
+        <label><input type="checkbox" id="ld-notes-toggle"> Show section status &amp; open questions</label>
+        <div class="ld-legend mt-2">
+            <span><span class="ld-note new" style="display:inline-flex">New</span></span>
+            <span><span class="ld-note existing" style="display:inline-flex">Existing – reuse with adjustment</span></span>
+            <span><span class="ld-note tbc" style="display:inline-flex">Existing or new? – to confirm</span></span>
+        </div>
+        <p class="ld-muted mt-3 mb-0">Admin view: <a href="lucky-draw-admin.html" style="color:#FE9E44;font-weight:bold">Lucky Draw admin</a></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/bootstrap.bundle.min.js"></script>
+    <script src="theme/lucky-draw/ld-config.js"></script>
+    <script src="theme/lucky-draw/ld-icons.js"></script>
+    <script>
+    (function () {
+        var C = LD_CONFIG, A = LD_DEMO_ACTIVITY, $root = document.getElementById('ld-root');
+        var STATES = [
+            ['guest', 'Guest (not logged in)'],
+            ['upcoming', 'Not started'],
+            ['active', 'Active'],
+            ['active-empty', 'Active – 0 tickets'],
+            ['drawing', 'Drawing in progress'],
+            ['completed-win', 'Draw completed – winner'],
+            ['completed-lose', 'Draw completed – not won']
+        ];
+        var params = new URLSearchParams(location.search);
+        var state = params.get('state') || 'active'; // demo copy is logged in
+        var notes = params.get('notes') === '1';
+        var GIFT = '<svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7M12 8v13M12 8S10.6 3.4 7.9 3.7C5.9 4 6.2 7.5 9 8M12 8s1.4-4.6 4.1-4.3c2 .3 1.7 3.8-1.1 4.3"/></svg>';
+        var SPARK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/></svg>';
+
+        function note(key) {
+            var s = C.sectionStatus[key];
+            return s ? '<div><span class="ld-note ' + s + '">' + LD.status[s] + '</span></div>' : '';
+        }
+        function flag(text) { return '<span class="ld-flag">' + text + '</span>'; }
+        function iconImg(id) { return 'https://demo.quizpro.mobi//images/category/' + id + '/icon/' + id + '_01122022_icon_image.png'; }
+        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+        function shortDate(s) { return LD.fmtDate(s).replace(/ \d{4}$/, ''); }
+        function secHead(icon, title, sub) {
+            return '<div class="ld-sec-head"><span class="ld-sec-ico">' + icon + '</span>' +
+                '<div><h3 class="section-title">' + title + '</h3>' + (sub ? '<div class="ld-sec-sub">' + sub + '</div>' : '') + '</div></div>';
+        }
+        function fa(name) { return '<span class="fa ' + name + '"></span>'; }
+        function ruleText() {
+            var r = C.ticketRule;
+            return '<b>' + r.tickets + ' ticket' + (r.tickets > 1 ? 's' : '') + '</b> for every <b>' + r.every + ' ' + LD.basisLabel(r) + '</b>';
+        }
+
+        function activity() { return state === 'active-empty' || state === 'upcoming' ? [] : A; }
+        function totalTickets() { return activity().reduce(function (t, a) { return t + LD.ticketsFor(a, C.ticketRule); }, 0); }
+
+        // ---------- Hero: the summary users need first ----------
+        function hero() {
+            if (state === 'drawing') return drawingHero();
+            var c = C.campaign, up = state === 'upcoming', guest = state === 'guest', t = totalTickets();
+            var badge = up ? 'Starting soon' : 'Campaign is live';
+            var tickets = guest
+                ? '<div class="ld-stat-label">My tickets</div><div class="ld-stat-guest">Log in to start collecting</div>'
+                : '<div class="ld-stat-label">My tickets</div><div class="ld-stat-big">' + LD_ICON('ticket') + '<b>' + t + '</b></div>';
+            var cta = guest
+                ? '<a href="login.html" class="btn btn-lg button-green w-100 ld-cta">Login to Join</a>'
+                : up ? '<span class="btn btn-lg button-grey w-100 ld-cta disabled">Starts ' + shortDate(c.periodStart) + '</span>'
+                : '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta">Play Now &amp; Earn Tickets</a>';
+            return '<div class="ld-annot">' + note('hero') +
+                '<section class="ld-hero">' +
+                    '<div class="ld-hero-top">' +
+                        '<div class="ld-hero-art"><span class="ld-spark s1">' + SPARK + '</span><span class="ld-spark s2">' + SPARK + '</span><span class="ld-spark s3">' + SPARK + '</span>' +
+                            '<span class="ld-hero-gift">' + LD_ICON('wheel') + '</span></div>' +
+                        '<div class="ld-hero-copy">' +
+                            '<span class="ld-hero-badge"><span class="ld-live-dot' + (up ? ' idle' : '') + '"></span>' + badge + '</span>' +
+                            '<h2 class="ld-hero-title">Play more quizzes, get more tickets, more chances to win!</h2>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="ld-panel-card">' +
+                        '<div class="ld-panel-row">' +
+                            '<div class="ld-panel-tickets">' + tickets + '</div>' +
+                            '<div class="ld-panel-time"><div class="ld-stat-label">' + (up ? 'Starts in' : 'Draw in') + '</div><div class="ld-countdown" id="ld-countdown"></div></div>' +
+                        '</div>' +
+                        '<div class="ld-panel-dates">' +
+                            '<div><span class="ld-mini-ico">' + LD_ICON('calendar') + '</span><div><div class="ld-stat-label">Campaign period</div><b>' + shortDate(c.periodStart) + ' – ' + shortDate(c.periodEnd) + '</b>' + flag('dates TBC') + '</div></div>' +
+                            '<div><span class="ld-mini-ico">' + LD_ICON('trophy') + '</span><div><div class="ld-stat-label">Draw date</div><b>' + shortDate(c.drawDate) + ' · ' + new Date(c.drawDate).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + '</b></div></div>' +
+                        '</div>' +
+                        cta +
+                    '</div>' +
+                '</section></div>';
+        }
+
+        // Prototype: count from a fixed "today" inside the campaign so the demo always shows time left
+        var loadedAt = Date.now();
+        function tickCountdown() {
+            var el = document.getElementById('ld-countdown');
+            if (!el) return;
+            var now = state === 'upcoming' ? new Date('2026-09-27T09:00:00') : new Date('2026-10-15T09:00:00');
+            now = new Date(now.getTime() + (Date.now() - loadedAt));
+            var target = new Date(state === 'upcoming' ? C.campaign.periodStart + 'T00:00:00' : C.campaign.drawDate);
+            var s = Math.floor(Math.max(0, target - now) / 1000);
+            var parts = [[Math.floor(s / 86400), 'd'], [Math.floor(s % 86400 / 3600), 'h'], [Math.floor(s % 3600 / 60), 'm'], [s % 60, 's']];
+            el.innerHTML = parts.map(function (p) { return '<div><b>' + String(p[0]).padStart(2, '0') + '</b><span>' + p[1] + '</span></div>'; }).join('');
+        }
+
+        // ---------- Drawing in progress ----------
+        function myTicketCodes() {
+            var codes = [], n = totalTickets();
+            for (var i = 0; i < n; i++) codes.push('LD-' + String(1000 + ((i * 7919 + 3301) % 9000)));
+            return codes;
+        }
+        function drawingHero() {
+            var c = C.campaign, t = totalTickets(), codes = myTicketCodes();
+            var steps = [['Entries locked', 'done'], ['Eligibility checked', 'done'], ['Drawing winners', 'now'], ['Winners announced', '']];
+            return '<div class="ld-annot">' + note('drawing') +
+                '<section class="ld-hero ld-hero-drawing">' +
+                    '<div class="text-center">' +
+                        '<span class="ld-hero-badge" id="ld-draw-badge"><span class="ld-live-dot"></span><span>Drawing now</span></span>' +
+                        '<div class="ld-spin-stage"><span class="ld-spin-glow"></span>' +
+                            '<span class="ld-spark p1">' + SPARK + '</span><span class="ld-spark p2">' + SPARK + '</span><span class="ld-spark p3">' + SPARK + '</span>' +
+                            '<div class="ld-spin-wheel">' + LD_WHEEL_SPIN + '</div>' +
+                            '</div>' +
+                        '<div class="ld-reel">' + LD_ICON('ticket') + '<span id="ld-reel">LD-0000</span></div>' +
+                        '<h2 class="ld-hero-title text-center" id="ld-draw-title">The draw is happening!</h2>' +
+                        '<p class="ld-hero-sub" id="ld-draw-sub">Winners are being picked at random from all eligible tickets.</p>' +
+                    '</div>' +
+                    '<div class="ld-panel-card">' +
+                        '<div class="ld-panel-row">' +
+                            '<div class="ld-panel-tickets"><div class="ld-stat-label">My tickets in this draw</div><div class="ld-stat-big">' + LD_ICON('ticket') + '<b>' + t + '</b></div></div>' +
+                            '<div class="ld-panel-time"><div class="ld-stat-label">Draw date</div><div class="ld-stat-mid">' + LD.fmtDate(c.drawDate) + '</div><span class="ld-tag live">Live</span></div>' +
+                        '</div>' +
+                        (codes.length ? '<div class="ld-codes">' + codes.map(function (x) { return '<span>' + x + '</span>'; }).join('') + '</div>' : '') +
+                        '<ol class="ld-draw-steps">' + steps.map(function (s) {
+                            return '<li class="' + s[1] + '"><span>' + (s[1] === 'done' ? fa('fa-check') : s[1] === 'now' ? '<span class="fa fa-circle-o-notch fa-spin"></span>' : '') + '</span>' + s[0] + '</li>';
+                        }).join('') + '</ol>' +
+                        '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta" id="ld-draw-cta">Keep Playing</a>' +
+                        '<div class="ld-panel-foot">Results appear on this page' + flag('announcement time TBC') + ' · New tickets count for the next period' + flag('TBC') + '</div>' +
+                    '</div>' +
+                '</section></div>';
+        }
+        var reelTimer = null;
+        function startReel() {
+            clearInterval(reelTimer);
+            var el = document.getElementById('ld-reel');
+            if (!el) return;
+            reelTimer = setInterval(function () { el.textContent = 'LD-' + String(1000 + Math.floor(Math.random() * 9000)); }, 90);
+        }
+
+        // ---------- Draw sequence: spin -> slow down -> stop -> reveal winner ----------
+        var drawRun = 0;
+        function startDrawSequence() {
+            var run = ++drawRun;
+            var disc = document.querySelector('.ld-wheel-disc');
+            if (!disc) return;
+            var codes = myTicketCodes();
+            var winCode = codes.length > 2 ? codes[2] : 'LD-4821';
+            var SPEED = 0.72, SPIN_MS = 2600, SLOW_MS = 3400;   // 720°/s, then ease out
+            var SEGMENT = 1;                                     // red segment ends under the pointer
+            var target = -(SEGMENT * 36 + 18);
+            var a1 = SPEED * SPIN_MS, extra = SPEED * SLOW_MS / 3;
+            var end = a1 + extra + ((((target - (a1 + extra)) % 360) + 360) % 360);
+            var t0 = performance.now();
+            function frame(now) {
+                if (run !== drawRun) return;
+                var t = now - t0, angle;
+                if (t < SPIN_MS) angle = SPEED * t;
+                else if (t < SPIN_MS + SLOW_MS) {
+                    var k = (t - SPIN_MS) / SLOW_MS, ease = 1 - Math.pow(1 - k, 3);
+                    angle = a1 + (end - a1) * ease;
+                } else { disc.style.transform = 'rotate(' + end + 'deg)'; return reveal(run, winCode); }
+                disc.style.transform = 'rotate(' + angle + 'deg)';
+                requestAnimationFrame(frame);
+            }
+            requestAnimationFrame(frame);
+        }
+
+        function reveal(run, winCode) {
+            if (run !== drawRun) return;
+            clearInterval(reelTimer);
+            var reel = document.getElementById('ld-reel');
+            if (reel) { reel.textContent = winCode; reel.parentNode.classList.add('won'); }
+            document.querySelector('.ld-spin-stage').classList.add('stopped');
+            var badge = document.getElementById('ld-draw-badge');
+            badge.classList.add('done');
+            badge.lastChild.textContent = 'Winners selected';
+            document.getElementById('ld-draw-title').textContent = 'We have our winners!';
+            document.getElementById('ld-draw-sub').textContent = 'Tap below to see the full results.';
+            var steps = document.querySelectorAll('.ld-draw-steps li');
+            [2, 3].forEach(function (i) {
+                if (!steps[i]) return;
+                steps[i].className = 'done';
+                steps[i].firstChild.innerHTML = '<span class="fa fa-check"></span>';
+            });
+            var live = document.querySelector('.ld-hero-drawing .ld-tag.live');
+            if (live) { live.textContent = 'Done'; live.className = 'ld-tag done'; }
+            document.querySelectorAll('.ld-codes span').forEach(function (s) { if (s.textContent === winCode) s.classList.add('won'); });
+            var cta = document.getElementById('ld-draw-cta');
+            cta.textContent = 'See Winners';
+            cta.setAttribute('href', '#');
+            cta.onclick = function (e) { e.preventDefault(); state = 'completed-win'; render(); window.scrollTo(0, 0); };
+            // confetti burst
+            var stage = document.querySelector('.ld-spin-stage');
+            var colors = ['#FFCC5F', '#FE9E44', '#F4513B', '#3EA9F5', '#47C475', '#FFF1C9'];
+            for (var i = 0; i < 28; i++) {
+                var c = document.createElement('i');
+                c.className = 'ld-confetti';
+                c.style.background = colors[i % colors.length];
+                c.style.setProperty('--x', (Math.random() * 240 - 120) + 'px');
+                c.style.setProperty('--y', (Math.random() * -160 - 40) + 'px');
+                c.style.setProperty('--r', (Math.random() * 540 - 270) + 'deg');
+                c.style.animationDelay = (Math.random() * 0.15) + 's';
+                stage.appendChild(c);
+            }
+        }
+
+        // ---------- How to earn ----------
+        function howToEarn() {
+            var r = C.ticketRule;
+            var steps = [
+                ['gamepad', 'Play quizzes', 'Any quiz during the campaign'],
+                ['ticket', 'Earn tickets', 'Added after every quiz'],
+                ['trophy', 'Win prizes', 'Drawn on ' + shortDate(C.campaign.drawDate)]
+            ];
+            return '<div class="ld-annot">' + note('howToEarn') +
+                '<section class="card-simple ld-card">' +
+                    secHead(LD_ICON('idea'), 'How to Earn Tickets', '3 simple steps') +
+                    '<div class="ld-steps-h">' + steps.map(function (s, i) {
+                        return '<div class="ld-step-h"><span class="ld-step-ico">' + LD_ICON(s[0]) + '<i>' + (i + 1) + '</i></span><b>' + s[1] + '</b><small>' + s[2] + '</small></div>';
+                    }).join('') + '</div>' +
+                    '<div class="ld-rule">' + LD_ICON('ticket') + '<span>You get ' + ruleText() + '.' + (r.dailyCap ? ' Max ' + r.dailyCap + ' tickets per day.' : '') + flag('rule & basis not confirmed') + '</span></div>' +
+                '</section></div>';
+        }
+
+        // ---------- Prizes ----------
+        function prizes() {
+            var list = C.campaign.prizes, g = list[0];
+            function winnersLabel(q) { return q + ' winner' + (q > 1 ? 's' : ''); }
+            return '<div class="ld-annot">' + note('prizes') +
+                '<section class="card-simple ld-card">' +
+                    secHead(LD_ICON('gift'), 'Amazing Prizes', 'Up for grabs this period' + flag('prizes TBC')) +
+                    '<div class="ld-prize-grand">' +
+                        '<span class="ld-spark g1">' + SPARK + '</span><span class="ld-spark g2">' + SPARK + '</span>' +
+                        (g.img ? '<span class="ld-prize-ico lg photo"><img class="ld-ill" src="' + g.img + '" alt="' + esc(g.item) + '"></span>' : '<span class="ld-prize-ico lg">' + LD_ICON(g.icon) + '</span>') +
+                        '<div><span class="ld-prize-tag">' + esc(g.rank) + '</span><div class="ld-prize-name">' + esc(g.item) + '</div><div class="ld-prize-qty">' + winnersLabel(g.qty) + '</div></div>' +
+                    '</div>' +
+                    '<div class="ld-prize-grid">' + list.slice(1).map(function (p) {
+                        return '<div class="ld-prize">' + (p.img ? '<span class="ld-prize-photo"><img src="' + p.img + '" alt="' + esc(p.item) + '"></span>' : '<span class="ld-prize-ico">' + LD_ICON(p.icon) + '</span>') +
+                            '<div><div class="ld-prize-name">' + esc(p.item) + '</div><div class="ld-prize-rank">' + esc(p.rank) + ' · ' + winnersLabel(p.qty) + '</div></div></div>';
+                    }).join('') + '</div>' +
+                '</section></div>';
+        }
+
+        // ---------- Ticket tracker ----------
+        var trackerTab = 'current';
+        function activityRows(rows) {
+            var r = C.ticketRule;
+            return rows.length ? rows.map(function (a) {
+                var n = LD.ticketsFor(a, r);
+                return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
+                    '<div class="history-list-pict"><img src="' + iconImg(a.icon) + '" alt=""></div>' +
+                    '<div class="history-list-info">' +
+                        '<h4 class="history-list-info-name">' + esc(a.quiz) + ' quiz</h4>' +
+                        '<div class="history-list-info-stats">' +
+                            '<span' + (r.basis === 'answered' ? ' class="ld-em"' : '') + '>' + a.answered + ' answered</span> · ' +
+                            '<span' + (r.basis === 'correct' ? ' class="ld-em"' : '') + '>' + a.correct + ' correct</span></div>' +
+                        '<div class="history-list-date">' + LD.fmtDate(a.date, true) + '</div>' +
+                    '</div>' +
+                    '<span class="ld-plus' + (n ? '' : ' zero') + '">+' + n + ' ' + fa('fa-ticket') + '</span>' +
+                '</div></li>';
+            }).join('') : '<li class="ld-empty">' + LD_ICON('ticket') + '<b>No tickets yet</b>Play a quiz to earn your first ticket.</li>';
+        }
+        function tracker() {
+            var c = C.campaign, t = totalTickets(), rows = activity();
+            var current =
+                '<div class="ld-track-stats">' +
+                    '<div class="main"><span>Total tickets</span><b>' + t + '</b></div>' +
+                    '<div><span>Campaign period</span><b>' + shortDate(c.periodStart) + ' – ' + shortDate(c.periodEnd) + '</b></div>' +
+                    '<div><span>Draw date</span><b>' + shortDate(c.drawDate) + '</b></div>' +
+                '</div>' +
+                '<div class="ld-track-sub"><span>Recent Activity</span>' + (rows.length ? '<em>' + rows.length + ' quizzes</em>' : '') + '</div>' +
+                '<ul class="history ld-history">' + activityRows(rows) + '</ul>';
+            var past = LD_PAST_PERIODS.map(function (p) {
+                var won = /^won/i.test(p.result);
+                return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
+                    '<div class="ld-past-ico' + (won ? ' won' : '') + '">' + fa(won ? 'fa-trophy' : 'fa-calendar-check-o') + '</div>' +
+                    '<div class="history-list-info">' +
+                        '<h4 class="history-list-info-name">' + esc(p.name) + '</h4>' +
+                        '<div class="history-list-info-stats">' + shortDate(p.start) + ' – ' + LD.fmtDate(p.end) + '</div>' +
+                        '<div class="history-list-date">Draw ' + LD.fmtDate(p.draw) + ' · <b class="' + (won ? 'ld-won' : '') + '">' + esc(p.result) + '</b></div>' +
+                    '</div>' +
+                    '<span class="ld-plus zero">' + p.tickets + ' ' + fa('fa-ticket') + '</span>' +
+                '</div></li>';
+            }).join('');
+            return '<div class="ld-annot">' + note('history') +
+                '<section class="card-simple-outer ld-card-outer">' +
+                    '<div class="ld-card-pad">' +
+                        secHead(LD_ICON('ticket'), 'My Ticket Tracker', 'Your tickets and where they came from') +
+                        '<div class="ld-tabs">' +
+                            '<button class="' + (trackerTab === 'current' ? 'on' : '') + '" data-tab="current">Current Period</button>' +
+                            '<button class="' + (trackerTab === 'history' ? 'on' : '') + '" data-tab="history">History</button>' +
+                        '</div>' +
+                    '</div>' +
+                    (trackerTab === 'current' ? current : '<ul class="history ld-history">' + past + '</ul>') +
+                '</section></div>';
+        }
+
+        // ---------- Period card (drawing state) ----------
+        function period() {
+            var c = C.campaign;
+            return '<div class="ld-annot">' + note('period') +
+                '<section class="card-simple ld-card ld-period">' +
+                    '<div><span class="ld-mini-ico">' + LD_ICON('calendar') + '</span><div><div class="ld-stat-label">Campaign period</div><b>' + shortDate(c.periodStart) + ' – ' + LD.fmtDate(c.periodEnd) + '</b> <span class="ld-tag">Ended</span></div></div>' +
+                    '<div><span class="ld-mini-ico">' + LD_ICON('trophy') + '</span><div><div class="ld-stat-label">Draw date</div><b>' + LD.fmtDate(c.drawDate, true) + '</b> <span class="ld-tag live">Live</span></div></div>' +
+                '</section></div>';
+        }
+
+        // ---------- After the draw ----------
+        function winners() {
+            var win = state === 'completed-win', t = totalTickets(), P = C.campaign.prizes;
+            var list = [
+                ['09•••••4821', P[0], 'https://demo.quizpro.mobi//uploads/user/1/ava-eissa.png'],
+                ['09•••••1176', P[1], 'https://demo.quizpro.mobi//theme/images/dp.png'],
+                [win ? 'You' : '09•••••7302', P[1], 'https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg'],
+                ['09•••••5518', P[2], 'https://demo.quizpro.mobi//theme/images/dp.png']
+            ];
+            var result = win
+                ? '<section class="ld-result win"><span class="ld-result-ico">' + LD_ICON('trophy') + '</span><div class="ld-result-title">Congratulations, you won!</div>' +
+                    '<div class="ld-result-prize">' + esc(P[1].item) + ' · ' + esc(P[1].rank) + '</div><div class="ld-result-text">Our team will contact you by SMS within 7 days.' + flag('claim process TBC') + '</div></section>'
+                : '<section class="ld-result lose"><span class="ld-result-ico">' + LD_ICON('wheel') + '</span><div class="ld-result-title">Not this time</div>' +
+                    '<div class="ld-result-text">Your ' + t + ' ticket' + (t === 1 ? ' was' : 's were') + ' entered in the draw. Keep playing for the next Lucky Draw!</div>' +
+                    '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta">Play Now</a></section>';
+            return '<div class="ld-annot">' + note('winners') + result +
+                '<section class="card-simple-outer ld-card-outer">' +
+                    '<div class="ld-card-pad">' + secHead(LD_ICON('trophy'), 'Winner Announcement', 'Drawn on ' + LD.fmtDate(C.campaign.drawDate, true)) + '</div>' +
+                    '<ul class="leaderboard">' + list.map(function (w, i) {
+                        var me = win && i === 2;
+                        return '<li class="leaderboard-winner' + (me ? ' ld-me' : '') + '"><div class="d-flex align-items-center w-100">' +
+                            '<div class="leaderboard-winner-pict"><img src="' + w[2] + '" alt=""><span class="leaderboard-winner-rank ld-winner-rank">' + (i + 1) + '</span></div>' +
+                            '<div class="leaderboard-winner-info"><h4 class="leaderboard-winner-info-name">' + w[0] + '</h4><div class="leaderboard-winner-info-stats">' + esc(w[1].item) + '</div></div>' +
+                            '<span class="ld-winner-prize">' + esc(w[1].rank) + '</span></div></li>';
+                    }).join('') + '</ul>' +
+                '</section></div>';
+        }
+
+        function terms() {
+            return '<div class="ld-annot">' + note('terms') +
+                '<details class="card-simple ld-card ld-terms"><summary>' + fa('fa-file-text-o') + ' Terms &amp; Conditions</summary><ol>' +
+                    '<li>Open to active QuizPro subscribers during the campaign period.' + flag('eligibility TBC') + '</li>' +
+                    '<li>Tickets are earned from quizzes played between ' + LD.fmtDate(C.campaign.periodStart) + ' and ' + LD.fmtDate(C.campaign.periodEnd) + '.</li>' +
+                    '<li>Winners are selected at random from eligible entries on the draw date.</li>' +
+                    '<li>Each mobile number can win at most one prize per campaign.' + flag('TBC') + '</li>' +
+                    '<li>Tickets are not transferable and cannot be exchanged for cash.</li>' +
+                '</ol></details></div>';
+        }
+
+        function render() {
+            document.body.classList.toggle('ld-notes', notes);
+            var html;
+            if (state === 'guest') html = hero() + howToEarn() + prizes();
+            else if (state === 'drawing') html = hero() + period() + prizes() + tracker();
+            else if (state.indexOf('completed') === 0) html = winners() + prizes() + tracker();
+            else html = hero() + howToEarn() + prizes() + tracker();
+            html += terms();
+            $root.innerHTML = html;
+            startReel();
+            if (state === 'drawing') startDrawSequence(); else drawRun++;
+            tickCountdown();
+            renderPanel();
+            var u = new URL(location.href);
+            u.searchParams.set('state', state);
+            notes ? u.searchParams.set('notes', '1') : u.searchParams.delete('notes');
+            try { window.history.replaceState(null, '', u); } catch (e) {}
+        }
+
+        // ---------- Prototype review panel ----------
+        function renderPanel() {
+            document.getElementById('ld-states').innerHTML = STATES.map(function (s) {
+                return '<button class="ld-chip' + (s[0] === state ? ' on' : '') + '" data-state="' + s[0] + '">' + s[1] + '</button>';
+            }).join('');
+            document.getElementById('ld-r-tickets').value = C.ticketRule.tickets;
+            document.getElementById('ld-r-every').value = C.ticketRule.every;
+            document.getElementById('ld-r-basis').value = C.ticketRule.basis;
+            document.getElementById('ld-method').value = C.drawMethod.type;
+            document.getElementById('ld-notes-toggle').checked = notes;
+        }
+        $root.addEventListener('click', function (e) {
+            var b = e.target.closest('[data-tab]'); if (!b) return;
+            trackerTab = b.getAttribute('data-tab'); render();
+        });
+        document.getElementById('ld-states').addEventListener('click', function (e) {
+            var b = e.target.closest('[data-state]'); if (!b) return;
+            state = b.getAttribute('data-state'); render();
+        });
+        function num(id, d) { var v = parseInt(document.getElementById(id).value, 10); return v > 0 ? v : d; }
+        ['ld-r-tickets', 'ld-r-every', 'ld-r-basis', 'ld-method', 'ld-notes-toggle'].forEach(function (id) {
+            document.getElementById(id).addEventListener('change', function () {
+                C.ticketRule.tickets = num('ld-r-tickets', 1);
+                C.ticketRule.every = num('ld-r-every', 1);
+                C.ticketRule.basis = document.getElementById('ld-r-basis').value;
+                C.drawMethod.type = document.getElementById('ld-method').value;
+                notes = document.getElementById('ld-notes-toggle').checked;
+                render();
+            });
+        });
+        var panel = document.getElementById('ld-panel');
+        document.getElementById('ld-review-btn').onclick = function () { panel.classList.add('open'); };
+        document.getElementById('ld-panel-close').onclick = function () { panel.classList.remove('open'); };
+
+        render();
+        setInterval(tickCountdown, 1000);
+    })();
+    </script>
+</body>
+</html>

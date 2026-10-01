@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizy Flash</title>
+    <link rel="stylesheet" href="theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
+    <link rel="stylesheet" href="theme/css/style.css">
+    <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
+    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+</head>
+<body>
+    <div class="content-wrapper">
+
+        <div class="page-header-score">
+            <div class="container box-wrapper">
+                <div class="row gx-0">
+                    <div class="col-5">
+                        <div class="quiz-player">
+                            <div class="quiz-player-avatar">
+
+                                                            <img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="Avatar">
+                            </div>
+                            <div class="quiz-player-info text-start ms-2">
+                                <p class="mb-0">You</p>
+                                <p class="mb-0 fw-bold" id="real_score_start">0</p>
+                                <p class="mb-0 fw-bold" id="real_score_show"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="countdown" id="countdown">
+                            <span id="countdown-number">20</span>
+                            <svg>
+                                <circle r="18" cx="20" cy="20"
+                                        style="stroke-dasharray: 113px;
+                                                stroke-dashoffset: 0px;
+                                                stroke-linecap: round;
+                                                stroke-width: 4px;
+                                                stroke: #fabc3f;
+                                                fill: none;animation: countdown 28s linear infinite forwards;">
+                                </circle>
+                            </svg>
+                        </div>
+
+                    </div>
+                    <div class="col-5">
+                        <div class="quiz-player">
+                            <div class="quiz-player-info text-end me-2">
+                                <p class="mb-0">Eissa</p>
+                                <p class="mb-0 fw-bold" id="fake_score_start">0</p>
+                                <p class="mb-0 fw-bold" id="fake_score_show"></p>
+                            </div>
+                            <div class="quiz-player-avatar">
+                                                                <img src="https://demo.quizpro.mobi//theme/images/ava-eissa.png" alt="Avatar">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container box-wrapper">
+            <div class="swipe">
+                <div class="swipe-action">
+                    <div class="swipe-action-circle love">
+                        <span class="qf-icon-thumbs-up"></span>
+                    </div>
+                    <div class="swipe-action-circle nope">
+                        <span class="qf-icon-thumbs-down"></span>
+                    </div>
+                </div>
+
+                <div id="swipe-counter" class="swipe-counter">
+                    <span id="current" class="count">1</span> of <span id="maxQuestion"></span>
+                </div>
+
+                <div class="swipe-cards" id="questionDisplay">
+                </div>
+
+                <div class="swipe-status" id="answerOption">
+                </div>
+
+                <!-- multiple start -->
+                <div class="multiple">
+                    <div id="multipleQuestionDisplay">
+                    </div>
+                    <ul class="multiple-answer" id="multipleAnswerDisplay">
+                    </ul>
+                </div>
+                <!-- multiple end -->
+
+                <!-- <audio id="audio" src="https://demo.quizpro.mobi//theme/audio/eatpellet.ogg" autostart="false" ></audio> -->
+                <audio id="audio" src="https://demo.quizpro.mobi//theme/audio/Ticking_Clock.wav" autostart="false" ></audio>
+                <audio id="audio_click" src="https://demo.quizpro.mobi//theme/audio/pop.mp3" autostart="false" ></audio>
+                <audio id="audio_correct" src="https://demo.quizpro.mobi//theme/audio/answer-correct.wav" autostart="false" ></audio>
+                <audio id="audio_wrong" src="https://demo.quizpro.mobi//theme/audio/answer-wrong.wav" autostart="false" ></audio>
+
+                <input type="hidden" name="qno" id="qno" value="0">
+                <input type="hidden" name="countdown" id="countdown" value="10">
+                <input type="hidden" name="currentQuestion" id="currentQuestion" value="0">
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/bootstrap.bundle.min.js"></script>
+
+    <script src="theme/js/hammer.js"></script>
+    <script src="theme/js/quiz.js"></script>
+
+    <script src="theme/js/custom.js"></script>
+
+</body>
+</html>

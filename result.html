@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizy Flash</title>
+    <link rel="stylesheet" href="theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
+    <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="theme/lucky-draw/ld.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container box-wrapper text-center pt-5">
+            <div class="quiz-result-status" id="r-status">You Win!</div>
+            <div class="quiz-result-ann" id="r-ann">Great job, keep it up</div>
+
+            <div class="quiz-result-pict">
+                <span class="quiz-result-pict-ava">
+                    <img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="Avatar">
+                </span>
+            </div>
+
+            <div class="mb-4">
+                <span class="quiz-result-points">
+                    <span class="quiz-result-points-badge"><span class="qf-icon-crown"></span></span>
+                    <span id="r-points">0</span> Points
+                </span>
+            </div>
+
+            <div class="final-score text-start">
+                <div class="text-center" style="transform:translateY(-50%)">
+                    <span class="final-score-title">Final Score</span>
+                </div>
+                <div class="final-score-top">
+                    <div class="row g-2 text-center">
+                        <div class="col-5">
+                            <div class="mb-1 fw-bold">You</div>
+                            <div class="final-score-top-box" id="r-real">0</div>
+                        </div>
+                        <div class="col-2 d-flex align-items-end justify-content-center pb-3 fw-bold">VS</div>
+                        <div class="col-5">
+                            <div class="mb-1 fw-bold">Eissa</div>
+                            <div class="final-score-top-box" id="r-fake">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="final-score-detail">
+                    <h4 class="final-score-detail-title">Summary</h4>
+                    <ul class="final-score-more mb-0">
+                        <li><span class="score-stats-badge" id="r-correct">0</span> Correct answers</li>
+                        <li><span class="score-stats-badge" id="r-answered">0</span> Questions answered</li>
+                        <li><span class="score-stats-badge" id="r-level">-</span> Level</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="lucky-draw.html" class="ld-entry text-start" id="r-ld">
+                <span class="ld-entry-ico"><img class="ld-ill" src="theme/lucky-draw/img/ticket.png" alt=""></span>
+                <span>
+                    <span class="ld-entry-title d-block" id="r-ld-title">+0 Lucky Draw tickets</span>
+                    <span class="ld-entry-sub d-block">See your Ticket History</span>
+                </span>
+                <span class="ld-entry-go qf-icon-arrow-right"></span>
+            </a>
+
+            <a href="#" class="btn btn-lg button-primary w-100 mb-3" id="r-again"><span class="qf-icon-replay"></span> Play Again</a>
+            <a href="index.html" class="btn btn-lg button-green w-100 mb-5">Home</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/bootstrap.bundle.min.js"></script>
+    <script src="theme/lucky-draw/ld-config.js"></script>
+    <script>
+    (function () {
+        var p = new URLSearchParams(location.search);
+        var win = p.get('res') === 'win';
+        var level = QP_DEMO.LEVELS.filter(function (l) { return String(l.id) === p.get('level'); })[0] || QP_DEMO.LEVELS[0];
+        var answered = +p.get('answered') || 0, correct = +p.get('correct') || 0;
+        document.getElementById('r-status').textContent = win ? 'You Win!' : 'You Lose';
+        document.getElementById('r-ann').textContent = win ? 'Great job, keep it up' : 'Nice try, play again to win';
+        document.getElementById('r-points').textContent = p.get('real') || 0;
+        document.getElementById('r-real').textContent = p.get('real') || 0;
+        document.getElementById('r-fake').textContent = p.get('fake') || 0;
+        document.getElementById('r-correct').textContent = correct;
+        document.getElementById('r-answered').textContent = answered + '/' + (p.get('total') || 10);
+        document.getElementById('r-level').textContent = level.title;
+        document.getElementById('r-again').href = 'game-detail.html?id=' + (p.get('game') || 31);
+        var t = LD.ticketsFor({ answered: answered, correct: correct }, LD_CONFIG.ticketRule);
+        document.getElementById('r-ld-title').textContent = '+' + t + ' Lucky Draw ticket' + (t === 1 ? '' : 's');
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Draw Admin</title>
+    <link rel="stylesheet" href="theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
+    <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="theme/lucky-draw/ld.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+    <style>
+        body{background:#F4F7FB}
+        body::before{display:none}
+        .adm-top{background:#3EA9F5;color:#fff;padding:14px 0}
+        .adm-top img{height:28px}
+        .adm-wrap{max-width:1100px}
+        .adm-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 2px 6px rgba(12,9,42,.05)}
+        .adm-card h2{font-size:1.0625rem;font-weight:bold;margin-bottom:4px;color:#0C092A}
+        .adm-card .sub{color:#969696;font-size:.875rem;margin-bottom:16px}
+        .adm-label{font-size:.75rem;font-weight:bold;color:#969696;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;display:block}
+        .adm-card .form-control,.adm-card .form-select{font-size:.875rem;border-radius:8px}
+        .adm-table{font-size:.8125rem;margin:0}
+        .adm-table th{color:#969696;font-weight:bold;text-transform:uppercase;font-size:.6875rem;letter-spacing:.04em;border-bottom-width:1px}
+        .adm-table td{vertical-align:middle}
+        .pill{display:inline-block;border-radius:50rem;padding:2px 10px;font-weight:bold;font-size:.75rem}
+        .pill.ok{background:#e3f6ea;color:#2fa85c}
+        .pill.no{background:#fde8ec;color:#d6336c}
+        .pill.warn{background:#FFEBD9;color:#c15e01}
+        .pill.info{background:#e6f2fd;color:#0A58CA}
+        .check-ok{color:#2fa85c}.check-no{color:#d6336c}
+        .steps{counter-reset:s;list-style:none;padding:0;margin:0}
+        .steps li{counter-increment:s;position:relative;padding:0 0 14px 40px;font-size:.875rem}
+        .steps li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:#DFDFDF;color:#fff;font-weight:bold;font-size:.75rem;display:flex;align-items:center;justify-content:center}
+        .steps li.done::before{background:#47c475;content:'\2713'}
+        .steps li.current::before{background:#FE9E44}
+        .steps li b{display:block;color:#0C092A}
+        .steps li span{color:#969696}
+        .stat{background:#F4F7FB;border-radius:12px;padding:12px;text-align:center}
+        .stat b{display:block;font-size:1.375rem;color:#0C092A}
+        .stat span{font-size:.75rem;color:#969696}
+        .mono{font-family:ui-monospace,Menlo,monospace;font-size:.75rem}
+        .rule-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:.875rem}
+        .rule-row:last-child{border-bottom:0}
+        body.ld-notes .ld-note{margin-bottom:10px}
+        .adm-notes-toggle{font-size:.8125rem;color:#fff}
+    </style>
+</head>
+<body>
+    <div class="adm-top">
+        <div class="container adm-wrap d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <img src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" alt="QuizPro">
+                <span class="fw-bold">Admin · Lucky Draw</span>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <label class="adm-notes-toggle"><input type="checkbox" id="notes"> Annotations</label>
+                <a href="lucky-draw.html" class="btn btn-sm btn-light fw-bold">User view</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container adm-wrap py-4">
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2">
+            <div>
+                <h1 class="h4 fw-bold mb-0" id="c-name"></h1>
+                <div class="ld-muted" id="c-dates"></div>
+            </div>
+            <span class="pill warn" id="c-status">Campaign ended · awaiting draw</span>
+        </div>
+
+        <!-- 1. Campaign setup -->
+        <div class="ld-annot"><div class="note-slot" data-key="adminSetup"></div>
+        <div class="adm-card">
+            <h2>1. Campaign Setup</h2>
+            <div class="sub">Values with a red flag are not agreed yet. They are settings, not hard-coded rules.</div>
+            <div class="row g-3">
+                <div class="col-md-3 col-6"><span class="adm-label">Period start</span><input class="form-control" type="date" id="f-start"></div>
+                <div class="col-md-3 col-6"><span class="adm-label">Period end</span><input class="form-control" type="date" id="f-end"></div>
+                <div class="col-md-3 col-6"><span class="adm-label">Draw date</span><input class="form-control" type="datetime-local" id="f-draw"></div>
+                <div class="col-md-3 col-6"><span class="adm-label">Winners / backups</span>
+                    <div class="d-flex gap-2"><input class="form-control" type="number" min="1" id="f-winners"><input class="form-control" type="number" min="0" id="f-backups"></div></div>
+                <div class="col-md-6">
+                    <span class="adm-label">Ticket rule <span class="ld-flag">not confirmed</span></span>
+                    <div class="d-flex align-items-center gap-2 flex-wrap" style="font-size:.875rem">
+                        <input class="form-control" style="width:70px" type="number" min="1" id="f-tickets"> ticket(s) per
+                        <input class="form-control" style="width:70px" type="number" min="1" id="f-every">
+                        <select class="form-select" style="width:auto" id="f-basis">
+                            <option value="answered">questions answered</option>
+                            <option value="correct">correct answers</option>
+                        </select>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mt-2" style="font-size:.875rem">
+                        Daily cap <input class="form-control" style="width:90px" type="number" min="0" id="f-cap" placeholder="none"> tickets/day
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <span class="adm-label">Draw method <span class="ld-flag">not confirmed</span></span>
+                    <select class="form-select" id="f-method">
+                        <option value="weighted">Weighted – each ticket is one entry</option>
+                        <option value="one-per-user">One entry per eligible user</option>
+                    </select>
+                    <div class="ld-muted mt-2" id="method-help"></div>
+                </div>
+            </div>
+        </div></div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <!-- 2. Eligibility -->
+                <div class="ld-annot"><div class="note-slot" data-key="adminEligibility"></div>
+                <div class="adm-card">
+                    <h2>2. Eligibility Check</h2>
+                    <div class="sub">Run on the entry snapshot taken when the campaign closes. Excluded users keep their tickets on record with the reason.</div>
+                    <div id="rules"></div>
+                    <div class="row g-2 my-3" id="stats"></div>
+                    <div class="table-responsive">
+                        <table class="table adm-table">
+                            <thead><tr><th>MSISDN</th><th>Tickets</th><th>Entries</th><th>Checks</th><th>Result</th></tr></thead>
+                            <tbody id="participants"></tbody>
+                        </table>
+                    </div>
+                </div></div>
+            </div>
+
+            <div class="col-lg-5">
+                <!-- 3. Winner selection -->
+                <div class="ld-annot"><div class="note-slot" data-key="adminDraw"></div>
+                <div class="adm-card">
+                    <h2>3. Winner Selection</h2>
+                    <div class="sub">Random draw from eligible entries only. Seed and entry hash are logged so the result can be reproduced.</div>
+                    <ol class="steps" id="steps"></ol>
+                    <div id="draw-out"></div>
+                    <div class="d-flex gap-2 mt-2" id="draw-actions"></div>
+                </div></div>
+            </div>
+        </div>
+
+        <!-- 4. Audit trail -->
+        <div class="ld-annot"><div class="note-slot" data-key="adminAudit"></div>
+        <div class="adm-card">
+            <h2>4. Audit Trail</h2>
+            <div class="sub">Every change to settings, eligibility, draw and publication. Read-only, cannot be edited or deleted.</div>
+            <div class="table-responsive">
+                <table class="table adm-table">
+                    <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Details</th></tr></thead>
+                    <tbody id="audit"></tbody>
+                </table>
+            </div>
+        </div></div>
+    </div>
+
+    <script src="theme/lucky-draw/ld-config.js"></script>
+    <script>
+    (function () {
+        var C = LD_CONFIG, $ = function (id) { return document.getElementById(id); };
+
+        // Sample entry snapshot (answered/correct per user so either ticket basis works)
+        var USERS = [
+            { m: '09•••••4821', answered: 212, correct: 160, sub: true, billing: true, black: false },
+            { m: '09•••••1176', answered: 95, correct: 61, sub: true, billing: true, black: false },
+            { m: '1234567890', answered: 51, correct: 35, sub: true, billing: true, black: false },
+            { m: '09•••••5518', answered: 41, correct: 22, sub: true, billing: true, black: false },
+            { m: '09•••••7302', answered: 130, correct: 97, sub: false, billing: true, black: false },
+            { m: '09•••••0007', answered: 300, correct: 290, sub: true, billing: true, black: true },
+            { m: '09•••••2264', answered: 33, correct: 12, sub: true, billing: false, black: false },
+            { m: '09•••••8810', answered: 3, correct: 1, sub: true, billing: true, black: false },
+            { m: '09•••••6142', answered: 77, correct: 50, sub: true, billing: true, black: false },
+            { m: '09•••••9035', answered: 19, correct: 15, sub: true, billing: true, black: false }
+        ];
+        var activeRules = {}; C.eligibility.forEach(function (r) { activeRules[r.id] = true; });
+        var draw = null, published = false;
+        var audit = [
+            ['2026-09-20 10:02', 'admin@linkit360', 'Campaign created', C.campaign.name],
+            ['2026-09-20 10:05', 'admin@linkit360', 'Ticket rule set', 'Sample rule – pending business confirmation'],
+            ['2026-10-01 00:00', 'system', 'Campaign started', 'Ticket earning enabled'],
+            ['2026-11-01 00:00', 'system', 'Campaign closed', 'Ticket earning disabled'],
+            ['2026-11-01 00:05', 'system', 'Entry snapshot frozen', USERS.length + ' participants · sha256 ' + hash()]
+        ];
+
+        function tickets(u) { return LD.ticketsFor(u, C.ticketRule); }
+        function checks(u) {
+            var c = [];
+            if (activeRules.sub) c.push(['sub', u.sub, 'No active subscription']);
+            if (activeRules.billing) c.push(['billing', u.billing, 'No successful billing']);
+            if (activeRules.tickets) c.push(['tickets', tickets(u) > 0, '0 tickets']);
+            if (activeRules.blacklist) c.push(['blacklist', !u.black, 'Test / blacklisted number']);
+            return c;
+        }
+        function eligible(u) { return checks(u).every(function (c) { return c[1]; }); }
+        function entries(u) { return !eligible(u) ? 0 : C.drawMethod.type === 'weighted' ? tickets(u) : 1; }
+        function hash() { // short deterministic fingerprint for the prototype
+            var s = JSON.stringify(USERS) + JSON.stringify(C.ticketRule), h = 2166136261;
+            for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+            return ('00000000' + (h >>> 0).toString(16)).slice(-8) + '…';
+        }
+        function now() { var d = new Date(); return d.toISOString().slice(0, 16).replace('T', ' '); }
+        function log(action, detail) { audit.push([now(), 'admin@linkit360', action, detail]); renderAudit(); }
+        function rng(seed) { return function () { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
+
+        function renderSetup() {
+            var c = C.campaign;
+            $('c-name').textContent = c.name;
+            $('c-dates').textContent = 'Campaign Period ' + LD.fmtDate(c.periodStart) + ' – ' + LD.fmtDate(c.periodEnd) + ' · Draw Date ' + LD.fmtDate(c.drawDate, true);
+            $('f-start').value = c.periodStart; $('f-end').value = c.periodEnd; $('f-draw').value = c.drawDate.slice(0, 16);
+            $('f-winners').value = C.drawMethod.winners; $('f-backups').value = C.drawMethod.backups;
+            $('f-tickets').value = C.ticketRule.tickets; $('f-every').value = C.ticketRule.every; $('f-basis').value = C.ticketRule.basis;
+            $('f-cap').value = C.ticketRule.dailyCap || ''; $('f-method').value = C.drawMethod.type;
+            $('method-help').textContent = C.drawMethod.type === 'weighted'
+                ? 'A user with 20 tickets has 20 entries. Each user can still win only once (later picks of the same user are skipped).'
+                : 'Every eligible user has exactly one entry, regardless of ticket count. Tickets only decide eligibility.';
+        }
+
+        function renderEligibility() {
+            $('rules').innerHTML = C.eligibility.map(function (r) {
+                return '<div class="rule-row"><label class="d-flex align-items-center gap-2"><input type="checkbox" data-rule="' + r.id + '"' + (activeRules[r.id] ? ' checked' : '') + (r.id === 'onewin' ? ' disabled checked' : '') + '> ' + r.label + '</label>' +
+                    (r.confirmed ? '<span class="pill ok">agreed</span>' : '<span class="pill warn">proposed</span>') + '</div>';
+            }).join('');
+            var el = USERS.filter(eligible), totalEntries = USERS.reduce(function (t, u) { return t + entries(u); }, 0);
+            $('stats').innerHTML = [[USERS.length, 'participants'], [el.length, 'eligible'], [USERS.length - el.length, 'excluded'], [totalEntries, 'entries in draw']]
+                .map(function (s) { return '<div class="col-3"><div class="stat"><b>' + s[0] + '</b><span>' + s[1] + '</span></div></div>'; }).join('');
+            $('participants').innerHTML = USERS.map(function (u) {
+                var cs = checks(u), ok = eligible(u), fail = cs.filter(function (c) { return !c[1]; }).map(function (c) { return c[2]; });
+                return '<tr><td class="mono">' + u.m + '</td><td>' + tickets(u) + '</td><td>' + entries(u) + '</td><td>' +
+                    cs.map(function (c) { return '<span class="fa ' + (c[1] ? 'fa-check-circle check-ok' : 'fa-times-circle check-no') + '" title="' + c[0] + '"></span>'; }).join(' ') +
+                    '</td><td>' + (ok ? '<span class="pill ok">Eligible</span>' : '<span class="pill no">Excluded</span><div class="ld-muted" style="font-size:.75rem">' + fail.join(', ') + '</div>') + '</td></tr>';
+            }).join('');
+        }
+
+        function renderDraw() {
+            var steps = [
+                ['Freeze entries', 'Snapshot at campaign close · sha256 ' + hash()],
+                ['Run eligibility check', USERS.filter(eligible).length + ' eligible of ' + USERS.length],
+                ['Random draw', draw ? 'Seed ' + draw.seed + ' · ' + draw.at : 'Generates winners + backups'],
+                ['Second-person approval', published ? 'Approved by ops@linkit360' : 'Required before publishing'],
+                ['Publish & notify', published ? 'Winner Announcement live · SMS sent' : 'Shows Winner Announcement in app + SMS']
+            ];
+            var cur = !draw ? 2 : !published ? 3 : 5;
+            $('steps').innerHTML = steps.map(function (s, i) {
+                return '<li class="' + (i < cur ? 'done' : i === cur ? 'current' : '') + '"><b>' + s[0] + '</b><span>' + s[1] + '</span></li>';
+            }).join('');
+            $('draw-out').innerHTML = draw ? '<table class="table adm-table mb-2"><thead><tr><th>#</th><th>MSISDN</th><th>Prize</th><th>Entries</th></tr></thead><tbody>' +
+                draw.picks.map(function (p, i) {
+                    return '<tr><td>' + (i + 1) + '</td><td class="mono">' + p.u.m + '</td><td>' + (p.backup ? '<span class="pill info">Backup</span>' : p.prize) + '</td><td>' + entries(p.u) + '</td></tr>';
+                }).join('') + '</tbody></table>' : '';
+            $('draw-actions').innerHTML = !draw
+                ? '<button class="btn button-primary" id="btn-draw"><span class="fa fa-random"></span> Run draw</button>'
+                : !published
+                ? '<button class="btn button-green" id="btn-approve"><span class="fa fa-check"></span> Approve &amp; publish</button><button class="btn btn-light" id="btn-redraw">Discard &amp; redraw</button>'
+                : '<span class="pill ok">Published · <a href="lucky-draw.html?state=completed-win" style="color:inherit;text-decoration:underline">see user view</a></span>';
+            $('c-status').textContent = published ? 'Draw completed · winners published' : draw ? 'Draw done · awaiting approval' : 'Campaign ended · awaiting draw';
+            $('c-status').className = 'pill ' + (published ? 'ok' : 'warn');
+        }
+
+        function runDraw() {
+            var seed = Math.floor(Math.random() * 1e9), r = rng(seed), pool = [];
+            USERS.forEach(function (u) { for (var i = 0; i < entries(u); i++) pool.push(u); });
+            var picks = [], won = {}, need = C.drawMethod.winners + C.drawMethod.backups, guard = 0;
+            var prizes = []; C.campaign.prizes.forEach(function (p) { for (var i = 0; i < p.qty; i++) prizes.push(p.rank); });
+            while (picks.length < need && guard++ < 10000 && pool.length) {
+                var u = pool[Math.floor(r() * pool.length)];
+                if (won[u.m]) continue; // one prize per MSISDN
+                won[u.m] = 1;
+                var backup = picks.length >= C.drawMethod.winners;
+                picks.push({ u: u, backup: backup, prize: backup ? '' : prizes[picks.length] || 'Prize' });
+            }
+            draw = { seed: seed, at: now(), picks: picks };
+            log('Draw executed', 'Seed ' + seed + ' · ' + pool.length + ' entries · ' + picks.length + ' picks (' + C.drawMethod.backups + ' backup)');
+            renderDraw();
+        }
+
+        function renderAudit() {
+            $('audit').innerHTML = audit.slice().reverse().map(function (a) {
+                return '<tr><td class="mono">' + a[0] + '</td><td>' + a[1] + '</td><td class="fw-bold">' + a[2] + '</td><td class="ld-muted">' + a[3] + '</td></tr>';
+            }).join('');
+        }
+
+        function renderNotes() {
+            document.querySelectorAll('.note-slot').forEach(function (el) {
+                var s = C.sectionStatus[el.getAttribute('data-key')];
+                el.innerHTML = s ? '<span class="ld-note ' + s + '">' + LD.status[s] + '</span>' : '';
+            });
+        }
+
+        function all() { renderSetup(); renderEligibility(); renderDraw(); renderAudit(); }
+
+        // Settings changes
+        var fields = { 'f-start': 'Period start', 'f-end': 'Period end', 'f-draw': 'Draw date', 'f-winners': 'Winners', 'f-backups': 'Backups',
+            'f-tickets': 'Ticket rule', 'f-every': 'Ticket rule', 'f-basis': 'Ticket basis', 'f-cap': 'Daily cap', 'f-method': 'Draw method' };
+        Object.keys(fields).forEach(function (id) {
+            $(id).addEventListener('change', function () {
+                var v = $(id).value, n = parseInt(v, 10);
+                if (id === 'f-start') C.campaign.periodStart = v;
+                if (id === 'f-end') C.campaign.periodEnd = v;
+                if (id === 'f-draw') C.campaign.drawDate = v + ':00';
+                if (id === 'f-winners') C.drawMethod.winners = Math.max(1, n || 1);
+                if (id === 'f-backups') C.drawMethod.backups = Math.max(0, n || 0);
+                if (id === 'f-tickets') C.ticketRule.tickets = Math.max(1, n || 1);
+                if (id === 'f-every') C.ticketRule.every = Math.max(1, n || 1);
+                if (id === 'f-basis') C.ticketRule.basis = v;
+                if (id === 'f-cap') C.ticketRule.dailyCap = n > 0 ? n : null;
+                if (id === 'f-method') C.drawMethod.type = v;
+                if (draw && !published) { draw = null; log('Draw discarded', 'Settings changed after draw'); }
+                log('Setting changed', fields[id] + ' → ' + (v || 'none'));
+                all();
+            });
+        });
+        $('rules').addEventListener('change', function (e) {
+            var id = e.target.getAttribute('data-rule'); if (!id) return;
+            activeRules[id] = e.target.checked;
+            log('Eligibility rule ' + (e.target.checked ? 'enabled' : 'disabled'), C.eligibility.filter(function (r) { return r.id === id; })[0].label);
+            if (draw && !published) { draw = null; log('Draw discarded', 'Eligibility changed after draw'); }
+            all();
+        });
+        $('draw-actions').addEventListener('click', function (e) {
+            var b = e.target.closest('button'); if (!b) return;
+            if (b.id === 'btn-draw') runDraw();
+            if (b.id === 'btn-redraw') { log('Draw discarded', 'Manual redraw – reason required in production'); draw = null; runDraw(); }
+            if (b.id === 'btn-approve') {
+                published = true;
+                audit.push([now(), 'ops@linkit360', 'Draw approved', 'Second-person approval']);
+                log('Winners published', draw.picks.filter(function (p) { return !p.backup; }).length + ' winners · SMS queued');
+                renderDraw();
+            }
+        });
+        $('notes').addEventListener('change', function () { document.body.classList.toggle('ld-notes', this.checked); });
+
+        renderNotes(); all();
+    })();
+    </script>
+</body>
+</html>

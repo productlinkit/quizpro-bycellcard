@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizy Flash</title>
+    <link rel="stylesheet" href="theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
+    <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+
+</head>
+<body class="login">
+    <div class="content-wrapper">
+        <div class="container box-wrapper">
+            <div class="text-center pt-5 pb-4 text-white">
+                <img src="https://demo.quizpro.mobi//theme/images/logo-light_quizypro.png" class="img-fluid mb-2" width="120" alt="Logo">
+                <p class="mb-0">Sign In to Play the Quiz</p>
+            </div>
+                        <div class="card-simple">
+                <form action="https://demo.quizpro.mobi/login_submit" class="form" method="post">
+                    <input type="hidden" name="_token" value="CSRF_PLACEHOLDER">
+                                        <div class="mb-3">
+                        <input type="number" class="form-control shadow-sm" name="msisdn" placeholder="MSISDN" id="msisdn" value="">
+                        <small class="text-danger"></small>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" name="password" class="form-control shadow-sm" placeholder="Password" id="password" value="">
+                        <small class="text-danger"></small>
+                    </div>
+
+                    <input type="submit" class="btn btn-lg button-primary w-100" value="Login" >
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/bootstrap.bundle.min.js"></script>
+
+    <script src="theme/js/custom.js"></script>
+
+</body>
+</html>
