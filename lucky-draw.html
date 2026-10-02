@@ -81,7 +81,7 @@
             ['completed-lose', 'Draw completed – not won']
         ];
         var params = new URLSearchParams(location.search);
-        var state = params.get('state') || 'active'; // demo copy is logged in
+        var state = params.get('state') || (window.QP_DEMO && QP_DEMO.user ? 'active' : 'guest');
         var notes = params.get('notes') === '1';
         var GIFT = '<svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7M12 8v13M12 8S10.6 3.4 7.9 3.7C5.9 4 6.2 7.5 9 8M12 8s1.4-4.6 4.1-4.3c2 .3 1.7 3.8-1.1 4.3"/></svg>';
         var SPARK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/></svg>';
@@ -116,7 +116,7 @@
                 ? '<div class="ld-stat-label">My tickets</div><div class="ld-stat-guest">Log in to start collecting</div>'
                 : '<div class="ld-stat-label">My tickets</div><div class="ld-stat-big">' + LD_ICON('ticket') + '<b>' + t + '</b></div>';
             var cta = guest
-                ? '<a href="login.html" class="btn btn-lg button-green w-100 ld-cta">Login to Join</a>'
+                ? '<a href="' + QP_DEMO.loginUrl('lucky-draw.html') + '" class="btn btn-lg button-green w-100 ld-cta">Login to Join</a>'
                 : up ? '<span class="btn btn-lg button-grey w-100 ld-cta disabled">Starts ' + shortDate(c.periodStart) + '</span>'
                 : '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta">Play Now &amp; Earn Tickets</a>';
             return '<div class="ld-annot">' + note('hero') +

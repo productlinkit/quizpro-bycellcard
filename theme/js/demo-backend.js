@@ -16,14 +16,20 @@
     var page = (location.pathname.split('/').pop() || 'index.html');
 
     // ---------- Session (dummy login) ----------
+    // Guests can browse; login is asked only when they use a feature (play, Lucky Draw, profile).
     var user = get(SESSION_KEY);
-    var PUBLIC_PAGES = ['login.html', 'lucky-draw-admin.html'];
-    if (!user && PUBLIC_PAGES.indexOf(page) === -1) {
-        location.replace('login.html');
+    var MEMBER_PAGES = ['game-play.html', 'result.html', 'history.html', 'profile.html', 'profile-edit.html'];
+    function loginUrl(next) { return 'login.html?next=' + encodeURIComponent(next || (page + location.search)); }
+    function safeNext() {
+        var n = param('next') || '';
+        return /^[a-z-]+\.html(\?[^#]*)?$/.test(n) && n.indexOf('login.html') !== 0 ? n : 'index.html';
+    }
+    if (!user && MEMBER_PAGES.indexOf(page) !== -1) {
+        location.replace(loginUrl());
         return;
     }
     if (user && page === 'login.html') {
-        location.replace('index.html');
+        location.replace(safeNext());
         return;
     }
 
@@ -210,8 +216,36 @@
             a.href = 'game-detail.html?id=' + a.getAttribute('href').split('/').pop();
         });
         document.querySelectorAll('a[href$="/logout"]').forEach(function (a) {
-            a.addEventListener('click', function (e) { e.preventDefault(); del(SESSION_KEY); location.href = 'login.html'; });
+            a.addEventListener('click', function (e) { e.preventDefault(); del(SESSION_KEY); location.href = 'index.html'; });
         });
+
+        // Login links return to the page the user came from
+        document.querySelectorAll('a[href="login.html"]').forEach(function (a) { a.href = loginUrl(); });
+
+        if (!user) {
+            // Home: guest card instead of the member profile
+            var card = page === 'index.html' && document.querySelector('.home-profile');
+            if (card) card.innerHTML =
+                '<div class="d-flex align-items-center">' +
+                    '<div class="avatar guest-avatar"><span class="qf-icon-profile"></span></div>' +
+                    '<div class="flex-grow-1 ms-2 min-w-0"><div class="home-profile-name">Hi, Guest!</div>' +
+                    '<div class="home-profile-status">Login to play quizzes &amp; win prizes</div></div>' +
+                    '<a href="' + loginUrl() + '" class="btn button-green guest-login">Login</a>' +
+                '</div>';
+            // Profile tab: go to login, then come back to the profile
+            document.querySelectorAll('.bottom-nav a[href="profile.html"]').forEach(function (a) { a.href = loginUrl('profile.html'); });
+            // Leaderboard: no "You" row for guests
+            document.querySelectorAll('.leaderboard-winner.is-you').forEach(function (li) {
+                li.classList.remove('is-you');
+                var tag = li.querySelector('.lb-you'); if (tag) tag.remove();
+            });
+            // Game detail: Play asks to log in (modal already in the page) instead of opening levels
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('#btnPlay')) return;
+                e.preventDefault(); e.stopPropagation();
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('modalplay')).show();
+            }, true);
+        }
 
         // Show the logged-in number
         if (user) {
@@ -232,7 +266,7 @@
                 });
                 if (!ok) return;
                 set(SESSION_KEY, { msisdn: m.value.trim() });
-                location.href = 'index.html';
+                location.href = safeNext();
             });
         }
 
@@ -256,5 +290,5 @@
         }
     });
 
-    window.QP_DEMO = { CATEGORIES: CATEGORIES, LEVELS: LEVELS, SERVER: SERVER };
+    window.QP_DEMO = { CATEGORIES: CATEGORIES, LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl };
 })();

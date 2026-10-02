@@ -1,0 +1,5 @@
+/* Home guest card (see guest mode in theme/js/demo-backend.js) */
+.min-w-0{min-width:0}
+.guest-avatar{background-color:#FFEBD9;color:#FE9E44;display:flex;align-items:center;justify-content:center;font-size:1.75rem}
+.guest-avatar span::before{margin:0}
+.guest-login{flex-shrink:0;border-radius:50rem;padding:6px 20px;margin-left:0.5rem}
