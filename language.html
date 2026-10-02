@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="theme/css/pages.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
     <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
 </head>
@@ -23,22 +24,14 @@
             </div>
         </div>
 
-        <form action="https://demo.quizpro.mobi/language_submit" class="form" method="post">
-            <input type="hidden" name="_token" value="CSRF_PLACEHOLDER"> <div class="container box-wrapper">
-                <div class="card-simple">
-                    <p>Choose your prefer language:</p>
-
-
-                    <select name="langSelect" id="langSelect" class="form-select mb-3 ">
-                                                    <option value="sdfg">English</option>
-                                                    <option value="ar">Arabic</option>
-                                                    <option value="fr">French </option>
-                                            </select>
-
-                    <input type="submit" class="btn btn-lg button-primary w-100" value="Change">
-
+        <form class="form" id="langForm">
+            <div class="container box-wrapper">
+                <div class="lang-current" id="langCurrent"></div>
+                <div class="card-simple-outer">
+                    <p class="lang-title">Choose your language</p>
+                    <div class="lang-list" id="langList" role="radiogroup"></div>
                 </div>
-
+                <input type="submit" class="btn btn-lg button-primary w-100" value="Save">
             </div>
         </form>
 
@@ -69,9 +62,37 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
     <script src="theme/js/custom.js"></script>
+    <script>
+    (function () {
+        var I = window.QP_I18N, chosen = I.current().code;
+        var list = document.getElementById('langList'), cur = document.getElementById('langCurrent');
+        function flag(l) { return '<img class="lang-flag" src="' + I.flagUrl(l) + '" alt="">'; }
+        function render() {
+            var c = I.LANGS.filter(function (l) { return l.code === chosen; })[0];
+            cur.innerHTML = flag(c) + '<div><div class="lang-current-label">Selected</div><div class="lang-current-name">' + c.native + '</div></div>';
+            list.innerHTML = I.LANGS.map(function (l) {
+                var on = l.code === chosen;
+                return '<button type="button" class="lang-item' + (on ? ' active' : '') + '" role="radio" aria-checked="' + on + '" data-code="' + l.code + '">' +
+                    flag(l) + '<span class="lang-name"><b>' + l.native + '</b><small>' + l.name + '</small></span>' +
+                    '<span class="lang-check"></span></button>';
+            }).join('');
+        }
+        list.addEventListener('click', function (e) {
+            var b = e.target.closest('.lang-item'); if (!b) return;
+            chosen = b.getAttribute('data-code'); render();
+        });
+        document.getElementById('langForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            I.setLang(chosen);
+            location.href = 'profile.html';
+        });
+        render();
+    })();
+    </script>
 
     
 </body>

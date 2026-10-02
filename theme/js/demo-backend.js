@@ -18,7 +18,7 @@
     // ---------- Session (dummy login) ----------
     // Guests can browse; login is asked only when they use a feature (play, Lucky Draw, profile).
     var user = get(SESSION_KEY);
-    var MEMBER_PAGES = ['game-play.html', 'result.html', 'history.html', 'profile.html', 'profile-edit.html'];
+    var MEMBER_PAGES = ['game-match.html', 'game-play.html', 'result.html', 'history.html', 'profile.html', 'profile-edit.html'];
     function loginUrl(next) { return 'login.html?next=' + encodeURIComponent(next || (page + location.search)); }
     function safeNext() {
         var n = param('next') || '';
@@ -47,6 +47,23 @@
         32: ['Animal', 'Name of animal, type of animal, animal ability'],
         33: ['Food', 'Name of food, taste, ingredients, food country origin']
     };
+    // Opponents for the VS screen; one is picked per match and kept for play + result
+    var OPPONENTS = [
+        { name: 'Eissa', img: SERVER + 'uploads/user/1/ava-eissa.png' },
+        { name: 'Hella', color: '#FF8FA3' },
+        { name: 'Dara', color: '#a78bfa' },
+        { name: 'Sokha', color: '#14b8a6' },
+        { name: 'Vibol', color: '#60a5fa' }
+    ];
+    var OPP_KEY = 'qp_demo_opponent';
+    function opponent() { return get(OPP_KEY) || OPPONENTS[0]; }
+    function pickOpponent() { var o = OPPONENTS[Math.floor(Math.random() * OPPONENTS.length)]; set(OPP_KEY, o); return o; }
+    function avatarHtml(o) {
+        return o.img ? '<img src="' + o.img + '" alt="' + o.name + '">'
+            : '<span class="opp-initial" style="background-color:' + o.color + '">' + o.name.charAt(0) + '</span>';
+    }
+    var USER_AVATAR = SERVER + 'uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg';
+
     var LEVELS = [
         { id: 1, title: 'Beginner', points: 10 },
         { id: 2, title: 'Intermediate', points: 20 },
@@ -119,6 +136,9 @@
         return q ? { ok: q._correct === String(answer), correct: q._correct } : { ok: false, correct: null };
     }
 
+    // Let the page react to answers (header feedback) without touching quiz.js
+    function emit(name, detail) { setTimeout(function () { document.dispatchEvent(new CustomEvent(name, { detail: detail })); }, 0); }
+
     var ROUTES = {
         '/game_category': function () {
             return { success: 1, result: LEVELS };
@@ -134,14 +154,16 @@
             return { success: 1, pair_id: 1, time: 60 };
         },
         '/quiz/play/answer_check': function (d) {
-            var r = isCorrect(game(), d.question_id, d.answer);
+            var g = game(), r = isCorrect(g, d.question_id, d.answer);
+            emit('qp:answer', { ok: r.ok, points: g.level ? g.level.points : 10 });
             return { success: 1, answer: r.ok ? 'right' : 'wrong', correct_answer_id: r.correct };
         },
         '/quiz/play/score_calculation': function (d) {
             var g = game(), r = isCorrect(g, d.question_id, d.answer);
             if (r.ok) { g.real += g.level.points; g.correct++; }
-            if (Math.random() < 0.6) g.fake += g.level.points; // opponent "Eissa"
+            if (Math.random() < 0.6) g.fake += g.level.points; // demo opponent
             set(GAME_KEY, g);
+            emit('qp:score', { real: g.real, fake: g.fake });
             return { success: 1, real_user: g.real, fake_user: g.fake };
         }
     };
@@ -202,10 +224,11 @@
         // quiz.js labels the swipe buttons No / Yes; this demo uses True / False statements
         var answerBox = document.getElementById('answerOption');
         if (answerBox) {
+            var t = function (s) { return window.QP_I18N ? QP_I18N.t(s) : s; };
             var relabel = function () {
                 var no = answerBox.querySelector('#nope'), yes = answerBox.querySelector('#love');
-                if (no && no.textContent !== 'False') no.textContent = 'False';
-                if (yes && yes.textContent !== 'True') yes.textContent = 'True';
+                if (no && no.textContent !== t('False')) no.textContent = t('False');
+                if (yes && yes.textContent !== t('True')) yes.textContent = t('True');
             };
             new MutationObserver(relabel).observe(answerBox, { childList: true, subtree: true });
             relabel();
@@ -215,8 +238,31 @@
         document.querySelectorAll('a[href*="demo.quizpro.mobi/game/detail/"]').forEach(function (a) {
             a.href = 'game-detail.html?id=' + a.getAttribute('href').split('/').pop();
         });
+        // Logout asks for confirmation first
         document.querySelectorAll('a[href$="/logout"]').forEach(function (a) {
-            a.addEventListener('click', function (e) { e.preventDefault(); del(SESSION_KEY); location.href = 'index.html'; });
+            a.addEventListener('click', function (e) {
+                e.preventDefault();
+                var m = document.getElementById('modalLogout');
+                if (!m) {
+                    m = document.createElement('div');
+                    m.className = 'modal fade modal-standard';
+                    m.id = 'modalLogout';
+                    m.tabIndex = -1;
+                    m.innerHTML =
+                        '<div class="modal-dialog modal-dialog-centered"><div class="modal-content confirm-modal">' +
+                            '<span class="confirm-ico"><span class="qf-icon-out"></span></span>' +
+                            '<h3 class="modal-level-title mb-2">Log out?</h3>' +
+                            '<p class="confirm-text">You will need to log in again to play quizzes and collect Lucky Draw tickets.</p>' +
+                            '<button type="button" class="btn btn-lg button-primary w-100 mb-2" data-bs-dismiss="modal">Cancel</button>' +
+                            '<button type="button" class="btn btn-lg confirm-danger w-100" id="btnLogoutConfirm">Yes, Log out</button>' +
+                        '</div></div>';
+                    document.body.appendChild(m);
+                    m.querySelector('#btnLogoutConfirm').addEventListener('click', function () {
+                        del(SESSION_KEY); location.href = 'index.html';
+                    });
+                }
+                bootstrap.Modal.getOrCreateInstance(m).show();
+            });
         });
 
         // Login links return to the page the user came from
@@ -285,10 +331,11 @@
             document.getElementById('search-result').addEventListener('click', function (e) {
                 var a = e.target.closest('a'); if (!a) return;
                 e.preventDefault();
-                location.href = 'game-play.html?game=' + id + '&level=' + a.getAttribute('href').split('/').pop();
+                location.href = 'game-match.html?game=' + id + '&level=' + a.getAttribute('href').split('/').pop();
             });
         }
     });
 
-    window.QP_DEMO = { CATEGORIES: CATEGORIES, LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl };
+    window.QP_DEMO = { CATEGORIES: CATEGORIES, LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl,
+        opponent: opponent, pickOpponent: pickOpponent, avatarHtml: avatarHtml, USER_AVATAR: USER_AVATAR };
 })();

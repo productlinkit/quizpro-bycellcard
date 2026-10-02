@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizy Flash</title>
+    <link rel="stylesheet" href="theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
+    <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="theme/css/game.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+</head>
+<body>
+    <div class="content-wrapper">
+
+        <div class="page-header">
+            <div class="box-wrapper mx-auto text-center position-relative">
+                <a href="game-detail.html" class="page-header-back" id="m-back"><span class="qf-icon-back"></span></a>
+                <span id="m-title">Quiz</span>
+            </div>
+        </div>
+
+        <div class="container box-wrapper">
+            <div class="match-meta">
+                <span class="match-chip" id="m-level">Beginner</span>
+                <span class="match-chip points"><span class="qf-icon-crown"></span> <span id="m-points">+10</span> per answer</span>
+            </div>
+
+            <div class="card-simple match-card" id="m-card">
+                <div class="match-row">
+                    <div class="match-player">
+                        <div class="match-ava" id="m-me"></div>
+                        <div class="match-name">You</div>
+                    </div>
+                    <div class="match-vs">VS</div>
+                    <div class="match-player">
+                        <div class="match-ava searching" id="m-opp"><span class="match-q">?</span></div>
+                        <div class="match-name" id="m-opp-name">Searching…</div>
+                    </div>
+                </div>
+                <p class="match-status" id="m-status">Finding an opponent…</p>
+                <a href="#" class="btn btn-lg button-primary w-100 disabled" id="m-play" aria-disabled="true">Let's Play</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/i18n.js"></script>
+    <script>
+    (function () {
+        var D = window.QP_DEMO, p = new URLSearchParams(location.search);
+        var game = parseInt(p.get('game'), 10) || 31, levelId = parseInt(p.get('level'), 10) || 1;
+        var cat = D.CATEGORIES[game] || D.CATEGORIES[31];
+        var level = D.LEVELS.filter(function (l) { return l.id === levelId; })[0] || D.LEVELS[0];
+
+        document.getElementById('m-title').textContent = cat[0];
+        document.getElementById('m-back').href = 'game-detail.html?id=' + game;
+        document.getElementById('m-level').textContent = level.title;
+        document.getElementById('m-points').textContent = '+' + level.points;
+        document.getElementById('m-me').innerHTML = '<img src="' + D.USER_AVATAR + '" alt="You">';
+
+        var play = document.getElementById('m-play');
+        play.href = 'game-play.html?game=' + game + '&level=' + levelId;
+
+        // Pretend to search, then reveal the opponent
+        setTimeout(function () {
+            var o = D.pickOpponent(), opp = document.getElementById('m-opp');
+            opp.classList.remove('searching');
+            opp.classList.add('found');
+            opp.innerHTML = D.avatarHtml(o);
+            document.getElementById('m-opp-name').textContent = o.name;
+            document.getElementById('m-status').textContent = 'Challenge Accepted!';
+            document.getElementById('m-card').classList.add('ready');
+            play.classList.remove('disabled');
+            play.removeAttribute('aria-disabled');
+        }, 2200);
+    })();
+    </script>
+</body>
+</html>

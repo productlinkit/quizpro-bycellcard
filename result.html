@@ -9,53 +9,63 @@
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="theme/lucky-draw/ld.css">
+    <link rel="stylesheet" href="theme/css/game.css">
     <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
 </head>
-<body>
+<body class="result-page">
+    <!-- Prototype preview toggle (not part of the product UI) -->
+    <div class="result-preview" role="group" aria-label="Demo preview">
+        <span class="result-preview-label"><span class="fa fa-sliders"></span> Demo Preview</span>
+        <button type="button" data-res="win">Win</button>
+        <button type="button" data-res="lose">Lose</button>
+    </div>
+
+    <div class="res-confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
     <div class="content-wrapper">
-        <div class="container box-wrapper text-center pt-5">
-            <div class="quiz-result-status" id="r-status">You Win!</div>
-            <div class="quiz-result-ann" id="r-ann">Great job, keep it up</div>
+        <div class="container box-wrapper text-center res-wrap">
 
-            <div class="quiz-result-pict">
-                <span class="quiz-result-pict-ava">
-                    <img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="Avatar">
-                </span>
-            </div>
-
-            <div class="mb-4">
-                <span class="quiz-result-points">
-                    <span class="quiz-result-points-badge"><span class="qf-icon-crown"></span></span>
-                    <span id="r-points">0</span> Points
-                </span>
-            </div>
-
-            <div class="final-score text-start">
-                <div class="text-center" style="transform:translateY(-50%)">
-                    <span class="final-score-title">Final Score</span>
+            <!-- Hero -->
+            <div class="res-hero">
+                <div class="res-rays" aria-hidden="true"></div>
+                <div class="res-ava-wrap">
+                    <span class="res-crown" aria-hidden="true"><span class="qf-icon-crown"></span></span>
+                    <span class="res-ava"><img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="You"></span>
+                    <span class="res-badge" id="r-badge"><span class="fa fa-trophy"></span></span>
                 </div>
-                <div class="final-score-top">
-                    <div class="row g-2 text-center">
-                        <div class="col-5">
-                            <div class="mb-1 fw-bold">You</div>
-                            <div class="final-score-top-box" id="r-real">0</div>
-                        </div>
-                        <div class="col-2 d-flex align-items-end justify-content-center pb-3 fw-bold">VS</div>
-                        <div class="col-5">
-                            <div class="mb-1 fw-bold">Eissa</div>
-                            <div class="final-score-top-box" id="r-fake">0</div>
-                        </div>
+                <div class="res-ribbon"><span id="r-status">You Win!</span></div>
+                <p class="res-ann" id="r-ann">Great job, keep it up</p>
+                <span class="res-points"><span class="res-points-ico"><span class="qf-icon-crown"></span></span><span>+<span id="r-points">0</span> Points</span></span>
+            </div>
+
+            <!-- Score -->
+            <div class="res-card res-score">
+                <div class="res-card-title">Final Score</div>
+                <div class="res-vs">
+                    <div class="res-side me">
+                        <span class="res-winner">WINNER</span>
+                        <span class="res-side-ava"><img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt=""></span>
+                        <span class="res-side-name">You</span>
+                        <span class="res-side-score" id="r-real">0</span>
+                    </div>
+                    <span class="res-vs-badge">VS</span>
+                    <div class="res-side opp">
+                        <span class="res-winner">WINNER</span>
+                        <span class="res-side-ava" id="r-opp-ava"></span>
+                        <span class="res-side-name" id="r-opp-name">Eissa</span>
+                        <span class="res-side-score" id="r-fake">0</span>
                     </div>
                 </div>
-                <div class="final-score-detail">
-                    <h4 class="final-score-detail-title">Summary</h4>
-                    <ul class="final-score-more mb-0">
-                        <li><span class="score-stats-badge" id="r-correct">0</span> Correct answers</li>
-                        <li><span class="score-stats-badge" id="r-answered">0</span> Questions answered</li>
-                        <li><span class="score-stats-badge" id="r-level">-</span> Level</li>
-                    </ul>
-                </div>
+                <div class="res-bar" aria-hidden="true"><span class="res-bar-me" id="r-bar-me"></span><span class="res-bar-opp" id="r-bar-opp"></span></div>
             </div>
+
+            <!-- Stats -->
+            <div class="res-stats">
+                <div class="res-stat"><span class="res-stat-ico green"><span class="fa fa-check"></span></span><b id="r-correct">0</b><small>Correct answers</small></div>
+                <div class="res-stat"><span class="res-stat-ico blue"><span class="fa fa-bullseye"></span></span><b id="r-acc">0%</b><small>Accuracy</small></div>
+                <div class="res-stat"><span class="res-stat-ico orange"><span class="fa fa-signal"></span></span><b id="r-level">-</b><small>Level</small></div>
+            </div>
+            <div class="res-answered"><span id="r-answered">0/10</span> <span>Questions answered</span></div>
 
             <a href="lucky-draw.html" class="ld-entry text-start" id="r-ld">
                 <span class="ld-entry-ico"><img class="ld-ill" src="theme/lucky-draw/img/ticket.png" alt=""></span>
@@ -66,30 +76,60 @@
                 <span class="ld-entry-go qf-icon-arrow-right"></span>
             </a>
 
-            <a href="#" class="btn btn-lg button-primary w-100 mb-3" id="r-again"><span class="qf-icon-replay"></span> Play Again</a>
-            <a href="index.html" class="btn btn-lg button-green w-100 mb-5">Home</a>
+            <div class="res-actions">
+                <a href="#" class="btn btn-lg button-primary res-btn" id="r-again"><span class="qf-icon-replay"></span> Play Again</a>
+                <a href="index.html" class="btn btn-lg res-btn res-btn-ghost"><span class="qf-icon-home"></span> Home</a>
+            </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
     <script src="theme/lucky-draw/ld-config.js"></script>
     <script>
     (function () {
         var p = new URLSearchParams(location.search);
-        var win = p.get('res') === 'win';
         var level = QP_DEMO.LEVELS.filter(function (l) { return String(l.id) === p.get('level'); })[0] || QP_DEMO.LEVELS[0];
         var answered = +p.get('answered') || 0, correct = +p.get('correct') || 0;
-        document.getElementById('r-status').textContent = win ? 'You Win!' : 'You Lose';
-        document.getElementById('r-ann').textContent = win ? 'Great job, keep it up' : 'Nice try, play again to win';
-        document.getElementById('r-points').textContent = p.get('real') || 0;
-        document.getElementById('r-real').textContent = p.get('real') || 0;
-        document.getElementById('r-fake').textContent = p.get('fake') || 0;
-        document.getElementById('r-correct').textContent = correct;
-        document.getElementById('r-answered').textContent = answered + '/' + (p.get('total') || 10);
+        var real = +p.get('real') || 0, fake = +p.get('fake') || 0;
+        var opp = QP_DEMO.opponent(), total = +p.get('total') || 10;
+        document.getElementById('r-opp-name').textContent = opp.name;
+        document.getElementById('r-opp-ava').innerHTML = QP_DEMO.avatarHtml(opp);
+        document.getElementById('r-correct').textContent = correct + '/' + total;
+        document.getElementById('r-acc').textContent = (answered ? Math.round(correct / answered * 100) : 0) + '%';
+        document.getElementById('r-answered').textContent = answered + '/' + total;
         document.getElementById('r-level').textContent = level.title;
         document.getElementById('r-again').href = 'game-detail.html?id=' + (p.get('game') || 31);
+
+        function show(win) {
+            // Preview keeps the scores consistent with the chosen outcome
+            var hi = Math.max(real, fake), lo = Math.min(real, fake);
+            if (hi === lo) { hi = real || level.points; lo = Math.max(hi - level.points, 0); }
+            var me = win ? hi : lo, them = win ? lo : hi;
+            if (win === (p.get('res') === 'win')) { me = real; them = fake; }
+            document.body.classList.toggle('is-win', win);
+            document.body.classList.toggle('is-lose', !win);
+            document.getElementById('r-status').textContent = win ? 'You Win!' : 'You Lose';
+            document.getElementById('r-ann').textContent = win ? 'Great job, keep it up' : 'Nice try, play again to win';
+            document.getElementById('r-badge').innerHTML = '<span class="fa ' + (win ? 'fa-trophy' : 'fa-heart') + '"></span>';
+            document.getElementById('r-points').textContent = me;
+            document.getElementById('r-real').textContent = me;
+            document.getElementById('r-fake').textContent = them;
+            var sum = me + them || 1;
+            document.getElementById('r-bar-me').style.width = (me / sum * 100) + '%';
+            document.getElementById('r-bar-opp').style.width = (them / sum * 100) + '%';
+            // replay entrance animation when switching preview
+            var w = document.querySelector('.res-wrap'); w.classList.remove('enter'); void w.offsetWidth; w.classList.add('enter');
+            document.querySelectorAll('.result-preview button').forEach(function (b) {
+                b.classList.toggle('active', (b.getAttribute('data-res') === 'win') === win);
+            });
+        }
+        document.querySelectorAll('.result-preview button').forEach(function (b) {
+            b.addEventListener('click', function () { show(b.getAttribute('data-res') === 'win'); });
+        });
+        show(p.get('res') === 'win');
         var t = LD.ticketsFor({ answered: answered, correct: correct }, LD_CONFIG.ticketRule);
         document.getElementById('r-ld-title').textContent = '+' + t + ' Lucky Draw ticket' + (t === 1 ? '' : 's');
     })();

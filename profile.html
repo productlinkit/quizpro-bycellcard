@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="theme/css/search.css">
     <link rel="stylesheet" href="theme/css/profile.css">
+    <link rel="stylesheet" href="theme/css/pages.css">
     <link rel="stylesheet" href="theme/floating-copy/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
@@ -77,6 +78,7 @@
                 <a href="language.html">
                     <span class="menu-list-ico fa fa-language"></span>
                     Languages
+                    <span class="menu-lang" id="menuLang"></span>
                 </a>
             </li>
 
@@ -193,10 +195,17 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
     <script src="theme/js/custom.js"></script>
     <script src="theme/js/search-suggest.js"></script>
+    <script>
+        (function () {
+            var l = QP_I18N.current();
+            document.getElementById('menuLang').innerHTML = '<img src="' + QP_I18N.flagUrl(l) + '" alt="">' + l.native;
+        })();
+    </script>
     <script>
         // Demo only: toggle subscription state locally
         (function () {

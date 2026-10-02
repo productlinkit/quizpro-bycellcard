@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="theme/css/pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
     <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
 </head>
@@ -24,16 +26,27 @@
         </div>
 
         <div class="container box-wrapper">
-            <div class="card-simple">
-                <div class="container-fluid box-wrapper">
-                    <div class="text-center">
-                        <p><strong>Got a Question?</strong></p>
-                        <p class="mb-2">Choose one you prefer:</p>
-                        <a href="http://wa.me/6289655913961" target="_blank" class="btn w-100 btn-success mb-2">WhatsApp</a>
-                        <a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=customer.service@linkit360.com&su=&body=" target="_blank" class="btn w-100 btn-info">Email</a>
-                    </div>
-                </div>
+            <div class="contact-hero">
+                <span class="contact-hero-ico"><span class="fa fa-comments"></span></span>
+                <h3 class="contact-hero-title">Got a question?</h3>
+                <p class="contact-hero-sub">Our team is happy to help. Choose how you'd like to reach us.</p>
             </div>
+
+            <div class="card-simple-outer contact-list">
+                <a href="http://wa.me/6289655913961" target="_blank" rel="noopener" class="contact-opt">
+                    <span class="contact-opt-ico wa"><span class="fa fa-whatsapp"></span></span>
+                    <span class="contact-opt-text"><b>WhatsApp</b><small>Chat with us · usually replies in minutes</small></span>
+                    <span class="contact-opt-go qf-icon-arrow-right"></span>
+                </a>
+                <a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=customer.service@linkit360.com&su=&body=" target="_blank" rel="noopener" class="contact-opt">
+                    <span class="contact-opt-ico mail"><span class="fa fa-envelope"></span></span>
+                    <span class="contact-opt-text"><b>Email</b><small>customer.service@linkit360.com</small></span>
+                    <span class="contact-opt-go qf-icon-arrow-right"></span>
+                </a>
+            </div>
+
+            <div class="contact-info"><span class="fa fa-clock-o"></span> Support hours: Mon – Sat, 08:00 – 20:00</div>
+            <a href="rule.html" class="contact-faq"><span class="fa fa-book"></span> Read Rules and Policies</a>
         </div>
 
     </div>
@@ -63,6 +76,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
     <script src="theme/js/custom.js"></script>
