@@ -260,7 +260,7 @@
                 e.preventDefault();
                 var m = document.getElementById('msisdn'), p = document.getElementById('password'), ok = true;
                 [[m, 'Please enter your MSISDN'], [p, 'Please enter your password']].forEach(function (f) {
-                    var err = f[0].parentNode.querySelector('.text-danger');
+                    var err = f[0].closest('.mb-3').querySelector('.text-danger');
                     err.textContent = f[0].value.trim() ? '' : f[1];
                     if (!f[0].value.trim()) ok = false;
                 });

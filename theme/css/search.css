@@ -14,3 +14,10 @@
 .search-list .quiz-list .quiz-list-info-title{font-size:1rem}
 .search-list .quiz-list .quiz-list-info p{font-size:0.875rem}
 .search-empty{text-align:center;color:#969696;padding:1rem 0 1.5rem}
+/* player search (leaderboard) */
+.search-player-rank{width:36px;flex-shrink:0;font-weight:bold;color:#969696;font-size:0.875rem}
+.search-player-pict{border-radius:50% !important;overflow:hidden}
+.search-player-pict img,.search-player-pict .leaderboard-initial{border-radius:50% !important}
+.search-list .quiz-list p .coin{width:12px;height:12px;vertical-align:-1px}
+.leaderboard-winner.search-flash{animation:searchFlash 1.6s ease-out}
+@keyframes searchFlash{0%,40%{background-color:#FFE0A3}100%{background-color:transparent}}
