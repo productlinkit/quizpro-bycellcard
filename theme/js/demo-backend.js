@@ -62,7 +62,8 @@
         return o.img ? '<img src="' + o.img + '" alt="' + o.name + '">'
             : '<span class="opp-initial" style="background-color:' + o.color + '">' + o.name.charAt(0) + '</span>';
     }
-    var USER_AVATAR = SERVER + 'uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg';
+    var DEFAULT_AVATAR = SERVER + 'uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg';
+    var USER_AVATAR = (user && user.avatar) || DEFAULT_AVATAR;
 
     var LEVELS = [
         { id: 1, title: 'Beginner', points: 10 },
@@ -149,6 +150,9 @@
             var qs = buildQuestions(cat);
             set(GAME_KEY, { cat: cat, level: level, questions: qs, real: 0, fake: 0, correct: 0 });
             return { success: 1, data: qs, length: qs.length };
+        },
+        '/changlang': function () {
+            return { success: 1 };
         },
         '/quiz_timer': function () {
             return { success: 1, pair_id: 1, time: 60 };
@@ -239,7 +243,7 @@
             a.href = 'game-detail.html?id=' + a.getAttribute('href').split('/').pop();
         });
         // Logout asks for confirmation first
-        document.querySelectorAll('a[href$="/logout"]').forEach(function (a) {
+        document.querySelectorAll('a[data-logout], a[href$="/logout"]').forEach(function (a) {
             a.addEventListener('click', function (e) {
                 e.preventDefault();
                 var m = document.getElementById('modalLogout');
@@ -293,10 +297,73 @@
             }, true);
         }
 
-        // Show the logged-in number
+        // Show the logged-in user's name, number and photo
         if (user) {
-            if (page === 'index.html') document.querySelectorAll('.home-profile-name').forEach(function (el) { el.textContent = user.msisdn; });
-            if (page === 'profile.html') document.querySelectorAll('.home-profile-status').forEach(function (el) { el.textContent = user.msisdn; });
+            var name = user.name || user.msisdn;
+            if (page === 'index.html') document.querySelectorAll('.home-profile-name').forEach(function (el) { el.textContent = name; });
+            if (page === 'profile.html') {
+                document.querySelectorAll('.home-profile-name').forEach(function (el) { el.textContent = user.name || 'Hello'; });
+                document.querySelectorAll('.home-profile-status').forEach(function (el) { el.textContent = user.msisdn; });
+            }
+            if (user.avatar) document.querySelectorAll('img[src="' + DEFAULT_AVATAR + '"]').forEach(function (img) { img.src = user.avatar; });
+        }
+
+        // Profile saved: short confirmation on the profile page
+        if (page === 'profile.html' && param('saved')) {
+            var note = document.createElement('div');
+            note.className = 'saved-toast';
+            note.innerHTML = '<span class="qf-icon-thumbs-up"></span> Profile updated';
+            document.body.appendChild(note);
+            setTimeout(function () { note.classList.add('hide'); }, 2200);
+            history.replaceState(null, '', 'profile.html');
+        }
+
+        // Edit profile: save locally instead of posting to the server
+        if (page === 'profile-edit.html' && user) {
+            var pform = document.querySelector('form'), nameIn = document.getElementById('username'),
+                fileIn = document.getElementById('avatar'), preview = document.querySelector('.avatar img'), newAvatar = null;
+            nameIn.value = user.name || '';
+            nameIn.maxLength = 20;
+            fileIn.accept = 'image/*';
+            var err = document.createElement('small');
+            err.className = 'text-danger d-block mt-1';
+            nameIn.parentNode.appendChild(err);
+            var ferr = document.createElement('small');
+            ferr.className = 'text-danger d-block mt-1';
+            fileIn.parentNode.appendChild(ferr);
+
+            // Shrink the photo so it fits in browser storage
+            fileIn.addEventListener('change', function () {
+                ferr.textContent = '';
+                var file = fileIn.files[0]; if (!file) return;
+                if (!/^image\//.test(file.type)) { ferr.textContent = 'Please choose an image file'; fileIn.value = ''; return; }
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var img = new Image();
+                    img.onload = function () {
+                        var size = 200, c = document.createElement('canvas'), k = Math.min(img.width, img.height);
+                        c.width = c.height = size;
+                        c.getContext('2d').drawImage(img, (img.width - k) / 2, (img.height - k) / 2, k, k, 0, 0, size, size);
+                        newAvatar = c.toDataURL('image/jpeg', 0.85);
+                        preview.src = newAvatar;
+                    };
+                    img.onerror = function () { ferr.textContent = 'This image could not be read'; };
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            pform.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var v = nameIn.value.trim();
+                err.textContent = v ? '' : 'Please enter your name';
+                if (!v) return;
+                user.name = v;
+                if (newAvatar) user.avatar = newAvatar;
+                set(SESSION_KEY, user);
+                if (!get(SESSION_KEY) || get(SESSION_KEY).name !== v) { ferr.textContent = 'Could not save, the photo may be too large'; return; }
+                location.href = 'profile.html?saved=1';
+            });
         }
 
         // Login: any MSISDN + password works

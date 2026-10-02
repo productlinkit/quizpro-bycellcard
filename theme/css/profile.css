@@ -22,3 +22,7 @@
 .menu-list a{align-items:center}
 .menu-list-ico.fa{display:flex;line-height:1;font-size:1.25rem}
 .profile-avatar .profile-avatar-edit{display:flex}
+/* "Profile updated" confirmation */
+.saved-toast{position:fixed;left:50%;top:24px;transform:translateX(-50%);z-index:200;background:#47c475;color:#fff;font-weight:bold;border-radius:50rem;padding:8px 18px;box-shadow:0 5px 10px rgba(12,9,42,0.16);transition:opacity .3s,transform .3s}
+.saved-toast span::before{margin-right:4px}
+.saved-toast.hide{opacity:0;transform:translate(-50%,-10px)}
