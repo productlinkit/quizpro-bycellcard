@@ -13,7 +13,7 @@ window.LD_CONFIG = {
     prizes: [
       { rank: 'Grand Prize', item: 'Smartphone', icon: 'phone', img: 'theme/lucky-draw/img/prize-phone.jpg', qty: 1 },
       { rank: '2nd Prize', item: 'Wireless Earbuds', icon: 'earbuds', img: 'theme/lucky-draw/img/prize-earbuds.jpg', qty: 2 },
-      { rank: '3rd Prize', item: 'Mobile Credit', icon: 'credit', img: 'theme/lucky-draw/img/prize-credit.jpg', qty: 5 }
+      { rank: '3rd Prize', item: 'Cellcard Credit', icon: 'credit', img: 'theme/lucky-draw/img/prize-credit.jpg', qty: 5 }
     ],
     confirmed: false
   },
@@ -58,7 +58,7 @@ window.LD_CONFIG = {
 // Previous periods for the Ticket Tracker "History" tab (sample data)
 window.LD_PAST_PERIODS = [
   { name: 'September 2026', start: '2026-09-01', end: '2026-09-30', draw: '2026-10-03', tickets: 14, result: 'Not won' },
-  { name: 'August 2026', start: '2026-08-01', end: '2026-08-31', draw: '2026-09-03', tickets: 6, result: 'Won · Mobile Credit' },
+  { name: 'August 2026', start: '2026-08-01', end: '2026-08-31', draw: '2026-09-03', tickets: 6, result: 'Won · Cellcard Credit' },
   { name: 'July 2026', start: '2026-07-01', end: '2026-07-31', draw: '2026-08-03', tickets: 3, result: 'Not won' }
 ];
 

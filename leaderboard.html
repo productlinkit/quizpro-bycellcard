@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="theme/css/search.css">
+    <link rel="stylesheet" href="theme/css/leaderboard.css">
     <link rel="stylesheet" href="theme/floating-copy/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
@@ -51,56 +53,116 @@
 
     <div class="card-simple-outer">
         <ul class="leaderboard">
-
-                                                <li class="leaderboard-winner">
-                        <div class="row gx-0">
-                            <div class="col-9">
-                                <div class="d-flex w-100">
-                                    <div class="leaderboard-winner-pict">
-
-                                        <img src="https://demo.quizpro.mobi//uploads/user/1/ava-eissa.png" alt="Avatar">
-                                        <span class="leaderboard-winner-rank">1</span>
-                                    </div>
-                                    <div class="leaderboard-winner-info">
-                                        <h4 class="leaderboard-winner-info-name">9876543210</h4>
-                                        <div class="leaderboard-winner-info-stats">
-                                            Score <b>27380</b>, <span class="qf-icon-clock"></span> 721.33
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-3 text-end">
-                                <div class="leaderboard-coin">
-                                    <span class="coin"></span> 32670
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                                    <li class="leaderboard-winner">
-                        <div class="row gx-0">
-                            <div class="col-9">
-                                <div class="d-flex w-100">
-                                    <div class="leaderboard-winner-pict">
-
-                                        <img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="Avatar">
-                                        <span class="leaderboard-winner-rank">2</span>
-                                    </div>
-                                    <div class="leaderboard-winner-info">
-                                        <h4 class="leaderboard-winner-info-name">1234567890</h4>
-                                        <div class="leaderboard-winner-info-stats">
-                                            Score <b>22260</b>, <span class="qf-icon-clock"></span> 580.67
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-3 text-end">
-                                <div class="leaderboard-coin">
-                                    <span class="coin"></span> 29160
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
+            <li class="leaderboard-winner top gold">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-medal gold"><span class="lb-medal-ribbon"></span><span class="lb-medal-face">1</span></span>
+                    <div class="leaderboard-winner-pict"><img src="https://demo.quizpro.mobi//uploads/user/1/ava-eissa.png" alt="Avatar"></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">9876543210</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>27380</b>, <span class="qf-icon-clock"></span> 721.33</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 32,670</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner top silver is-you">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-medal silver"><span class="lb-medal-ribbon"></span><span class="lb-medal-face">2</span></span>
+                    <div class="leaderboard-winner-pict"><img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="Avatar"></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">1234567890 <span class="lb-you">You</span></h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>22260</b>, <span class="qf-icon-clock"></span> 580.67</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 29,160</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner top bronze">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-medal bronze"><span class="lb-medal-ribbon"></span><span class="lb-medal-face">3</span></span>
+                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#a78bfa"><span class="qf-icon-profile"></span></span></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">8551234567</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>19840</b>, <span class="qf-icon-clock"></span> 512.40</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 24,310</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-num"><span>4</span></span>
+                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#FE9E44"><span class="qf-icon-profile"></span></span></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">8559876543</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>17120</b>, <span class="qf-icon-clock"></span> 488.15</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 21,050</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-num"><span>5</span></span>
+                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#14b8a6"><span class="qf-icon-profile"></span></span></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">8557654321</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>15300</b>, <span class="qf-icon-clock"></span> 455.02</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 18,430</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-num"><span>6</span></span>
+                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#f472b6"><span class="qf-icon-profile"></span></span></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">8552468135</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>13890</b>, <span class="qf-icon-clock"></span> 430.71</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 16,220</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-num"><span>7</span></span>
+                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#60a5fa"><span class="qf-icon-profile"></span></span></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">8551357924</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>11950</b>, <span class="qf-icon-clock"></span> 402.36</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 14,080</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-num"><span>8</span></span>
+                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#47c475"><span class="qf-icon-profile"></span></span></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">8558642097</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>10420</b>, <span class="qf-icon-clock"></span> 377.90</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 12,560</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-num"><span>9</span></span>
+                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#3EA9F5"><span class="qf-icon-profile"></span></span></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">8553692581</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>9010</b>, <span class="qf-icon-clock"></span> 351.24</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 10,940</div>
+                </div>
+            </li>
+            <li class="leaderboard-winner">
+                <div class="d-flex align-items-center">
+                    <span class="lb-rank lb-num"><span>10</span></span>
+                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#FF8FA3"><span class="qf-icon-profile"></span></span></div>
+                    <div class="leaderboard-winner-info">
+                        <h4 class="leaderboard-winner-info-name">8557418529</h4>
+                        <div class="leaderboard-winner-info-stats">Score <b>7640</b>, <span class="qf-icon-clock"></span> 322.58</div>
+                    </div>
+                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 9,370</div>
+                </div>
+            </li>
         </ul>
     </div>
 
@@ -188,6 +250,7 @@
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
     <script src="theme/js/custom.js"></script>
+    <script src="theme/js/search-suggest.js"></script>
 
 </body>
 </html>

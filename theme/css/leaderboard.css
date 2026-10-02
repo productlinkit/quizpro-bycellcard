@@ -1,0 +1,33 @@
+/* Leaderboard list: framed rank badges (medals for top 3) */
+.leaderboard{overflow:hidden;border-radius:24px}
+.leaderboard .leaderboard-winner{padding:0.875rem 1rem}
+.leaderboard .leaderboard-winner:last-child{border-bottom:0}
+.leaderboard .leaderboard-winner-info{min-width:0;max-width:none;padding-right:0.5rem}
+.leaderboard-initial{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;color:#fff;font-weight:bold;font-size:1.25rem}
+.leaderboard-initial span::before{margin:0}
+
+/* rank frame */
+.lb-rank{flex-shrink:0;width:34px;height:40px;margin-right:0.75rem;display:flex;align-items:center;justify-content:center;position:relative;font-weight:bold}
+.lb-num::before{content:'';position:absolute;width:30px;height:30px;border-radius:50%;background-color:#F3F6FA;border:2px solid #D5DCE6}
+.lb-num span{position:relative;font-size:0.9375rem;color:#4A5A72;line-height:1}
+
+/* medals */
+.lb-medal-face{position:relative;z-index:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;text-shadow:0 1px 2px rgba(12,9,42,0.25);box-shadow:0 3px 6px rgba(12,9,42,0.18),inset 0 0 0 3px rgba(255,255,255,0.45);margin-top:-6px}
+.lb-medal-ribbon{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:20px;height:16px;z-index:0}
+.lb-medal-ribbon::before,.lb-medal-ribbon::after{content:'';position:absolute;bottom:0;width:9px;height:16px;clip-path:polygon(0 0,100% 0,100% 100%,50% 75%,0 100%)}
+.lb-medal-ribbon::before{left:0;background-color:#3EA9F5}
+.lb-medal-ribbon::after{right:0;background-color:#0A58CA}
+.gold .lb-medal-face{background:linear-gradient(145deg,#FFE08A 0%,#FFCC5F 45%,#F0A020 100%)}
+.silver .lb-medal-face{background:linear-gradient(145deg,#F3F6FA 0%,#C9D2DE 45%,#98A6B9 100%)}
+.bronze .lb-medal-face{background:linear-gradient(145deg,#F7C49B 0%,#E3935A 45%,#B8622A 100%)}
+
+/* avatar ring for top 3 */
+.leaderboard-winner .leaderboard-winner-pict{box-sizing:content-box}
+.leaderboard-winner.gold .leaderboard-winner-pict{box-shadow:0 0 0 3px #FFCC5F}
+.leaderboard-winner.silver .leaderboard-winner-pict{box-shadow:0 0 0 3px #C9D2DE}
+.leaderboard-winner.bronze .leaderboard-winner-pict{box-shadow:0 0 0 3px #E3935A}
+.leaderboard-winner.gold{background:linear-gradient(90deg,rgba(255,204,95,0.18) 0%,transparent 70%)}
+
+/* current user */
+.leaderboard-winner.is-you{background:#FFEBD9}
+.lb-you{display:inline-block;vertical-align:middle;margin-left:0.25rem;font-size:0.6875rem;background-color:#FE9E44;color:#fff;border-radius:50rem;padding:1px 8px}

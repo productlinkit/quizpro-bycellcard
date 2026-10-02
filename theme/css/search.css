@@ -1,0 +1,16 @@
+/* Search modal suggestions (see theme/js/search-suggest.js) */
+.search-suggest{margin-top:24px;padding-bottom:24px}
+.search-section{margin-bottom:24px}
+.search-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem}
+.search-section-title{font-size:1rem;font-weight:bold;margin:0;color:#0C092A}
+.search-clear{background:none;border:0;padding:0;color:#FE9E44;font-size:0.875rem;font-weight:bold}
+.search-chips{display:flex;flex-wrap:wrap;gap:0.5rem}
+.search-chip{border:0;border-radius:50rem;padding:6px 14px;font-size:0.875rem;font-weight:bold;background-color:#FFEBD9;color:#FE9E44;display:inline-flex;align-items:center;gap:0.25rem}
+.search-chip.recent{background-color:rgba(223,223,223,0.5);color:#0C092A}
+.search-chip.recent span{color:#969696;font-size:0.75rem}
+.search-chip:hover,.search-chip:focus{background-color:#FE9E44;color:#fff}
+.search-chip:hover span,.search-chip:focus span{color:#fff}
+.search-list{background-color:#fff;border-radius:24px;box-shadow:0 5px 10px rgba(12,9,42,0.08)}
+.search-list .quiz-list .quiz-list-info-title{font-size:1rem}
+.search-list .quiz-list .quiz-list-info p{font-size:0.875rem}
+.search-empty{text-align:center;color:#969696;padding:1rem 0 1.5rem}
