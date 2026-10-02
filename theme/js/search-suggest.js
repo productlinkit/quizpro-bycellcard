@@ -27,7 +27,8 @@
         term = term.trim().toLowerCase();
         return Object.keys(D.CATEGORIES).filter(function (id) {
             var c = D.CATEGORIES[id];
-            return (c[0] + ' ' + c[1]).toLowerCase().indexOf(term) !== -1;
+            var tt = window.QP_I18N ? QP_I18N.t : function (x) { return x; };
+            return (c[0] + ' ' + c[1] + ' ' + tt(c[0]) + ' ' + tt(c[1])).toLowerCase().indexOf(term) !== -1;
         });
     }
 

@@ -94,7 +94,8 @@
         function flag(text) { return '<span class="ld-flag">' + text + '</span>'; }
         function iconImg(id) { return 'https://demo.quizpro.mobi//images/category/' + id + '/icon/' + id + '_01122022_icon_image.png'; }
         function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
-        function shortDate(s) { return LD.fmtDate(s).replace(/ \d{4}$/, ''); }
+        function shortDate(s) { return LD.fmtDate(s, false, true); }
+        var I = window.QP_I18N || { t: function (x) { return x; }, f: function (x, v) { Object.keys(v || {}).forEach(function (k) { x = x.split('{' + k + '}').join(v[k]); }); return x; } };
         function secHead(icon, title, sub) {
             return '<div class="ld-sec-head"><span class="ld-sec-ico">' + icon + '</span>' +
                 '<div><h3 class="section-title">' + title + '</h3>' + (sub ? '<div class="ld-sec-sub">' + sub + '</div>' : '') + '</div></div>';
@@ -102,7 +103,10 @@
         function fa(name) { return '<span class="fa ' + name + '"></span>'; }
         function ruleText() {
             var r = C.ticketRule;
-            return '<b>' + r.tickets + ' ticket' + (r.tickets > 1 ? 's' : '') + '</b> for every <b>' + r.every + ' ' + LD.basisLabel(r) + '</b>';
+            return I.f('You get {tickets} for every {every}.', {
+                tickets: '<b>' + I.f(r.tickets > 1 ? '{n} tickets' : '{n} ticket', { n: r.tickets }) + '</b>',
+                every: '<b>' + I.f('{n} ' + LD.basisLabel(r), { n: r.every }) + '</b>'
+            });
         }
 
         function activity() { return state === 'active-empty' || state === 'upcoming' ? [] : A; }
@@ -118,7 +122,7 @@
                 : '<div class="ld-stat-label">My tickets</div><div class="ld-stat-big">' + LD_ICON('ticket') + '<b>' + t + '</b></div>';
             var cta = guest
                 ? '<a href="' + QP_DEMO.loginUrl('lucky-draw.html') + '" class="btn btn-lg button-green w-100 ld-cta">Login to Join</a>'
-                : up ? '<span class="btn btn-lg button-grey w-100 ld-cta disabled">Starts ' + shortDate(c.periodStart) + '</span>'
+                : up ? '<span class="btn btn-lg button-grey w-100 ld-cta disabled">' + I.f('Starts {d}', { d: shortDate(c.periodStart) }) + '</span>'
                 : '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta">Play Now &amp; Earn Tickets</a>';
             return '<div class="ld-annot">' + note('hero') +
                 '<section class="ld-hero">' +
@@ -273,7 +277,7 @@
             var steps = [
                 ['gamepad', 'Play quizzes', 'Any quiz during the campaign'],
                 ['ticket', 'Earn tickets', 'Added after every quiz'],
-                ['trophy', 'Win prizes', 'Drawn on ' + shortDate(C.campaign.drawDate)]
+                ['trophy', 'Win prizes', I.f('Drawn on {d}', { d: shortDate(C.campaign.drawDate) })]
             ];
             return '<div class="ld-annot">' + note('howToEarn') +
                 '<section class="card-simple ld-card">' +
@@ -281,14 +285,14 @@
                     '<div class="ld-steps-h">' + steps.map(function (s, i) {
                         return '<div class="ld-step-h"><span class="ld-step-ico">' + LD_ICON(s[0]) + '<i>' + (i + 1) + '</i></span><b>' + s[1] + '</b><small>' + s[2] + '</small></div>';
                     }).join('') + '</div>' +
-                    '<div class="ld-rule">' + LD_ICON('ticket') + '<span>You get ' + ruleText() + '.' + (r.dailyCap ? ' Max ' + r.dailyCap + ' tickets per day.' : '') + flag('rule & basis not confirmed') + '</span></div>' +
+                    '<div class="ld-rule">' + LD_ICON('ticket') + '<span>' + ruleText() + (r.dailyCap ? ' ' + I.f('Max {n} tickets per day.', { n: r.dailyCap }) : '') + flag('rule & basis not confirmed') + '</span></div>' +
                 '</section></div>';
         }
 
         // ---------- Prizes ----------
         function prizes() {
             var list = C.campaign.prizes, g = list[0];
-            function winnersLabel(q) { return q + ' winner' + (q > 1 ? 's' : ''); }
+            function winnersLabel(q) { return I.t(q + ' winner' + (q > 1 ? 's' : '')); }
             return '<div class="ld-annot">' + note('prizes') +
                 '<section class="card-simple ld-card">' +
                     secHead(LD_ICON('gift'), 'Amazing Prizes', 'Up for grabs this period' + flag('prizes TBC')) +
@@ -340,7 +344,7 @@
                     '<div class="history-list-info">' +
                         '<h4 class="history-list-info-name">' + esc(p.name) + '</h4>' +
                         '<div class="history-list-info-stats">' + shortDate(p.start) + ' – ' + LD.fmtDate(p.end) + '</div>' +
-                        '<div class="history-list-date">Draw ' + LD.fmtDate(p.draw) + ' · <b class="' + (won ? 'ld-won' : '') + '">' + esc(p.result) + '</b></div>' +
+                        '<div class="history-list-date">' + I.f('Draw {d}', { d: LD.fmtDate(p.draw) }) + ' · <b class="' + (won ? 'ld-won' : '') + '">' + esc(p.result) + '</b></div>' +
                     '</div>' +
                     '<span class="ld-plus zero">' + p.tickets + ' ' + fa('fa-ticket') + '</span>' +
                 '</div></li>';
@@ -381,11 +385,11 @@
                 ? '<section class="ld-result win"><span class="ld-result-ico">' + LD_ICON('trophy') + '</span><div class="ld-result-title">Congratulations, you won!</div>' +
                     '<div class="ld-result-prize">' + esc(P[1].item) + ' · ' + esc(P[1].rank) + '</div><div class="ld-result-text">Our team will contact you by SMS within 7 days.' + flag('claim process TBC') + '</div></section>'
                 : '<section class="ld-result lose"><span class="ld-result-ico">' + LD_ICON('wheel') + '</span><div class="ld-result-title">Not this time</div>' +
-                    '<div class="ld-result-text">Your ' + t + ' ticket' + (t === 1 ? ' was' : 's were') + ' entered in the draw. Keep playing for the next Lucky Draw!</div>' +
+                    '<div class="ld-result-text">' + I.f(t === 1 ? 'Your {n} ticket was entered in the draw. Keep playing for the next Lucky Draw!' : 'Your {n} tickets were entered in the draw. Keep playing for the next Lucky Draw!', { n: t }) + '</div>' +
                     '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta">Play Now</a></section>';
             return '<div class="ld-annot">' + note('winners') + result +
                 '<section class="card-simple-outer ld-card-outer">' +
-                    '<div class="ld-card-pad">' + secHead(LD_ICON('trophy'), 'Winner Announcement', 'Drawn on ' + LD.fmtDate(C.campaign.drawDate, true)) + '</div>' +
+                    '<div class="ld-card-pad">' + secHead(LD_ICON('trophy'), 'Winner Announcement', I.f('Drawn on {d}', { d: LD.fmtDate(C.campaign.drawDate, true) })) + '</div>' +
                     '<ul class="leaderboard">' + list.map(function (w, i) {
                         var me = win && i === 2;
                         return '<li class="leaderboard-winner' + (me ? ' ld-me' : '') + '"><div class="d-flex align-items-center w-100">' +
@@ -400,7 +404,7 @@
             return '<div class="ld-annot">' + note('terms') +
                 '<details class="card-simple ld-card ld-terms"><summary>' + fa('fa-file-text-o') + ' Terms &amp; Conditions</summary><ol>' +
                     '<li>Open to active QuizPro subscribers during the campaign period.' + flag('eligibility TBC') + '</li>' +
-                    '<li>Tickets are earned from quizzes played between ' + LD.fmtDate(C.campaign.periodStart) + ' and ' + LD.fmtDate(C.campaign.periodEnd) + '.</li>' +
+                    '<li>' + I.f('Tickets are earned from quizzes played between {a} and {b}.', { a: LD.fmtDate(C.campaign.periodStart), b: LD.fmtDate(C.campaign.periodEnd) }) + '</li>' +
                     '<li>Winners are selected at random from eligible entries on the draw date.</li>' +
                     '<li>Each mobile number can win at most one prize per campaign.' + flag('TBC') + '</li>' +
                     '<li>Tickets are not transferable and cannot be exchanged for cash.</li>' +

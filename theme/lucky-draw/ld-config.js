@@ -85,8 +85,9 @@ window.LD = {
   basisLabel: function (rule) {
     return rule.basis === 'correct' ? 'correct answers' : 'questions answered';
   },
-  fmtDate: function (s, withTime) {
+  fmtDate: function (s, withTime, noYear) {
     var d = new Date(s.replace(' ', 'T'));
+    if (window.QP_I18N) return QP_I18N.date(d, { time: withTime, noYear: noYear });
     var o = { day: 'numeric', month: 'short', year: 'numeric' };
     if (withTime) { o.hour = '2-digit'; o.minute = '2-digit'; }
     return d.toLocaleString('en-GB', o);

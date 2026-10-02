@@ -130,7 +130,8 @@
         document.addEventListener('qp:answer', function (e) {
             var ok = e.detail.ok, t = window.QP_I18N ? QP_I18N.t : function (s) { return s; };
             streak = ok ? streak + 1 : 0;
-            var sub = ok ? (streak >= 2 ? '🔥 ' + streak + ' in a row · +' + e.detail.points : '+' + e.detail.points + ' points') : t('Keep going!');
+            var F = window.QP_I18N ? QP_I18N.f : function (x, v) { Object.keys(v).forEach(function (k) { x = x.split('{' + k + '}').join(v[k]); }); return x; };
+            var sub = ok ? (streak >= 2 ? F('🔥 {n} in a row · +{p}', { n: streak, p: e.detail.points }) : F('+{p} points', { p: e.detail.points })) : t('Keep going!');
             toast.className = 'answer-toast ' + (ok ? 'ok' : 'bad');
             toast.innerHTML = (ok ? SPARKS : '') +
                 '<span class="toast-ico"><span class="fa ' + (ok ? 'fa-check' : 'fa-times') + '"></span></span>' +
