@@ -31,3 +31,44 @@
 /* current user */
 .leaderboard-winner.is-you{background:#FFEBD9}
 .lb-you{display:inline-block;vertical-align:middle;margin-left:0.25rem;font-size:0.6875rem;background-color:#FE9E44;color:#fff;border-radius:50rem;padding:1px 8px}
+
+/* hero with prize tiers */
+.lb-hero{background:linear-gradient(160deg,#FFB35C 0%,#FE8A1E 100%);border-radius:24px;padding:18px 16px 16px;margin-bottom:12px;color:#fff;box-shadow:0 5px 10px rgba(12,9,42,0.16);position:relative;overflow:hidden}
+.lb-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,0.12)}
+.lb-hero-top{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.lb-hero-ico{width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.lb-hero-title{font-size:1.375rem;font-weight:bold;margin:0}
+.lb-hero-sub{font-size:0.8125rem;opacity:0.95}
+.lb-tiers-title{font-weight:bold;font-size:0.8125rem;text-transform:uppercase;letter-spacing:0.05em;margin:16px 0 8px;opacity:0.95;position:relative;z-index:1}
+.lb-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1}
+.lb-tier{background:#fff;border-radius:16px;padding:8px 6px 10px;text-align:center;color:#0C092A;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.lb-tier-rank{font-size:0.6875rem;font-weight:bold;color:#fff;border-radius:50rem;padding:1px 8px}
+.lb-tier.t1 .lb-tier-rank{background:#F0A020}
+.lb-tier.t2 .lb-tier-rank{background:#98A6B9}
+.lb-tier.t3 .lb-tier-rank{background:#C9773E}
+.lb-tier-img{width:100%;height:64px;border-radius:12px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
+.lb-tier-img img{max-width:100%;max-height:100%;object-fit:contain}
+.lb-tier b{font-size:0.75rem;line-height:1.2}
+
+/* your position */
+.lb-me{background:#fff;border-radius:24px;padding:14px 16px;margin-bottom:12px;box-shadow:0 5px 10px rgba(12,9,42,0.08);border:2px solid #FFCC5F}
+.lb-me-rank{font-weight:bold;font-size:1.25rem;color:#FE9E44;margin-right:10px;min-width:32px}
+.lb-me-info{margin-left:10px;min-width:0;line-height:1.3}
+.lb-me-info b{display:block;color:#0C092A}
+.lb-me-info small{color:#969696;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.lb-me-info .coin{width:12px;height:12px;margin-right:0}
+.lb-me-prize{display:inline-flex;align-items:center;gap:4px;color:#0C092A;font-weight:bold}
+.lb-me-prize img{width:18px;height:18px;border-radius:5px;object-fit:contain;background:#fff}
+.lb-me-bar{height:8px;border-radius:50rem;background:#F3F6FA;margin:12px 0 6px;overflow:hidden}
+.lb-me-bar span{display:block;height:100%;border-radius:50rem;background:#FE9E44}
+.lb-me-next{font-size:0.8125rem;color:#969696}
+.lb-me-next b{color:#0C092A}
+.lb-me-next .fa{color:#47c475}
+
+/* prize per rank in the list */
+.lb-prize{display:inline-flex;align-items:center;gap:4px;margin-top:4px;background:#FFF6EE;color:#C15E01;border-radius:50rem;padding:2px 8px 2px 2px;font-size:0.6875rem;font-weight:bold;max-width:100%}
+.lb-prize img{width:18px;height:18px;border-radius:50%;object-fit:contain;background:#fff}
+.lb-prize span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-zone{list-style:none;padding:8px 16px;background:#F3F6FA;text-align:center;font-size:0.75rem;font-weight:bold;color:#969696;border-bottom:1px solid rgba(150,150,150,0.25)}
+.lb-zone .fa{color:#FE9E44}
+.lb-list .leaderboard-winner-info{padding-right:0.5rem}

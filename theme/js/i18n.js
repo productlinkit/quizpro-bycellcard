@@ -346,7 +346,39 @@
         'eligibility TBC': ['សិទ្ធិនឹងបញ្ជាក់', '资格待定'],
         'announcement time TBC': ['ពេលប្រកាសនឹងបញ្ជាក់', '公布时间待定'],
         'claim process TBC': ['ការទទួលរង្វាន់នឹងបញ្ជាក់', '领奖流程待定'],
-        'TBC': ['នឹងបញ្ជាក់', '待定']
+        'TBC': ['នឹងបញ្ជាក់', '待定'],
+        // ---------- feedback round: solo game, levels, coming soon, leaderboard prizes, settings ----------
+        'Coming soon': ['ឆាប់ៗនេះ', '即将推出'],
+        'Quizzes for this category are coming soon': ['កម្រងសំណួរសម្រាប់ប្រភេទនេះនឹងមកដល់ឆាប់ៗ', '该分类的测验即将推出'],
+        'Choose your level': ['ជ្រើសរើសកម្រិតរបស់អ្នក', '选择难度'],
+        'Easy questions to warm up': ['សំណួរងាយៗសម្រាប់កម្តៅខ្លួន', '简单题目热热身'],
+        'A bit more challenging': ['ពិបាកជាងបន្តិច', '更具挑战性'],
+        'For true quiz masters': ['សម្រាប់អ្នកពូកែពិតប្រាកដ', '专为答题高手准备'],
+        'Point': ['ពិន្ទុ', '分'],
+        'pts / answer': ['ពិន្ទុ / ចម្លើយ', '分 / 题'],
+        'Exit quiz': ['ចាកចេញពីកម្រងសំណួរ', '退出测验'],
+        'Exit quiz?': ['ចាកចេញពីកម្រងសំណួរ?', '要退出测验吗？'],
+        'Your progress in this round will be lost.': ['វឌ្ឍនភាពក្នុងវគ្គនេះនឹងបាត់បង់។', '本轮进度将会丢失。'],
+        'Yes, Exit': ['បាទ/ចាស ចាកចេញ', '确认退出'],
+        "Time's up!": ['អស់ម៉ោងហើយ!', '时间到！'],
+        'Time left': ['ពេលនៅសល់', '剩余时间'],
+        'Well done!': ['ល្អណាស់!', '干得漂亮！'],
+        'Keep practicing': ['បន្តហាត់', '继续练习'],
+        'Theme': ['រចនាប័ទ្ម', '主题'],
+        'Sound': ['សំឡេង', '声音'],
+        'Pick a color for the app': ['ជ្រើសរើសពណ៌សម្រាប់កម្មវិធី', '为应用选择一个颜色'],
+        'Ocean Blue': ['ខៀវសមុទ្រ', '海洋蓝'],
+        'Purple': ['ស្វាយ', '紫色'],
+        'Mint Green': ['បៃតងស្រាល', '薄荷绿'],
+        'Pink': ['ផ្កាឈូក', '粉色'],
+        'Night': ['យប់', '夜间'],
+        'Sound on': ['បើកសំឡេង', '声音已开启'],
+        'Sound off': ['បិទសំឡេង', '声音已关闭'],
+        'Change profile photo': ['ប្តូររូបភាពប្រវត្តិរូប', '更换头像'],
+        'Prizes this month': ['រង្វាន់ប្រចាំខែនេះ', '本月奖品'],
+        'Your position': ['ចំណាត់ថ្នាក់របស់អ្នក', '你的排名'],
+        'Prize zone ends here': ['តំបន់រង្វាន់បញ្ចប់ត្រឹមនេះ', '获奖区到此为止'],
+        'reach the top 5 to win': ['ឡើងដល់កំពូល ៥ ដើម្បីឈ្នះ', '进入前5名即可获奖'],
     };
 
     // Text with numbers or names. {1}/{2} = captured groups; t1/t2 = translate that group first.
@@ -373,6 +405,7 @@
         [/^No quizzes found for "(.*)"$/, ['រកមិនឃើញកម្រងសំណួរសម្រាប់ "{1}"', '未找到与"{1}"相关的测验']],
         [/^Players matching "(.*)"$/, ['អ្នកលេងដែលត្រូវនឹង "{1}"', '匹配"{1}"的玩家']],
         [/^No player found for "(.*)"$/, ['រកមិនឃើញអ្នកលេងសម្រាប់ "{1}"', '未找到"{1}"的玩家']],
+        [/^Ends in (\d+) days$/, ['បញ្ចប់ក្នុងរយៈពេល {1} ថ្ងៃ', '{1} 天后结束']],
         [/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{4})$/, ['{m} {2}', '{2}年{n}月']]
     ];
 
@@ -395,7 +428,10 @@
         '+{p} points': ['+{p} ពិន្ទុ', '+{p} 积分'],
         '+{n} Lucky Draw ticket': ['+{n} សំបុត្រចាប់រង្វាន់', '+{n} 张幸运抽奖券'],
         '+{n} Lucky Draw tickets': ['+{n} សំបុត្រចាប់រង្វាន់', '+{n} 张幸运抽奖券'],
-        '{n} coins': ['{n} កាក់', '{n} 金币']
+        '{n} coins': ['{n} កាក់', '{n} 金币'],
+        '{n} questions': ['{n} សំណួរ', '{n} 道题'],
+        '{n} sec': ['{n} វិនាទី', '{n} 秒'],
+        '{coins} coins to reach #1 and win a {prize}': ['ខ្វះ {coins} កាក់ទៀតដើម្បីឡើងលេខ ១ និងឈ្នះ {prize}', '还差 {coins} 金币即可登上第1名，赢得{prize}']
     };
 
     function current() {

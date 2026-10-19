@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="theme/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="theme/lucky-draw/ld.css">
     <link rel="stylesheet" href="theme/css/game.css">
@@ -41,22 +42,9 @@
             <!-- Score -->
             <div class="res-card res-score">
                 <div class="res-card-title">Final Score</div>
-                <div class="res-vs">
-                    <div class="res-side me">
-                        <span class="res-winner">WINNER</span>
-                        <span class="res-side-ava"><img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt=""></span>
-                        <span class="res-side-name">You</span>
-                        <span class="res-side-score" id="r-real">0</span>
-                    </div>
-                    <span class="res-vs-badge">VS</span>
-                    <div class="res-side opp">
-                        <span class="res-winner">WINNER</span>
-                        <span class="res-side-ava" id="r-opp-ava"></span>
-                        <span class="res-side-name" id="r-opp-name">Eissa</span>
-                        <span class="res-side-score" id="r-fake">0</span>
-                    </div>
-                </div>
-                <div class="res-bar" aria-hidden="true"><span class="res-bar-me" id="r-bar-me"></span><span class="res-bar-opp" id="r-bar-opp"></span></div>
+                <div class="res-big"><span id="r-real">0</span><small>Points</small></div>
+                <div class="res-dots" id="r-dots" aria-hidden="true"></div>
+                <div class="res-score-sub"><span class="fa fa-clock-o"></span> <span id="r-time">0 sec</span></div>
             </div>
 
             <!-- Stats -->
@@ -90,17 +78,13 @@
     <script src="theme/lucky-draw/ld-config.js"></script>
     <script>
     (function () {
-        var p = new URLSearchParams(location.search);
+        var p = new URLSearchParams(location.search), I = window.QP_I18N;
         var level = QP_DEMO.LEVELS.filter(function (l) { return String(l.id) === p.get('level'); })[0] || QP_DEMO.LEVELS[0];
-        var answered = +p.get('answered') || 0, correct = +p.get('correct') || 0;
-        var real = +p.get('real') || 0, fake = +p.get('fake') || 0;
-        var opp = QP_DEMO.opponent(), total = +p.get('total') || 10;
-        document.getElementById('r-opp-name').textContent = opp.name;
-        document.getElementById('r-opp-ava').innerHTML = QP_DEMO.avatarHtml(opp);
-        document.getElementById('r-correct').textContent = correct + '/' + total;
-        document.getElementById('r-acc').textContent = (answered ? Math.round(correct / answered * 100) : 0) + '%';
+        var total = +p.get('total') || 5, answered = +p.get('answered') || 0, correct = +p.get('correct') || 0;
+        var pass = Math.ceil(total * 0.6);
         document.getElementById('r-answered').textContent = answered + '/' + total;
         document.getElementById('r-level').textContent = level.title;
+        document.getElementById('r-time').textContent = I.f('{n} sec', { n: +p.get('time') || 0 });
         document.getElementById('r-again').href = 'game-detail.html?id=' + (p.get('game') || 31);
 
         // Broken heart for the lose badge (Font Awesome 4.7 has none)
@@ -110,22 +94,21 @@
             '</svg>';
 
         function show(win) {
-            // Preview keeps the scores consistent with the chosen outcome
-            var hi = Math.max(real, fake), lo = Math.min(real, fake);
-            if (hi === lo) { hi = real || level.points; lo = Math.max(hi - level.points, 0); }
-            var me = win ? hi : lo, them = win ? lo : hi;
-            if (win === (p.get('res') === 'win')) { me = real; them = fake; }
+            // Demo preview: the other outcome uses sample numbers that fit it
+            var c = win === (p.get('res') === 'win') ? correct : (win ? Math.max(pass, correct) : Math.min(pass - 1, correct));
+            var pts = c * level.points;
             document.body.classList.toggle('is-win', win);
             document.body.classList.toggle('is-lose', !win);
-            document.getElementById('r-status').textContent = win ? 'You Win!' : 'You Lose';
+            document.getElementById('r-status').textContent = win ? 'Well done!' : 'Keep practicing';
             document.getElementById('r-ann').textContent = win ? 'Great job, keep it up' : 'Nice try, play again to win';
             document.getElementById('r-badge').innerHTML = win ? '<span class="fa fa-trophy"></span>' : BROKEN_HEART;
-            document.getElementById('r-points').textContent = me;
-            document.getElementById('r-real').textContent = me;
-            document.getElementById('r-fake').textContent = them;
-            var sum = me + them || 1;
-            document.getElementById('r-bar-me').style.width = (me / sum * 100) + '%';
-            document.getElementById('r-bar-opp').style.width = (them / sum * 100) + '%';
+            document.getElementById('r-points').textContent = pts;
+            document.getElementById('r-real').textContent = pts;
+            document.getElementById('r-correct').textContent = c + '/' + total;
+            document.getElementById('r-acc').textContent = Math.round(c / total * 100) + '%';
+            document.getElementById('r-dots').innerHTML = Array.apply(null, Array(total)).map(function (x, i) {
+                return '<i class="' + (i < c ? 'ok' : 'bad') + '"><span class="fa ' + (i < c ? 'fa-check' : 'fa-times') + '"></span></i>';
+            }).join('');
             // replay entrance animation when switching preview
             var w = document.querySelector('.res-wrap'); w.classList.remove('enter'); void w.offsetWidth; w.classList.add('enter');
             document.querySelectorAll('.result-preview button').forEach(function (b) {

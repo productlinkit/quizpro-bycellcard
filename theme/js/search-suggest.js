@@ -8,7 +8,7 @@
     if (!D) return;
 
     var RECENT_KEY = 'qp_recent_search';
-    var POPULAR = [31, 1, 21, 30, 25];      // popular searches (category ids)
+    var POPULAR = [31, 1, 25, 29, 33];      // popular searches (category ids, all playable)
     var RECOMMENDED = [31, 33, 32, 29];     // recommended for you
 
     function get() { try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch (e) { return []; } }
@@ -36,7 +36,8 @@
         var c = D.CATEGORIES[id];
         return '<li class="quiz-list"><a href="' + link(id) + '" class="d-flex align-items-center" data-term="' + esc(c[0]) + '">' +
             '<span class="quiz-list-pict"><img src="' + icon(id) + '" alt=""></span>' +
-            '<div class="quiz-list-info"><div class="quiz-list-info-title">' + esc(c[0]) + '</div>' +
+            '<div class="quiz-list-info"><div class="quiz-list-info-title">' + esc(c[0]) +
+                (D.playable && !D.playable(id) ? ' <span class="soon-inline">Coming soon</span>' : '') + '</div>' +
             '<p>' + esc(c[1]) + '</p></div></a></li>';
     }
 

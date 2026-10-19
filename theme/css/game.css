@@ -1,33 +1,6 @@
 /* Game flow: VS screen, play header + answer feedback, result win/lose */
 
 /* ---------- shared avatar ---------- */
-.opp-initial{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;color:#fff;font-weight:bold;font-size:1.25em}
-
-/* ---------- VS screen (game-match.html) ---------- */
-.match-meta{display:flex;justify-content:center;gap:0.5rem;margin-bottom:1rem}
-.match-chip{background-color:rgba(255,255,255,0.2);color:#fff;font-weight:bold;font-size:0.875rem;border-radius:50rem;padding:6px 14px;display:inline-flex;align-items:center;gap:0.25rem}
-.match-chip.points{background-color:#FE9E44}
-.match-chip .qf-icon-crown::before{margin:0}
-.match-card{padding:32px 1rem 1rem}
-.match-row{display:flex;align-items:flex-start;justify-content:space-between}
-.match-player{flex:1 1 0;text-align:center;min-width:0}
-.match-ava{width:80px;height:80px;margin:0 auto 0.5rem;border-radius:50%;background-color:#DFDFDF;font-size:1.5rem;position:relative}
-.match-ava img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.match-name{font-weight:bold;font-size:1.125rem;color:#0C092A;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.match-vs{width:80px;height:80px;flex-shrink:0;border-radius:50%;background-color:#FFEBD9;color:#FE9E44;font-weight:bold;font-size:1.375rem;display:flex;align-items:center;justify-content:center}
-.match-ava.searching{background-color:#F3F6FA;display:flex;align-items:center;justify-content:center}
-.match-ava.searching::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:3px solid transparent;border-top-color:#FE9E44;animation:matchSpin 0.9s linear infinite}
-.match-q{color:#969696;font-weight:bold;font-size:2rem;animation:matchPulse 1.2s ease-in-out infinite}
-.match-ava.found{animation:matchPop 0.45s ease-out}
-.match-player:last-child .match-name{transition:color 0.2s}
-.match-card:not(.ready) .match-player:last-child .match-name{color:#969696;font-weight:normal;font-size:1rem}
-.match-status{text-align:center;margin:1.5rem 0 1rem;color:#0C092A;font-size:1.125rem}
-.match-card:not(.ready) .match-status{color:#969696}
-.match-card.ready .match-status{font-weight:bold;animation:matchPop 0.45s ease-out}
-.match-card .btn.disabled{opacity:0.5}
-@keyframes matchSpin{to{transform:rotate(360deg)}}
-@keyframes matchPulse{0%,100%{opacity:0.4}50%{opacity:1}}
-@keyframes matchPop{0%{transform:scale(0.6);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
 
 /* ---------- play header (game-play.html) ---------- */
 .game-header{padding-top:20px;padding-bottom:12px}
@@ -120,21 +93,6 @@
 /* cards */
 .res-card{background-color:#fff;border-radius:24px;padding:20px 1rem 1rem;margin-bottom:12px;box-shadow:0 5px 10px rgba(12,9,42,0.08);position:relative}
 .res-card-title{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:#FFCC5F;color:#fff;font-weight:bold;font-size:0.875rem;border-radius:12px;padding:4px 16px;white-space:nowrap}
-.res-vs{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-top:6px}
-.res-side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;padding-top:14px}
-.res-side-ava{width:52px;height:52px;border-radius:50%;background:#DFDFDF;overflow:hidden;font-size:1.1rem;border:3px solid #F3F6FA}
-.res-side-ava img{width:100%;height:100%;object-fit:cover}
-.res-side-name{font-weight:bold;color:#0C092A;font-size:0.9375rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.res-side-score{font-weight:bold;font-size:2rem;line-height:1;color:#969696}
-.res-vs-badge{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:#FFEBD9;color:#FE9E44;font-weight:bold;display:flex;align-items:center;justify-content:center}
-.res-winner{position:absolute;top:-6px;font-size:0.625rem;font-weight:bold;letter-spacing:0.08em;color:#fff;background:#47c475;border-radius:50rem;padding:2px 8px;visibility:hidden}
-.is-win .me .res-winner,.is-lose .opp .res-winner{visibility:visible}
-.is-win .me .res-side-ava,.is-lose .opp .res-side-ava{border-color:#47c475}
-.is-win .me .res-side-score,.is-lose .opp .res-side-score{color:#2fb463}
-.res-bar{display:flex;height:10px;border-radius:50rem;overflow:hidden;background:#F3F6FA;margin-top:14px;gap:3px}
-.res-bar span{display:block;height:100%;border-radius:50rem;transition:width 0.8s cubic-bezier(.2,.8,.2,1)}
-.res-bar-me{background:#FE9E44}
-.res-bar-opp{background:#C9D2DE}
 
 /* stats */
 .res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
@@ -178,3 +136,56 @@
 @keyframes resPop{0%{transform:scale(0.4);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes resUp{0%{transform:translateY(16px);opacity:0}100%{transform:none;opacity:1}}
 @keyframes confFall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0.9;transform:translateY(105vh) rotate(720deg)}}
+
+/* ---------- solo round (game-play.html) ---------- */
+.play-hud{display:flex;align-items:center;justify-content:space-between;gap:0.5rem}
+.play-hud .game-player{flex:1 1 0}
+.play-timer{position:relative;width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.125rem;color:#fff}
+.play-timer svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.play-timer circle{fill:none;stroke-width:4}
+.play-timer .track{stroke:rgba(255,255,255,0.25)}
+.play-timer .bar{stroke:#FFCC5F;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .3s}
+.play-timer.low .bar{stroke:#ff6b6b}
+.play-timer.low span{color:#FFE0E0;animation:scorePop 1s ease-in-out infinite}
+.play-cat{flex:1 1 0;display:flex;justify-content:flex-end}
+.play-cat-ico{width:48px;height:48px;border-radius:14px;overflow:hidden;border:2px solid rgba(255,255,255,0.8);background:#fff}
+.play-cat-ico img{width:100%;height:100%;object-fit:cover}
+.play-progress{display:flex;gap:6px;justify-content:center;margin-top:14px}
+.play-progress i{width:34px;height:6px;border-radius:50rem;background:rgba(255,255,255,0.3);transition:background .2s}
+.play-progress i.now{background:#fff}
+.play-progress i.ok{background:#47c475}
+.play-progress i.bad{background:#ff6b6b}
+.play-count{text-align:center;color:#fff;font-weight:bold;font-size:0.875rem;margin-top:6px}
+.play-body{position:relative;padding-top:12px}
+.play-body .answer-toast{top:-6px}
+.play-question{background:#FE9E44;color:#fff;border-radius:24px;padding:28px 20px;min-height:132px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:bold;font-size:1.25rem;line-height:1.35;box-shadow:0 5px 10px rgba(12,9,42,0.16);margin-bottom:16px}
+.play-question.in{animation:qIn .35s ease-out}
+.play-options{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.play-opt{width:100%;display:flex;align-items:center;gap:12px;background:#fff;border:2px solid transparent;border-radius:18px;padding:12px 14px;text-align:left;color:#0C092A;font-weight:bold;font-size:1rem;box-shadow:0 5px 10px rgba(12,9,42,0.08);animation:optIn .3s ease-out both;transition:transform .1s,background .2s,border-color .2s}
+.play-opt:active{transform:scale(0.98)}
+.play-opt-key{width:32px;height:32px;flex-shrink:0;border-radius:10px;background:#FFEBD9;color:#FE9E44;display:flex;align-items:center;justify-content:center;font-size:0.9375rem}
+.play-opt-text{flex:1;min-width:0}
+.play-opt-mark{width:24px;height:24px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:FontAwesome;font-size:0.8125rem}
+.play-opt:disabled{opacity:0.55}
+.play-opt.is-correct{opacity:1;background:#E6F8EE;border-color:#47c475}
+.play-opt.is-correct .play-opt-key{background:#47c475;color:#fff}
+.play-opt.is-correct .play-opt-mark{background:#47c475}
+.play-opt.is-correct .play-opt-mark::before{content:'\f00c'}
+.play-opt.is-wrong{opacity:1;background:#FFEBEB;border-color:#ff6b6b;animation:toastShake .4s}
+.play-opt.is-wrong .play-opt-key{background:#ff6b6b;color:#fff}
+.play-opt.is-wrong .play-opt-mark{background:#ff6b6b}
+.play-opt.is-wrong .play-opt-mark::before{content:'\f00d'}
+.play-exit{display:block;margin:18px auto 24px;background:none;border:0;color:rgba(255,255,255,0.85);font-weight:bold;font-size:0.875rem}
+.play-exit span{margin-right:4px}
+@keyframes qIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes optIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* solo score card (result.html) */
+.res-big{font-weight:bold;font-size:3rem;line-height:1;color:#0C092A;margin-top:8px}
+.res-big small{display:block;font-size:0.8125rem;color:#969696;margin-top:4px}
+.is-win .res-big span{color:#2fb463}
+.res-dots{display:flex;justify-content:center;gap:8px;margin:14px 0 10px}
+.res-dots i{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.8125rem}
+.res-dots i.ok{background:#47c475}
+.res-dots i.bad{background:#FF8FA3}
+.res-score-sub{color:#969696;font-size:0.875rem;font-weight:bold}

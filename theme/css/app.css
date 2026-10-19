@@ -1,0 +1,56 @@
+/* Shared pieces used across pages: toast, "Coming soon", home avatar, level picker, theme & sound */
+
+/* toast */
+.saved-toast{position:fixed;left:50%;top:24px;transform:translateX(-50%);z-index:2000;background:#47c475;color:#fff;font-weight:bold;border-radius:50rem;padding:8px 18px;box-shadow:0 5px 10px rgba(12,9,42,0.16);transition:opacity .3s,transform .3s;white-space:nowrap}
+.saved-toast.info{background:#0C092A}
+.saved-toast span{margin-right:4px}
+.saved-toast span::before{margin:0}
+.saved-toast.hide{opacity:0;transform:translate(-50%,-10px)}
+
+/* categories without quizzes yet */
+.quiz-box{position:relative}
+.quiz-box.is-soon img{filter:grayscale(1);opacity:0.45}
+.quiz-box.is-soon .quiz-box-title{color:#969696}
+.soon-tag{position:absolute;left:50%;top:6px;transform:translateX(-50%);background:#0C092A;color:#fff;font-size:0.5625rem;font-weight:bold;letter-spacing:0.02em;border-radius:50rem;padding:2px 7px;white-space:nowrap}
+
+/* home: tap the photo to change it */
+.home-ava-edit{position:relative;display:inline-block}
+.home-ava-edit img{object-fit:cover}
+.home-ava-cam{position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:#FE9E44;color:#fff;border:2px solid #fff;display:flex !important;align-items:center;justify-content:center;font-size:10px;line-height:1}
+
+/* level picker (game-detail.html): same background and white cards as Home */
+:root{--qp-bg:#3EA9F5;--qp-top:#1888D8}
+#level .modal-content{background:linear-gradient(180deg,var(--qp-top) 0,var(--qp-bg) 300px) var(--qp-bg)}
+#level .modal-level-title{color:#fff}
+.modal-level-option .lvl-card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:24px;padding:1rem;margin-bottom:12px;color:#0C092A;text-align:left;box-shadow:0 5px 10px rgba(12,9,42,0.08)}
+.modal-level-option .lvl-card:hover,.modal-level-option .lvl-card:focus{color:#0C092A}
+.modal-level-option .lvl-card:active{transform:scale(0.98)}
+.lvl-ico{width:56px;height:56px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem}
+.lvl-1 .lvl-ico{background-color:#47c475}
+.lvl-2 .lvl-ico{background-color:#FE9E44}
+.lvl-3 .lvl-ico{background-color:#F4513B}
+.lvl-text{flex:1;min-width:0;line-height:1.25}
+.lvl-text b{display:block;font-size:1.0625rem}
+.lvl-text small{display:block;font-size:0.875rem;color:#969696;margin-top:2px}
+.lvl-pts{flex-shrink:0;background-color:#FE9E44;color:#fff;border-radius:50rem;padding:4px 10px 4px 4px;font-size:0.875rem;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.lvl-pts-badge{width:24px;height:24px;border-radius:50%;background:#fff;color:#FE9E44;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+.lvl-pts-badge::before{margin:0 !important;width:auto !important}
+
+/* theme sheet & sound switch (profile.html) */
+.theme-sheet{padding:24px;border-radius:24px;text-align:center}
+.theme-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.theme-opt{background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:0.75rem;font-weight:bold;color:#0C092A}
+.theme-swatch{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;box-shadow:0 0 0 2px #DFDFDF}
+.theme-swatch .fa{opacity:0}
+.theme-opt.on .theme-swatch{box-shadow:0 0 0 3px #FE9E44}
+.theme-opt.on .theme-swatch .fa{opacity:1}
+.menu-theme i{width:14px;height:14px;border-radius:50%;display:inline-block}
+.menu-switch::before{display:none}
+.qp-switch{margin-left:auto;margin-right:0.25rem;position:relative;width:44px;height:26px;flex-shrink:0}
+.qp-switch input{opacity:0;width:0;height:0;position:absolute}
+.qp-switch span{position:absolute;inset:0;border-radius:50rem;background:#DFDFDF;transition:background .2s;cursor:pointer}
+.qp-switch span::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(12,9,42,0.25);transition:transform .2s}
+.qp-switch input:checked+span{background:#47c475}
+.qp-switch input:checked+span::after{transform:translateX(18px)}
+.soon-inline{display:inline-block;vertical-align:middle;background:#0C092A;color:#fff;font-size:0.625rem;border-radius:50rem;padding:1px 7px;margin-left:4px}
+.quiz-list a:has(.soon-inline) .quiz-list-pict img{filter:grayscale(1);opacity:0.5}

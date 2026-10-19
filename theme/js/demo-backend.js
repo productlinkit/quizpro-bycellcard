@@ -1,8 +1,7 @@
 /*
  * QuizPro demo backend (prototype only).
- * Answers the AJAX calls made by custom.js and quiz.js with dummy data,
- * so the original front-end code runs unchanged without the Laravel server.
- * Load it right after jQuery and before quiz.js / custom.js.
+ * Dummy login, profile, settings (theme, sound) and page wiring so the copied
+ * front-end runs without the Laravel server. Load it right after jQuery.
  */
 (function () {
     var SERVER = 'https://demo.quizpro.mobi//';
@@ -15,10 +14,31 @@
     function param(name) { return new URLSearchParams(location.search).get(name); }
     var page = (location.pathname.split('/').pop() || 'index.html');
 
+    // ---------- Settings: theme & sound (Profile menu) ----------
+    function raw(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+    function setRaw(key, v) { try { localStorage.setItem(key, v); } catch (e) {} }
+    var THEMES = [
+        { id: 'blue', name: 'Ocean Blue', bg: '#3EA9F5', top: '#1888D8' },
+        { id: 'purple', name: 'Purple', bg: '#8E6CEF', top: '#6B46E0' },
+        { id: 'green', name: 'Mint Green', bg: '#2DBE8C', top: '#169A6E' },
+        { id: 'pink', name: 'Pink', bg: '#EE6FA6', top: '#D24887' },
+        { id: 'night', name: 'Night', bg: '#1B2340', top: '#0E1428' }
+    ];
+    (function () {
+        var css = THEMES.slice(1).map(function (t) {
+            return '[data-theme="' + t.id + '"]{--qp-bg:' + t.bg + ';--qp-top:' + t.top + '}' +
+                '[data-theme="' + t.id + '"] body{background-color:' + t.bg + '}' +
+                '[data-theme="' + t.id + '"] body::before{background:linear-gradient(180deg,' + t.top + ' 0%,transparent 100%)}';
+        }).join('');
+        var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+    })();
+    function applyTheme(id) { document.documentElement.setAttribute('data-theme', id || 'blue'); }
+    applyTheme(raw('qp_theme'));
+
     // ---------- Session (dummy login) ----------
     // Guests can browse; login is asked only when they use a feature (play, Lucky Draw, profile).
     var user = get(SESSION_KEY);
-    var MEMBER_PAGES = ['game-match.html', 'game-play.html', 'result.html', 'history.html', 'profile.html', 'profile-edit.html'];
+    var MEMBER_PAGES = ['game-play.html', 'result.html', 'history.html', 'profile.html', 'profile-edit.html'];
     function loginUrl(next) { return 'login.html?next=' + encodeURIComponent(next || (page + location.search)); }
     function safeNext() {
         var n = param('next') || '';
@@ -47,128 +67,27 @@
         32: ['Animal', 'Name of animal, type of animal, animal ability'],
         33: ['Food', 'Name of food, taste, ingredients, food country origin']
     };
-    // Opponents for the VS screen; one is picked per match and kept for play + result
-    var OPPONENTS = [
-        { name: 'Eissa', img: SERVER + 'uploads/user/1/ava-eissa.png' },
-        { name: 'Hella', color: '#FF8FA3' },
-        { name: 'Dara', color: '#a78bfa' },
-        { name: 'Sokha', color: '#14b8a6' },
-        { name: 'Vibol', color: '#60a5fa' }
-    ];
-    var OPP_KEY = 'qp_demo_opponent';
-    function opponent() { return get(OPP_KEY) || OPPONENTS[0]; }
-    function pickOpponent() { var o = OPPONENTS[Math.floor(Math.random() * OPPONENTS.length)]; set(OPP_KEY, o); return o; }
-    function avatarHtml(o) {
-        return o.img ? '<img src="' + o.img + '" alt="' + o.name + '">'
-            : '<span class="opp-initial" style="background-color:' + o.color + '">' + o.name.charAt(0) + '</span>';
-    }
+    // Categories that have questions in theme/js/questions.js; the rest show "Coming soon"
+    var PLAYABLE = [31, 25, 29, 1, 32, 33];
+    function playable(id) { return PLAYABLE.indexOf(+id) !== -1; }
+
     var DEFAULT_AVATAR = SERVER + 'uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg';
     var USER_AVATAR = (user && user.avatar) || DEFAULT_AVATAR;
 
+    // A round is 5 questions in 30 seconds (see theme/js/play.js)
     var LEVELS = [
-        { id: 1, title: 'Beginner', points: 10 },
-        { id: 2, title: 'Intermediate', points: 20 },
-        { id: 3, title: 'Advance', points: 30 }
+        { id: 1, title: 'Beginner', points: 10, icon: 'fa-leaf' },
+        { id: 2, title: 'Intermediate', points: 20, icon: 'fa-bolt' },
+        { id: 3, title: 'Advance', points: 30, icon: 'fa-fire' }
     ];
 
-    // ---------- Dummy questions ----------
-    // True/false statements only, so quiz.js always renders the swipe card (game_type = null).
-    var BANK = [
-        { cat: 31, q: 'Canberra is the capital city of Australia.', answer: true },
-        { cat: 31, q: 'The Nile flows through Brazil.', answer: false },
-        { cat: 31, q: 'Tokyo is the capital city of Japan.', answer: true },
-        { cat: 31, q: 'The flag of Canada has a red maple leaf.', answer: true },
-        { cat: 31, q: 'The Atlantic is the largest ocean in the world.', answer: false },
-        { cat: 25, q: 'Water boils at 100°C at sea level.', answer: true },
-        { cat: 25, q: 'Sound travels faster than light.', answer: false },
-        { cat: 25, q: 'Plants absorb carbon dioxide from the air.', answer: true },
-        { cat: 29, q: '7 × 8 = 56', answer: true },
-        { cat: 29, q: 'A triangle has four sides.', answer: false },
-        { cat: 29, q: '15 is an even number.', answer: false },
-        { cat: 1,  q: 'A football team has 11 players on the field.', answer: true },
-        { cat: 1,  q: 'A marathon is longer than 40 km.', answer: true },
-        { cat: 1,  q: 'In tennis, a score of zero is called "love".', answer: true },
-        { cat: 32, q: 'A whale is a mammal.', answer: true },
-        { cat: 32, q: 'Spiders have six legs.', answer: false },
-        { cat: 32, q: 'Penguins can fly.', answer: false },
-        { cat: 33, q: 'Honey is made by bees.', answer: true },
-        { cat: 33, q: 'Sushi originally comes from Japan.', answer: true },
-        { cat: 33, q: 'A tomato grows underground.', answer: false },
-        { cat: 30, q: 'There are seven continents.', answer: true },
-        { cat: 30, q: 'A leap year has 365 days.', answer: false },
-        { cat: 30, q: 'The sun rises in the east.', answer: true },
-        { cat: 28, q: 'An electric car needs petrol to run.', answer: false },
-        { cat: 28, q: 'A bicycle has an engine.', answer: false },
-        { cat: 26, q: 'A person who writes books is called an author.', answer: true },
-        { cat: 26, q: 'A dictionary lists words in alphabetical order.', answer: true },
-        { cat: 21, q: 'A guitar usually has six strings.', answer: true },
-        { cat: 21, q: 'A movie director acts in every scene of the film.', answer: false },
-        { cat: 22, q: 'A hashtag starts with the # symbol.', answer: true },
-        { cat: 22, q: 'You need a stamp to send an email.', answer: false }
-    ];
-
-    function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-
-    function buildQuestions(cat) {
-        var own = shuffle(BANK.filter(function (q) { return q.cat === cat; }));
-        var rest = shuffle(BANK.filter(function (q) { return q.cat !== cat; }));
-        return own.concat(rest).slice(0, 10).map(function (q, i) {
-            var qid = 100 + i;
-            // quiz.js maps questionChoice[0] to the left button (swipe left) and [1] to the right (swipe right)
-            var choices = [{ id: 'q' + qid + 'false', choice: 'False' }, { id: 'q' + qid + 'true', choice: 'True' }];
-            return {
-                question_id: qid,
-                question: q.q,
-                quiz_image: 0,
-                quiz_video: null,
-                game_type: null,
-                questionChoice: choices,
-                _correct: choices[q.answer ? 1 : 0].id
-            };
-        });
-    }
-
-    // ---------- Fake AJAX endpoints ----------
-    var GAME_KEY = 'qp_demo_game';
-    function game() { return get(GAME_KEY) || {}; }
-
-    function isCorrect(g, qid, answer) {
-        var q = (g.questions || []).filter(function (x) { return String(x.question_id) === String(qid); })[0];
-        return q ? { ok: q._correct === String(answer), correct: q._correct } : { ok: false, correct: null };
-    }
-
-    // Let the page react to answers (header feedback) without touching quiz.js
-    function emit(name, detail) { setTimeout(function () { document.dispatchEvent(new CustomEvent(name, { detail: detail })); }, 0); }
-
+    // ---------- Fake AJAX endpoints (custom.js) ----------
     var ROUTES = {
         '/game_category': function () {
             return { success: 1, result: LEVELS };
         },
-        '/quiz/question': function () {
-            var cat = parseInt(param('game'), 10) || 31;
-            var level = LEVELS.filter(function (l) { return l.id === (parseInt(param('level'), 10) || 1); })[0];
-            var qs = buildQuestions(cat);
-            set(GAME_KEY, { cat: cat, level: level, questions: qs, real: 0, fake: 0, correct: 0 });
-            return { success: 1, data: qs, length: qs.length };
-        },
         '/changlang': function () {
             return { success: 1 };
-        },
-        '/quiz_timer': function () {
-            return { success: 1, pair_id: 1, time: 60 };
-        },
-        '/quiz/play/answer_check': function (d) {
-            var g = game(), r = isCorrect(g, d.question_id, d.answer);
-            emit('qp:answer', { ok: r.ok, points: g.level ? g.level.points : 10 });
-            return { success: 1, answer: r.ok ? 'right' : 'wrong', correct_answer_id: r.correct };
-        },
-        '/quiz/play/score_calculation': function (d) {
-            var g = game(), r = isCorrect(g, d.question_id, d.answer);
-            if (r.ok) { g.real += g.level.points; g.correct++; }
-            if (Math.random() < 0.6) g.fake += g.level.points; // demo opponent
-            set(GAME_KEY, g);
-            emit('qp:score', { real: g.real, fake: g.fake });
-            return { success: 1, real_user: g.real, fake_user: g.fake };
         }
     };
 
@@ -192,52 +111,19 @@
         });
     }
 
-    // quiz.js redirects to /game/result/... on the server; send it to the local result page instead.
-    // (DOMContentLoaded, not load: the game page's server-hosted audio can hold up the load event)
-    document.addEventListener('DOMContentLoaded', function () {
-        if (typeof window.resultGenarate !== 'function') return;
-        window.resultGenarate = function (qna) {
-            if (window.timer) clearInterval(window.timer);
-            try { localStorage.removeItem('setTimer'); } catch (e) {}
-            var g = game(), real = 0, correct = 0, answered = 0;
-            (g.questions || []).forEach(function (q) {
-                if (qna[q.question_id] === undefined) return;
-                answered++;
-                if (q._correct === String(qna[q.question_id])) { correct++; real += g.level.points; }
-            });
-            var fake = Math.max(g.fake || 0, 0);
-            var win = real >= fake;
-            // Lucky Draw activity: store answered + correct so either ticket basis works
-            var log = get('qp_ld_activity') || [];
-            var now = new Date();
-            log.unshift({
-                date: now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') +
-                      ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
-                quiz: CATEGORIES[g.cat] ? CATEGORIES[g.cat][0] : 'Quiz', icon: g.cat, answered: answered, correct: correct
-            });
-            set('qp_ld_activity', log.slice(0, 50));
-            location.href = 'result.html?' + new URLSearchParams({
-                res: win ? 'win' : 'lose', game: g.cat, level: g.level ? g.level.id : 1,
-                real: real, fake: fake, correct: correct, answered: answered, total: (g.questions || []).length
-            });
-        };
-    });
+    function t(s) { return window.QP_I18N ? QP_I18N.t(s) : s; }
+    function f(s, v) { return window.QP_I18N ? QP_I18N.f(s, v) : s.replace(/\{(\w+)\}/g, function (m, k) { return v[k]; }); }
+    function toastMsg(html) {
+        var n = document.createElement('div');
+        n.className = 'saved-toast info';
+        n.innerHTML = html;
+        document.body.appendChild(n);
+        setTimeout(function () { n.classList.add('hide'); }, 1800);
+        setTimeout(function () { n.remove(); }, 2300);
+    }
 
     // ---------- Page wiring ----------
     document.addEventListener('DOMContentLoaded', function () {
-        // quiz.js labels the swipe buttons No / Yes; this demo uses True / False statements
-        var answerBox = document.getElementById('answerOption');
-        if (answerBox) {
-            var t = function (s) { return window.QP_I18N ? QP_I18N.t(s) : s; };
-            var relabel = function () {
-                var no = answerBox.querySelector('#nope'), yes = answerBox.querySelector('#love');
-                if (no && no.textContent !== t('False')) no.textContent = t('False');
-                if (yes && yes.textContent !== t('True')) yes.textContent = t('True');
-            };
-            new MutationObserver(relabel).observe(answerBox, { childList: true, subtree: true });
-            relabel();
-        }
-
         // Keep quiz links inside the local copy
         document.querySelectorAll('a[href*="demo.quizpro.mobi/game/detail/"]').forEach(function (a) {
             a.href = 'game-detail.html?id=' + a.getAttribute('href').split('/').pop();
@@ -269,6 +155,35 @@
             });
         });
 
+        // Categories without questions yet: greyed out with a "Coming soon" tag, playable ones first
+        document.querySelectorAll('.quiz-box[href*="game-detail.html?id="]').forEach(function (a) {
+            if (playable(a.getAttribute('href').split('id=').pop())) return;
+            a.classList.add('is-soon');
+            a.setAttribute('aria-disabled', 'true');
+            a.insertAdjacentHTML('beforeend', '<span class="soon-tag">Coming soon</span>');
+            var col = a.parentNode;
+            if (col && col.parentNode) col.parentNode.appendChild(col);
+        });
+        document.addEventListener('click', function (e) {
+            var a = e.target.closest('a[href*="game-detail.html?id="]');
+            if (!a || playable(a.getAttribute('href').split('id=').pop())) return;
+            e.preventDefault();
+            toastMsg('<span class="fa fa-clock-o"></span> ' + t('Quizzes for this category are coming soon'));
+        });
+
+        // Home: tap the photo to change it
+        if (user && page === 'index.html') {
+            var ava = document.querySelector('.home-profile .avatar');
+            if (ava) {
+                var link = document.createElement('a');
+                link.href = 'profile-edit.html';
+                link.className = 'avatar home-ava-edit';
+                link.setAttribute('aria-label', 'Change profile photo');
+                link.innerHTML = ava.innerHTML + '<span class="home-ava-cam fa fa-camera"></span>';
+                ava.parentNode.replaceChild(link, ava);
+            }
+        }
+
         // Login links return to the page the user came from
         document.querySelectorAll('a[href="login.html"]').forEach(function (a) { a.href = loginUrl(); });
 
@@ -284,17 +199,12 @@
                 '</div>';
             // Profile tab: go to login, then come back to the profile
             document.querySelectorAll('.bottom-nav a[href="profile.html"]').forEach(function (a) { a.href = loginUrl('profile.html'); });
-            // Leaderboard: no "You" row for guests
+            // Leaderboard: no "You" row or position card for guests
+            var meCard = document.querySelector('.lb-me'); if (meCard) meCard.remove();
             document.querySelectorAll('.leaderboard-winner.is-you').forEach(function (li) {
                 li.classList.remove('is-you');
                 var tag = li.querySelector('.lb-you'); if (tag) tag.remove();
             });
-            // Game detail: Play asks to log in (modal already in the page) instead of opening levels
-            document.addEventListener('click', function (e) {
-                if (!e.target.closest('#btnPlay')) return;
-                e.preventDefault(); e.stopPropagation();
-                bootstrap.Modal.getOrCreateInstance(document.getElementById('modalplay')).show();
-            }, true);
         }
 
         // Show the logged-in user's name, number and photo
@@ -383,7 +293,7 @@
             });
         }
 
-        // Game detail: fill from ?id=
+        // Game detail: fill from ?id=, then Play opens the level picker (guests are asked to log in)
         if (page === 'game-detail.html') {
             var id = parseInt(param('id'), 10) || 31, c = CATEGORIES[id] || CATEGORIES[31];
             var icon = SERVER + 'images/category/' + id + '/icon/' + id + '_01122022_icon_image.png';
@@ -392,17 +302,72 @@
             document.querySelector('.quiz-thumbnail img').src = icon;
             document.querySelector('.quiz-info .section-title').textContent = c[0] + ' Quizzes';
             document.querySelector('.quiz-info-content p').textContent = c[1];
-            document.getElementById('btnPlay').setAttribute('gameId', id);
             document.title = 'Quizy Flash';
-            // Level links from custom.js point to /game/search/friend/{level}; play locally instead
-            document.getElementById('search-result').addEventListener('click', function (e) {
-                var a = e.target.closest('a'); if (!a) return;
-                e.preventDefault();
-                location.href = 'game-match.html?game=' + id + '&level=' + a.getAttribute('href').split('/').pop();
-            });
+            var meta = document.querySelectorAll('.quiz-info-meta .col-6');
+            if (meta.length === 2) {
+                meta[0].lastChild.textContent = ' ' + f('{n} questions', { n: 5 });
+                meta[1].lastChild.textContent = ' ' + f('{n} sec', { n: 30 });
+                meta[1].querySelector('.quiz-info-meta-circle').innerHTML = '<span class="fa fa-clock-o"></span>';
+            }
+            var play = document.getElementById('btnPlay');
+            play.setAttribute('gameId', id);
+            if (!playable(id)) {
+                play.classList.add('disabled', 'button-grey');
+                play.classList.remove('button-primary');
+                play.textContent = 'Coming soon';
+            }
+            var list = document.getElementById('search-result');
+            list.innerHTML = LEVELS.map(function (l) {
+                return '<a href="game-play.html?game=' + id + '&level=' + l.id + '" class="lvl-card lvl-' + l.id + '">' +
+                    '<span class="lvl-ico"><span class="fa ' + l.icon + '"></span></span>' +
+                    '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + f('{n} questions', { n: 5 }) + ' · ' + f('{n} sec', { n: 30 }) + '</small></span>' +
+                    '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span></a>';
+            }).join('');
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('#btnPlay')) return;
+                e.preventDefault(); e.stopPropagation();   // keep custom.js from loading the server's level list
+                if (!playable(id)) return;
+                bootstrap.Modal.getOrCreateInstance(document.getElementById(user ? 'level' : 'modalplay')).show();
+            }, true);
+        }
+
+        // Profile: theme picker and sound switch
+        if (page === 'profile.html') {
+            var themeRow = document.getElementById('menuTheme'), soundRow = document.getElementById('menuSound');
+            var cur = raw('qp_theme') || 'blue';
+            function themeLabel() {
+                var th = THEMES.filter(function (x) { return x.id === cur; })[0] || THEMES[0];
+                document.getElementById('menuThemeVal').innerHTML = '<i style="background:' + th.bg + '"></i>' + t(th.name);
+            }
+            if (themeRow) {
+                themeLabel();
+                var sheet = document.getElementById('modalTheme'), grid = document.getElementById('themeGrid');
+                grid.innerHTML = THEMES.map(function (th) {
+                    return '<button type="button" class="theme-opt" data-theme-id="' + th.id + '">' +
+                        '<span class="theme-swatch" style="background:linear-gradient(180deg,' + th.top + ',' + th.bg + ')"><span class="fa fa-check"></span></span>' +
+                        '<span>' + t(th.name) + '</span></button>';
+                }).join('');
+                function mark() { grid.querySelectorAll('.theme-opt').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-theme-id') === cur); }); }
+                mark();
+                grid.addEventListener('click', function (e) {
+                    var b = e.target.closest('.theme-opt'); if (!b) return;
+                    cur = b.getAttribute('data-theme-id');
+                    setRaw('qp_theme', cur); applyTheme(cur); mark(); themeLabel();
+                });
+                themeRow.addEventListener('click', function (e) { e.preventDefault(); bootstrap.Modal.getOrCreateInstance(sheet).show(); });
+            }
+            if (soundRow) {
+                var sw = document.getElementById('soundSwitch');
+                sw.checked = raw('qp_sound') !== 'off';
+                soundRow.addEventListener('click', function (e) {
+                    if (e.target !== sw) { e.preventDefault(); sw.checked = !sw.checked; }
+                    setRaw('qp_sound', sw.checked ? 'on' : 'off');
+                    toastMsg('<span class="fa ' + (sw.checked ? 'fa-volume-up' : 'fa-volume-off') + '"></span> ' + t(sw.checked ? 'Sound on' : 'Sound off'));
+                });
+            }
         }
     });
 
     window.QP_DEMO = { CATEGORIES: CATEGORIES, LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl,
-        opponent: opponent, pickOpponent: pickOpponent, avatarHtml: avatarHtml, USER_AVATAR: USER_AVATAR };
+        USER_AVATAR: USER_AVATAR, PLAYABLE: PLAYABLE, playable: playable };
 })();

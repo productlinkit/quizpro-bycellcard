@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="theme/css/app.css">
     <link rel="stylesheet" href="theme/css/search.css">
     <link rel="stylesheet" href="theme/css/leaderboard.css">
     <link rel="stylesheet" href="theme/floating-copy/css/style.css">
@@ -44,14 +45,48 @@
             </div>
 
 
-    <div class="page-title">
-        <div class="page-title-circle">
-            <span class="qf-icon-leaderboard"></span>
+    <div class="lb-hero">
+        <div class="lb-hero-top">
+            <span class="lb-hero-ico"><span class="fa fa-trophy"></span></span>
+            <div>
+                <h2 class="lb-hero-title">Leaderboard</h2>
+                <div class="lb-hero-sub"><span class="fa fa-calendar"></span> <span id="lbPeriod">October 2026</span> · <span id="lbEnds">Ends in 12 days</span></div>
+            </div>
         </div>
-        <span>Leaderboard</span>
+        <div class="lb-tiers-title">Prizes this month</div>
+        <div class="lb-tiers">
+                <div class="lb-tier t1">
+                    <span class="lb-tier-rank">#1</span>
+                    <span class="lb-tier-img"><img src="theme/lucky-draw/img/prize-phone.jpg" alt=""></span>
+                    <b>Smartphone</b>
+                </div>
+                <div class="lb-tier t2">
+                    <span class="lb-tier-rank">#2 – #3</span>
+                    <span class="lb-tier-img"><img src="theme/lucky-draw/img/prize-earbuds.jpg" alt=""></span>
+                    <b>Wireless Earbuds</b>
+                </div>
+                <div class="lb-tier t3">
+                    <span class="lb-tier-rank">#4 – #5</span>
+                    <span class="lb-tier-img"><img src="theme/lucky-draw/img/prize-credit.jpg" alt=""></span>
+                    <b>Cellcard Credit</b>
+                </div>
+        </div>
     </div>
 
-    <div class="card-simple-outer">
+    <div class="lb-me">
+        <div class="d-flex align-items-center">
+            <span class="lb-me-rank">#2</span>
+            <div class="leaderboard-winner-pict"><img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt=""></div>
+            <div class="lb-me-info">
+                <b>Your position</b>
+                <small><span class="coin"></span> 29,160 · <span class="lb-me-prize"><img src="theme/lucky-draw/img/prize-earbuds.jpg" alt=""> Wireless Earbuds</span></small>
+            </div>
+        </div>
+        <div class="lb-me-bar"><span style="width:89%"></span></div>
+        <div class="lb-me-next" id="lbNext" data-coins="3,510" data-prize="Smartphone"></div>
+    </div>
+
+    <div class="card-simple-outer lb-list">
         <ul class="leaderboard">
             <li class="leaderboard-winner top gold">
                 <div class="d-flex align-items-center">
@@ -60,6 +95,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">9876543210</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>27380</b>, <span class="qf-icon-clock"></span> 721.33</div>
+                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-phone.jpg" alt=""> <span>Smartphone</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 32,670</div>
                 </div>
@@ -71,6 +107,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">1234567890 <span class="lb-you">You</span></h4>
                         <div class="leaderboard-winner-info-stats">Score <b>22260</b>, <span class="qf-icon-clock"></span> 580.67</div>
+                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-earbuds.jpg" alt=""> <span>Wireless Earbuds</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 29,160</div>
                 </div>
@@ -82,6 +119,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8551234567</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>19840</b>, <span class="qf-icon-clock"></span> 512.40</div>
+                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-earbuds.jpg" alt=""> <span>Wireless Earbuds</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 24,310</div>
                 </div>
@@ -93,6 +131,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8559876543</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>17120</b>, <span class="qf-icon-clock"></span> 488.15</div>
+                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-credit.jpg" alt=""> <span>Cellcard Credit</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 21,050</div>
                 </div>
@@ -104,10 +143,12 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8557654321</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>15300</b>, <span class="qf-icon-clock"></span> 455.02</div>
+                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-credit.jpg" alt=""> <span>Cellcard Credit</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 18,430</div>
                 </div>
             </li>
+            <li class="lb-zone"><span><span class="fa fa-gift"></span> Prize zone ends here · reach the top 5 to win</span></li>
             <li class="leaderboard-winner">
                 <div class="d-flex align-items-center">
                     <span class="lb-rank lb-num"><span>6</span></span>
@@ -115,6 +156,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8552468135</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>13890</b>, <span class="qf-icon-clock"></span> 430.71</div>
+                        
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 16,220</div>
                 </div>
@@ -126,6 +168,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8551357924</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>11950</b>, <span class="qf-icon-clock"></span> 402.36</div>
+                        
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 14,080</div>
                 </div>
@@ -137,6 +180,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8558642097</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>10420</b>, <span class="qf-icon-clock"></span> 377.90</div>
+                        
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 12,560</div>
                 </div>
@@ -148,6 +192,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8553692581</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>9010</b>, <span class="qf-icon-clock"></span> 351.24</div>
+                        
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 10,940</div>
                 </div>
@@ -159,6 +204,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8557418529</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>7640</b>, <span class="qf-icon-clock"></span> 322.58</div>
+                        
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 9,370</div>
                 </div>
@@ -252,6 +298,14 @@
 
     <script src="theme/js/custom.js"></script>
     <script src="theme/js/search-suggest.js"></script>
+    <script>
+        (function () {
+            var el = document.getElementById('lbNext'); if (!el) return;
+            el.innerHTML = '<span class="fa fa-arrow-up"></span> ' + QP_I18N.f('{coins} coins to reach #1 and win a {prize}', {
+                coins: '<b>' + el.getAttribute('data-coins') + '</b>', prize: '<b>' + QP_I18N.t(el.getAttribute('data-prize')) + '</b>'
+            });
+        })();
+    </script>
 
 </body>
 </html>

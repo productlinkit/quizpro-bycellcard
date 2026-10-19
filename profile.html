@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="theme/css/app.css">
     <link rel="stylesheet" href="theme/css/search.css">
     <link rel="stylesheet" href="theme/css/profile.css">
     <link rel="stylesheet" href="theme/css/pages.css">
@@ -82,6 +83,20 @@
                 </a>
             </li>
 
+            <li class="menu-list">
+                <a href="#" id="menuTheme">
+                    <span class="menu-list-ico fa fa-paint-brush"></span>
+                    Theme
+                    <span class="menu-lang menu-theme" id="menuThemeVal"></span>
+                </a>
+            </li>
+            <li class="menu-list menu-switch">
+                <a href="#" id="menuSound">
+                    <span class="menu-list-ico fa fa-volume-up"></span>
+                    Sound
+                    <label class="qp-switch" onclick="event.stopPropagation()"><input type="checkbox" id="soundSwitch" aria-label="Sound"><span></span></label>
+                </a>
+            </li>
             <li class="menu-list">
                 <a href="rule.html">
                     <span class="menu-list-ico qf-icon-attention"></span>
@@ -166,6 +181,17 @@
                 <p class="unsub-modal-text">You will stop being charged, but you will lose unlimited quizzes and won't earn Lucky Draw tickets anymore.</p>
                 <button type="button" class="btn btn-lg button-primary w-100 mb-2" data-bs-dismiss="modal">Stay Subscribed</button>
                 <button type="button" class="btn btn-lg unsub-confirm w-100" id="btnUnsubConfirm" data-bs-dismiss="modal">Yes, Unsubscribe</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="modalTheme">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content theme-sheet">
+                <h3 class="modal-level-title mb-1">Theme</h3>
+                <p class="confirm-text mb-3">Pick a color for the app</p>
+                <div class="theme-grid" id="themeGrid"></div>
+                <button type="button" class="btn btn-lg button-primary w-100 mt-3" data-bs-dismiss="modal">Done</button>
             </div>
         </div>
     </div>
