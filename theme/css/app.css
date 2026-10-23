@@ -56,8 +56,8 @@
 .quiz-list a:has(.soon-inline) .quiz-list-pict img{filter:grayscale(1);opacity:0.5}
 
 /* home: Lucky Draw banner in purple, Play Now banner in orange (same banner shape) */
-.ld-entry.ld-entry-home{background:linear-gradient(135deg,#7C4DFF 0%,#B05CF0 100%)}
-.ld-entry.ld-entry-home .ld-entry-ico{color:#7C4DFF}
+.ld-entry.ld-entry-home{background:linear-gradient(135deg,#13234F 0%,#2A4590 100%)}
+.ld-entry.ld-entry-home .ld-entry-ico{color:#13234F}
 /* Play Now: same banner as Lucky Draw, mirrored (text left, icon right), in orange */
 .ld-entry.qp-entry{background:#FFFFFF;color:#000000;padding:12px}
 .ld-entry.qp-entry::after{display:none}
@@ -77,7 +77,7 @@
 /* orange theme: keep header search button and orange-on-orange items readable */
 [data-theme="orange"] .search{background-color:#fff;color:#F7731B}
 [data-theme="orange"] .search:hover,[data-theme="orange"] .search:active{background-color:#FFEBD9;color:#F7731B}
-[data-theme="orange"] .ld-hero{background:linear-gradient(135deg,#7C4DFF 0%,#B05CF0 100%)}
+[data-theme="orange"] .ld-hero{background:linear-gradient(135deg,#13234F 0%,#2A4590 100%);box-shadow:0 8px 18px rgba(19,35,79,0.3)}
 [data-theme="orange"] .lb-hero{background:linear-gradient(135deg,#4338CA 0%,#6D63E8 100%);box-shadow:0 8px 18px rgba(67,56,202,0.3)}
 
 /* Play Now owl: bob, blink, wave, swinging tassel */
