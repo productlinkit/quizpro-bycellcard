@@ -189,3 +189,13 @@
 .res-dots i.ok{background:#47c475}
 .res-dots i.bad{background:#FF8FA3}
 .res-score-sub{color:#969696;font-size:0.875rem;font-weight:bold}
+
+/* True / False answers */
+.play-options:has(.play-tf){grid-template-columns:1fr 1fr}
+.play-tf{flex-direction:column;justify-content:center;gap:8px;padding:18px 10px;text-align:center;font-size:1.125rem}
+.play-tf .play-opt-text{flex:none}
+.play-tf .play-opt-key{width:44px;height:44px;border-radius:50%;font-size:1.25rem}
+.play-tf.tf-true .play-opt-key{background:#E6F8EE;color:#2fb463}
+.play-tf.tf-false .play-opt-key{background:#FFEBEB;color:#e5484d}
+.play-tf .play-opt-mark{position:absolute;top:10px;right:10px}
+.play-tf{position:relative}

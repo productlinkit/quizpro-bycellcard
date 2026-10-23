@@ -1,5 +1,5 @@
 /*
- * Quiz round (prototype only): solo play, 5 multiple-choice questions, one 30-second timer per round.
+ * Quiz round (prototype only): solo play, 5 True/False statements, one 30-second timer per round.
  * Each answer shows right/wrong straight away, then moves to the next question.
  * Needs demo-backend.js, i18n.js and questions.js.
  */
@@ -16,12 +16,11 @@
     function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
     function $(id) { return document.getElementById(id); }
 
-    // Pick 5 questions from this category (others only if the category is short), shuffle the answers
+    // Pick 5 statements from this category (others only if the category is short)
     var own = shuffle(BANK[cat] || []);
     var extra = shuffle([].concat.apply([], Object.keys(BANK).filter(function (k) { return +k !== cat; }).map(function (k) { return BANK[k]; })));
     var round = own.concat(extra).slice(0, QUESTIONS_PER_ROUND).map(function (q) {
-        var order = shuffle([0, 1, 2, 3]);
-        return { q: text(q.q), options: order.map(function (i) { return text(q.o[i]); }), answer: order.indexOf(q.a) };
+        return { q: text(q.s), answer: q.a ? 0 : 1 };   // button 0 = True, 1 = False
     });
 
     // ---------- Sound (on unless turned off in Profile) ----------
@@ -70,9 +69,9 @@
         $('gp-num').textContent = idx + 1;
         $('gp-question').innerHTML = '<span>' + q.q + '</span>';
         $('gp-question').classList.remove('in'); void $('gp-question').offsetWidth; $('gp-question').classList.add('in');
-        $('gp-options').innerHTML = q.options.map(function (o, i) {
-            return '<li><button type="button" class="play-opt" data-i="' + i + '" style="animation-delay:' + (i * 0.05) + 's">' +
-                '<span class="play-opt-key">' + 'ABCD'.charAt(i) + '</span><span class="play-opt-text">' + o + '</span>' +
+        $('gp-options').innerHTML = [['True', 'fa-check', 'tf-true'], ['False', 'fa-times', 'tf-false']].map(function (o, i) {
+            return '<li><button type="button" class="play-opt play-tf ' + o[2] + '" data-i="' + i + '" style="animation-delay:' + (i * 0.05) + 's">' +
+                '<span class="play-opt-key"><span class="fa ' + o[1] + '"></span></span><span class="play-opt-text">' + I.t(o[0]) + '</span>' +
                 '<span class="play-opt-mark"></span></button></li>';
         }).join('');
         var dots = $('gp-dots').children;
