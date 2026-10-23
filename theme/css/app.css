@@ -38,7 +38,7 @@
 
 /* theme sheet & sound switch (profile.html) */
 .theme-sheet{padding:24px;border-radius:24px;text-align:center}
-.theme-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px}
 .theme-opt{background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:0.75rem;font-weight:bold;color:#0C092A}
 .theme-swatch{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;box-shadow:0 0 0 2px #DFDFDF}
 .theme-swatch .fa{opacity:0}
@@ -54,3 +54,39 @@
 .qp-switch input:checked+span::after{transform:translateX(18px)}
 .soon-inline{display:inline-block;vertical-align:middle;background:#0C092A;color:#fff;font-size:0.625rem;border-radius:50rem;padding:1px 7px;margin-left:4px}
 .quiz-list a:has(.soon-inline) .quiz-list-pict img{filter:grayscale(1);opacity:0.5}
+
+/* home: Lucky Draw banner in purple, Play Now banner in orange (same banner shape) */
+.ld-entry.ld-entry-home{background:linear-gradient(135deg,#7C4DFF 0%,#B05CF0 100%)}
+.ld-entry.ld-entry-home .ld-entry-ico{color:#7C4DFF}
+/* Play Now: same banner as Lucky Draw, mirrored (text left, icon right), in orange */
+.ld-entry.qp-entry{background:#FFFFFF;color:#000000;padding:12px}
+.ld-entry.qp-entry::after{display:none}
+.ld-entry.qp-entry:hover,.ld-entry.qp-entry:focus{color:#000000}
+.qp-entry-copy{flex:1;min-width:0}
+.qp-entry .ld-entry-title,.qp-entry .ld-entry-sub{color:#000000}
+.qp-entry .ld-entry-sub{opacity:0.7}
+.qp-entry-btn{display:inline-flex;align-items:center;gap:8px;background:#FFEBD9;color:#000000;font-weight:bold;font-size:1.25rem;border-radius:50rem;padding:10px 22px}
+.qp-entry-btn .fa{color:#F7731B}
+.qp-entry-ill{position:relative;z-index:1;margin-left:auto;width:112px;height:92px;flex-shrink:0;display:block;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#FFF1A8 0%,#FFDD55 55%,#FFC81E 100%)}
+.qp-entry-ill svg{width:100%;height:100%;display:block;transform:translateY(4px)}
+.qp-float-a{animation:qpBob 3s ease-in-out infinite}
+.qp-float-b{animation:qpBob 2.6s ease-in-out .5s infinite}
+.qp-float-c{animation:qpBob 3.2s ease-in-out 1s infinite}
+@keyframes qpBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* orange theme: keep header search button and orange-on-orange items readable */
+[data-theme="orange"] .search{background-color:#fff;color:#F7731B}
+[data-theme="orange"] .search:hover,[data-theme="orange"] .search:active{background-color:#FFEBD9;color:#F7731B}
+[data-theme="orange"] .ld-hero{background:linear-gradient(135deg,#7C4DFF 0%,#B05CF0 100%)}
+[data-theme="orange"] .lb-hero{background:linear-gradient(135deg,#4338CA 0%,#6D63E8 100%);box-shadow:0 8px 18px rgba(67,56,202,0.3)}
+
+/* Play Now owl: bob, blink, wave, swinging tassel */
+.owl-all{animation:owlBob 2.4s ease-in-out infinite}
+.owl-wing{transform-box:fill-box;transform-origin:20% 85%;animation:owlWave 1.6s ease-in-out infinite}
+.owl-lids{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:owlBlink 4s infinite}
+.owl-tassel{transform-box:fill-box;transform-origin:50% 0;animation:owlTassel 1.2s ease-in-out infinite}
+@keyframes owlBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes owlWave{0%,100%{transform:rotate(0)}50%{transform:rotate(-22deg)}}
+@keyframes owlBlink{0%,92%,100%{transform:scaleY(0)}95%{transform:scaleY(1)}}
+@keyframes owlTassel{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){.owl-all,.owl-wing,.owl-lids,.owl-tassel{animation:none}}

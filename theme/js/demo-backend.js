@@ -17,7 +17,9 @@
     // ---------- Settings: theme & sound (Profile menu) ----------
     function raw(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
     function setRaw(key, v) { try { localStorage.setItem(key, v); } catch (e) {} }
+    // First theme is the default (orange); the original QuizPro blue stays as a choice
     var THEMES = [
+        { id: 'orange', name: 'Orange', bg: '#FFA048', top: '#F7731B' },
         { id: 'blue', name: 'Ocean Blue', bg: '#3EA9F5', top: '#1888D8' },
         { id: 'purple', name: 'Purple', bg: '#8E6CEF', top: '#6B46E0' },
         { id: 'green', name: 'Mint Green', bg: '#2DBE8C', top: '#169A6E' },
@@ -25,14 +27,14 @@
         { id: 'night', name: 'Night', bg: '#1B2340', top: '#0E1428' }
     ];
     (function () {
-        var css = THEMES.slice(1).map(function (t) {
+        var css = THEMES.map(function (t) {
             return '[data-theme="' + t.id + '"]{--qp-bg:' + t.bg + ';--qp-top:' + t.top + '}' +
                 '[data-theme="' + t.id + '"] body{background-color:' + t.bg + '}' +
                 '[data-theme="' + t.id + '"] body::before{background:linear-gradient(180deg,' + t.top + ' 0%,transparent 100%)}';
         }).join('');
         var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
     })();
-    function applyTheme(id) { document.documentElement.setAttribute('data-theme', id || 'blue'); }
+    function applyTheme(id) { document.documentElement.setAttribute('data-theme', id || THEMES[0].id); }
     applyTheme(raw('qp_theme'));
 
     // ---------- Session (dummy login) ----------
@@ -71,8 +73,12 @@
     var PLAYABLE = [31, 25, 29, 1, 32, 33];
     function playable(id) { return PLAYABLE.indexOf(+id) !== -1; }
 
+    // The copied pages use this server photo for the demo account; members without their own photo get the orange default
     var DEFAULT_AVATAR = SERVER + 'uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg';
-    var USER_AVATAR = (user && user.avatar) || DEFAULT_AVATAR;
+    var ORANGE_AVATAR = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#FE9E44"/>' +
+        '<circle cx="50" cy="40" r="17" fill="#fff"/><path d="M18 88c3-17 16-27 32-27s29 10 32 27z" fill="#fff"/></svg>');
+    var USER_AVATAR = (user && user.avatar) || ORANGE_AVATAR;
 
     // A round is 5 questions in 30 seconds (see theme/js/play.js)
     var LEVELS = [
@@ -215,7 +221,7 @@
                 document.querySelectorAll('.home-profile-name').forEach(function (el) { el.textContent = user.name || 'Hello'; });
                 document.querySelectorAll('.home-profile-status').forEach(function (el) { el.textContent = user.msisdn; });
             }
-            if (user.avatar) document.querySelectorAll('img[src="' + DEFAULT_AVATAR + '"]').forEach(function (img) { img.src = user.avatar; });
+            document.querySelectorAll('img[src="' + DEFAULT_AVATAR + '"]').forEach(function (img) { img.src = USER_AVATAR; });
         }
 
         // Profile saved: short confirmation on the profile page
@@ -334,7 +340,7 @@
         // Profile: theme picker and sound switch
         if (page === 'profile.html') {
             var themeRow = document.getElementById('menuTheme'), soundRow = document.getElementById('menuSound');
-            var cur = raw('qp_theme') || 'blue';
+            var cur = raw('qp_theme') || THEMES[0].id;
             function themeLabel() {
                 var th = THEMES.filter(function (x) { return x.id === cur; })[0] || THEMES[0];
                 document.getElementById('menuThemeVal').innerHTML = '<i style="background:' + th.bg + '"></i>' + t(th.name);
