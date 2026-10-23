@@ -294,7 +294,7 @@
             card.addEventListener('click', function (e) {
                 e.preventDefault();
                 var pick = D.PLAYABLE[Math.floor(Math.random() * D.PLAYABLE.length)];
-                location.href = 'game-play.html?game=' + pick + '&level=1';
+                location.href = 'game-play.html?game=' + pick + '&level=1&quick=1';
             });
         })();
     </script>

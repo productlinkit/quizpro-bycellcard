@@ -117,8 +117,8 @@
     function finish() {
         if (done) return;
         done = true; clearInterval(timer); sfx.end();
-        // Lucky Draw ticket history keeps answered + correct so either ticket rule works
-        try {
+        // Lucky Draw ticket history keeps answered + correct so either ticket rule works (members only)
+        if (D.user) try {
             var log = JSON.parse(localStorage.getItem('qp_ld_activity')) || [], now = new Date();
             log.unshift({
                 date: now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') +
@@ -129,7 +129,8 @@
         } catch (e) {}
         location.href = 'result.html?' + new URLSearchParams({
             res: correct >= Math.ceil(round.length * 0.6) ? 'win' : 'lose', game: cat, level: level.id,
-            real: score, correct: correct, answered: answered, total: round.length, time: ROUND_SECONDS - left
+            real: score, correct: correct, answered: answered, total: round.length, time: ROUND_SECONDS - left,
+            quick: D.quick ? 1 : 0
         });
     }
 
@@ -139,7 +140,7 @@
 
     // Exit asks for confirmation; the round timer keeps running meanwhile
     $('gp-exit').addEventListener('click', function () { bootstrap.Modal.getOrCreateInstance($('modalExit')).show(); });
-    $('gp-exit-yes').addEventListener('click', function () { done = true; clearInterval(timer); location.href = 'game-detail.html?id=' + cat; });
+    $('gp-exit-yes').addEventListener('click', function () { done = true; clearInterval(timer); location.href = D.quick ? 'index.html' : 'game-detail.html?id=' + cat; });
 
     drawTimer();
     show();

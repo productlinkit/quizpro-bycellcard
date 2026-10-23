@@ -85,7 +85,15 @@
         document.getElementById('r-answered').textContent = answered + '/' + total;
         document.getElementById('r-level').textContent = level.title;
         document.getElementById('r-time').textContent = I.f('{n} sec', { n: +p.get('time') || 0 });
-        document.getElementById('r-again').href = 'game-detail.html?id=' + (p.get('game') || 31);
+        var again = document.getElementById('r-again');
+        if (QP_DEMO.quick) {
+            // Quick Play: play another random quiz straight away
+            again.addEventListener('click', function (e) {
+                e.preventDefault();
+                var P = QP_DEMO.PLAYABLE;
+                location.href = 'game-play.html?game=' + P[Math.floor(Math.random() * P.length)] + '&level=1&quick=1';
+            });
+        } else again.href = 'game-detail.html?id=' + (p.get('game') || 31);
 
         // Broken heart for the lose badge (Font Awesome 4.7 has none)
         var BROKEN_HEART = '<svg class="res-badge-svg" viewBox="0 0 24 24" aria-hidden="true">' +
@@ -121,6 +129,13 @@
         show(p.get('res') === 'win');
         var t = LD.ticketsFor({ answered: answered, correct: correct }, LD_CONFIG.ticketRule);
         document.getElementById('r-ld-title').textContent = '+' + t + ' Lucky Draw ticket' + (t === 1 ? '' : 's');
+        // Guests (Quick Play) don't collect tickets: invite them to log in instead
+        if (!QP_DEMO.user) {
+            var ld = document.getElementById('r-ld');
+            ld.href = QP_DEMO.loginUrl('index.html');
+            document.getElementById('r-ld-title').textContent = 'Login to earn Lucky Draw tickets';
+            ld.querySelector('.ld-entry-sub').textContent = 'Your score is not saved as a guest';
+        }
     })();
     </script>
 </body>

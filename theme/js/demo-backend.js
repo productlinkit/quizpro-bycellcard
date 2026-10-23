@@ -46,7 +46,9 @@
         var n = param('next') || '';
         return /^[a-z-]+\.html(\?[^#]*)?$/.test(n) && n.indexOf('login.html') !== 0 ? n : 'index.html';
     }
-    if (!user && MEMBER_PAGES.indexOf(page) !== -1) {
+    // Quick Play (Play Now on Home) can be played without logging in
+    var quick = param('quick') === '1' && (page === 'game-play.html' || page === 'result.html');
+    if (!user && !quick && MEMBER_PAGES.indexOf(page) !== -1) {
         location.replace(loginUrl());
         return;
     }
@@ -213,6 +215,9 @@
             });
         }
 
+        // Photo: the member's own, otherwise the orange default (guests too)
+        document.querySelectorAll('img[src="' + DEFAULT_AVATAR + '"]').forEach(function (img) { img.src = USER_AVATAR; });
+
         // Show the logged-in user's name, number and photo
         if (user) {
             var name = user.name || user.msisdn;
@@ -221,7 +226,7 @@
                 document.querySelectorAll('.home-profile-name').forEach(function (el) { el.textContent = user.name || 'Hello'; });
                 document.querySelectorAll('.home-profile-status').forEach(function (el) { el.textContent = user.msisdn; });
             }
-            document.querySelectorAll('img[src="' + DEFAULT_AVATAR + '"]').forEach(function (img) { img.src = USER_AVATAR; });
+
         }
 
         // Profile saved: short confirmation on the profile page
@@ -374,6 +379,6 @@
         }
     });
 
-    window.QP_DEMO = { CATEGORIES: CATEGORIES, LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl,
+    window.QP_DEMO = { CATEGORIES: CATEGORIES, LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl, quick: quick,
         USER_AVATAR: USER_AVATAR, PLAYABLE: PLAYABLE, playable: playable };
 })();
