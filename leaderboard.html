@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="theme/css/app.css">
-    <link rel="stylesheet" href="theme/css/search.css">
-    <link rel="stylesheet" href="theme/css/leaderboard.css">
+    <link rel="stylesheet" href="theme/css/leaderboard.css?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
     <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
@@ -30,11 +29,6 @@
                         </div>
                     </div>
 
-                    <div class="col-6 text-end">
-                        <a href="#" class="search" id="btnSearch">
-                            <span class="qf-icon-search"></span>
-                        </a>
-                    </div>
 
 
 
@@ -112,6 +106,12 @@
                 </div>
         </div>
     </div>
+
+    <div class="lb-search">
+        <span class="qf-icon-search"></span>
+        <input type="search" id="lbSearch" inputmode="numeric" autocomplete="off" placeholder="Search phone number..." aria-label="Find Player">
+    </div>
+    <div class="lb-empty" id="lbEmpty" hidden></div>
 
     <div class="card-simple-outer lb-list">
         <ul class="leaderboard">
@@ -293,36 +293,13 @@
     </div>
     <!-- language option model -->
 
-    <div class="modal" tabindex="-1" id="search">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-body modal-level">
-                    <div class="modal-level-header">
-                        <a href="#" class="modal-level-header-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span class="qf-icon-close"></span>
-                        </a>
-                    </div>
-                    <form action="#" id="search-form" method="GET">
-                    <div class="container-fluid box-wrapper">
-                        <h3 class="modal-level-title">Find Player</h3>
-                        <div class="input-group input-group-lg shadow">
-                                                        <input type="text" class="form-control main-search" name="q" id="search-box" name="serach_keyword" placeholder="Search..." value="">
-                            <button type="submit" class="btn button-primary"><span class="qf-icon-search"></span></button>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
     <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
     <script src="theme/js/custom.js"></script>
-    <script src="theme/js/search-suggest.js"></script>
+    <script src="theme/js/search-suggest.js?v=2"></script>
 
 </body>
 </html>

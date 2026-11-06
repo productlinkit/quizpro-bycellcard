@@ -58,3 +58,10 @@
 .lb-zone{list-style:none;padding:8px 16px;background:#F3F6FA;text-align:center;font-size:0.75rem;font-weight:bold;color:#969696;border-bottom:1px solid rgba(150,150,150,0.25)}
 .lb-zone .fa{color:#FE9E44}
 .lb-list .leaderboard-winner-info{padding-right:0.5rem}
+
+/* search right on the page: the list filters as you type */
+.lb-search{display:flex;align-items:center;gap:0.5rem;background:#fff;border-radius:50rem;padding:0 1.125rem;margin-bottom:12px;box-shadow:var(--qp-lift)}
+.lb-search span{color:#969696}
+.lb-search input{flex:1;min-width:0;border:0;background:none;padding:12px 0;outline:none;color:#0C092A}
+.lb-empty{background:#fff;border-radius:24px;padding:2rem 1rem;margin-bottom:24px;text-align:center;color:#6b7083;box-shadow:var(--qp-lift)}
+.lb-empty[hidden]{display:none}
