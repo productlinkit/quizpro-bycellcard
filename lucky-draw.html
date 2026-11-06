@@ -101,6 +101,8 @@
                 '<div><h3 class="section-title">' + title + '</h3>' + (sub ? '<div class="ld-sec-sub">' + sub + '</div>' : '') + '</div></div>';
         }
         function fa(name) { return '<span class="fa ' + name + '"></span>'; }
+        // The win trophy split in two: each piece is the same glyph clipped along one jagged line
+        var BROKEN_TROPHY = '<i class="fa fa-trophy ld-shard l"></i><i class="fa fa-trophy ld-shard r"></i>';
         function ruleText() {
             var r = C.ticketRule;
             return I.f('You get {tickets} for every {every}.', {
@@ -340,7 +342,7 @@
             var past = LD_PAST_PERIODS.map(function (p) {
                 var won = /^won/i.test(p.result);
                 return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
-                    '<div class="ld-past-ico' + (won ? ' won' : '') + '">' + fa(won ? 'fa-trophy' : 'fa-calendar-check-o') + '</div>' +
+                    '<div class="ld-past-ico ' + (won ? 'won' : 'lost') + '">' + (won ? fa('fa-trophy') : BROKEN_TROPHY) + '</div>' +
                     '<div class="history-list-info">' +
                         '<h4 class="history-list-info-name">' + esc(p.name) + '</h4>' +
                         '<div class="history-list-info-stats">' + shortDate(p.start) + ' – ' + LD.fmtDate(p.end) + '</div>' +

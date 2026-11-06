@@ -144,7 +144,11 @@
 .ld-empty{list-style:none;text-align:center;padding:28px 16px;color:#969696;font-size:.875rem}
 .ld-empty .fa{font-size:2rem;color:#FFCC5F;display:block;margin-bottom:8px}
 .ld-empty b{display:block;color:#0C092A}
-.ld-past-ico{width:45px;height:45px;border-radius:50%;background:rgba(223,223,223,.5);color:#969696;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.ld-past-ico{width:45px;height:45px;border-radius:12px;background:rgba(223,223,223,.5);color:#969696;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.ld-past-ico.lost{position:relative;background:#FDE8E8;color:#dc2626}
+.ld-shard{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform-origin:50% 66%}
+.ld-shard.l{clip-path:polygon(0 0,53% 0,46% 33%,54% 44%,45% 56%,52% 68%,47% 100%,0 100%);transform:translate(-.3px,-.6px) rotate(-6deg)}
+.ld-shard.r{clip-path:polygon(100% 0,53% 0,46% 33%,54% 44%,45% 56%,52% 68%,47% 100%,100% 100%);transform:translate(.5px,-.6px) rotate(6deg)}
 .ld-past-ico.won{background:rgba(71,196,117,.15);color:#3bb768}
 .ld-won{color:#3bb768}
 
