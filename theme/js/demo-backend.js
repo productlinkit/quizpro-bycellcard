@@ -342,6 +342,23 @@
             }, true);
         }
 
+        // Level cards: touch screens have no hover, so the lift shows on press and stays a moment before leaving
+        document.addEventListener('pointerdown', function (e) {
+            var c = e.target.closest('.lvl-card'); if (c) c.classList.add('is-press');
+        });
+        ['pointerup', 'pointercancel'].forEach(function (type) {
+            document.addEventListener(type, function () {
+                document.querySelectorAll('.lvl-card.is-press').forEach(function (c) { c.classList.remove('is-press'); });
+            });
+        });
+        document.addEventListener('click', function (e) {
+            var c = e.target.closest('.lvl-card');
+            if (!c || e.metaKey || e.ctrlKey) return;
+            e.preventDefault();
+            c.classList.add('is-press');
+            setTimeout(function () { location.href = c.getAttribute('href'); }, 220);
+        });
+
         // Home: Daily Competition card opens a level picker first (guests can play too, via quick=1)
         if (page === 'index.html') {
             var homeList = document.getElementById('homeLevelList');
@@ -352,10 +369,25 @@
                         '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + t(l.tagline) + '</small></span>' +
                         '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span></a>';
                 }).join('');
-                document.getElementById('quickPlay').addEventListener('click', function (e) {
-                    e.preventDefault();
-                    bootstrap.Modal.getOrCreateInstance(document.getElementById('level')).show();
-                });
+                function openLevels() { bootstrap.Modal.getOrCreateInstance(document.getElementById('level')).show(); }
+                document.getElementById('quickPlay').addEventListener('click', function (e) { e.preventDefault(); openLevels(); });
+                // First open of the app: splash, then straight to the level picker
+                var splash = document.getElementById('splash');
+                if (splash) {
+                    try { sessionStorage.setItem('qp_splash', '1'); } catch (e) {}
+                    var splashEyes = splash.querySelector('.owl-pupils');
+                    ['pointerdown', 'pointermove'].forEach(function (type) {
+                        splash.addEventListener(type, function (e) {
+                            splash.classList.add('is-live');
+                            splashEyes.style.transform = 'translate(' + ((e.clientX / innerWidth - 0.5) * 6).toFixed(1) + 'px,' + ((e.clientY / innerHeight - 0.5) * 5).toFixed(1) + 'px)';
+                        });
+                    });
+                    setTimeout(function () {
+                        openLevels();
+                        splash.classList.add('out');
+                        setTimeout(function () { splash.remove(); }, 350);
+                    }, 2500);
+                }
             }
         }
 

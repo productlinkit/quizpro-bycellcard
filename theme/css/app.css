@@ -24,10 +24,17 @@
 #level .modal-level-title{color:#fff}
 .modal-level-option .lvl-card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:24px;padding:1rem;margin-bottom:12px;color:#0C092A;text-align:left;box-shadow:0 5px 10px rgba(12,9,42,0.08);transition:transform .2s cubic-bezier(.2,.9,.3,1.3),box-shadow .2s}
 .modal-level-option .lvl-card:hover,.modal-level-option .lvl-card:focus{color:#0C092A}
-.modal-level-option .lvl-card:hover,.modal-level-option .lvl-card:focus-visible{transform:translateY(-4px) scale(1.015);box-shadow:0 22px 34px -14px rgba(12,9,42,0.45)}
-.modal-level-option .lvl-card:hover .lvl-ico,.modal-level-option .lvl-card:focus-visible .lvl-ico{transform:scale(1.1) rotate(-6deg)}
-.modal-level-option .lvl-card:hover .lvl-pts,.modal-level-option .lvl-card:focus-visible .lvl-pts{transform:translateX(-3px)}
-.modal-level-option .lvl-card:active{transform:scale(0.98)}
+.modal-level-option .lvl-card:hover,.modal-level-option .lvl-card:focus-visible,.modal-level-option .lvl-card.is-press{transform:translateY(-4px) scale(1.015);box-shadow:0 22px 34px -14px rgba(12,9,42,0.45)}
+.modal-level-option .lvl-card:hover .lvl-ico,.modal-level-option .lvl-card:focus-visible .lvl-ico,.modal-level-option .lvl-card.is-press .lvl-ico{transform:scale(1.1) rotate(-6deg)}
+.modal-level-option .lvl-card:hover .lvl-pts,.modal-level-option .lvl-card:focus-visible .lvl-pts,.modal-level-option .lvl-card.is-press .lvl-pts{transform:translateX(-3px)}
+#level.show .lvl-card{animation:lvlIn .45s cubic-bezier(.2,.9,.3,1.25) backwards}
+#level.show .lvl-card:nth-child(2){animation-delay:.1s}
+#level.show .lvl-card:nth-child(3){animation-delay:.2s}
+#level.show .lvl-ico{animation:lvlWiggle .6s .45s ease-in-out}
+#level.show .lvl-card:nth-child(2) .lvl-ico{animation-delay:.6s}
+#level.show .lvl-card:nth-child(3) .lvl-ico{animation-delay:.75s}
+@keyframes lvlIn{from{opacity:0;transform:translateY(22px) scale(0.95)}}
+@keyframes lvlWiggle{30%{transform:scale(1.14) rotate(-8deg)}65%{transform:scale(1.08) rotate(6deg)}}
 .lvl-ico{width:56px;height:56px;flex-shrink:0;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;transition:transform .2s cubic-bezier(.2,.9,.3,1.5)}
 .lvl-1 .lvl-ico{background-color:#47c475}
 .lvl-2 .lvl-ico{background-color:#FE9E44}
@@ -94,7 +101,12 @@
 [data-theme="orange"] .lb-hero{background:linear-gradient(135deg,#4338CA 0%,#6D63E8 100%);box-shadow:0 8px 18px rgba(67,56,202,0.3)}
 
 .owl-all{animation:owlBob 2.4s ease-in-out infinite}
-.owl-pupils{transition:transform .12s ease-out}
+.owl-pupils{transition:transform .12s ease-out;animation:owlLook 3s .7s ease-in-out backwards}
+.is-live .owl-pupils,.is-live.splash .owl-pupils{animation:none}
+.comp-card.hop .owl-pupils{animation:owlRoll .6s ease-in-out}
+.splash .owl-pupils{animation:owlLook 2.2s .3s ease-in-out backwards}
+@keyframes owlLook{0%,100%{transform:none}12%,26%{transform:translate(-3px,0)}38%,52%{transform:translate(3px,-1px)}64%,76%{transform:translate(0,2px)}88%{transform:translate(-2px,-1px)}}
+@keyframes owlRoll{25%{transform:translate(-3px,-1px)}50%{transform:translate(0,-2px)}75%{transform:translate(3px,-1px)}}
 .owl-wing{transform-box:fill-box;transform-origin:20% 85%;animation:owlWave 1.6s ease-in-out infinite}
 .owl-lids{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:owlBlink 4s infinite}
 .owl-tassel{transform-box:fill-box;transform-origin:50% 0;animation:owlTassel 1.2s ease-in-out infinite}
@@ -134,3 +146,20 @@
 .modal-standard .modal-content{border:0;border-radius:28px;overflow:hidden;box-shadow:0 30px 60px -18px rgba(12,9,42,0.55)}
 .modal-standard .modal-header{background:var(--qp-top) !important;border:0}
 .modal-standard .modal-footer{border:0;padding-bottom:1.25rem}
+
+/* splash on first open; orange is hard-coded because the theme script loads at the end of the page */
+.splash{position:fixed;inset:0;z-index:3000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#F7731B 0,#FFA048 300px) #FFA048;transition:opacity .35s}
+[data-theme] .splash{background:linear-gradient(180deg,var(--qp-top) 0,var(--qp-bg) 300px) var(--qp-bg)}
+.splash.out{opacity:0;pointer-events:none}
+.splash-glow{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-210px 0 0 -150px;border-radius:50%;background:rgba(255,255,255,0.28);filter:blur(30px);animation:splashGlow 1.6s ease-in-out infinite alternate}
+.splash-owl{position:relative;display:block;width:170px;height:142px;filter:drop-shadow(0 16px 14px rgba(90,40,0,0.3));animation:splashOwl .8s cubic-bezier(.3,1.5,.5,1) backwards,splashFloat 2s .8s ease-in-out infinite alternate}
+.splash-logo{position:relative;height:44px;margin-top:24px;animation:splashUp .5s .35s ease-out backwards}
+.splash-bar{position:relative;display:block;width:150px;height:6px;margin-top:24px;border-radius:50rem;overflow:hidden;background:rgba(255,255,255,0.3);animation:splashUp .5s .5s ease-out backwards}
+.splash-bar i{display:block;height:100%;border-radius:50rem;background:#fff;transform-origin:0 50%;animation:splashBar 2.3s .2s ease-in-out both}
+@keyframes splashOwl{from{opacity:0;transform:translateY(40px) scale(0.5)}}
+@keyframes splashFloat{to{transform:translateY(-8px)}}
+@keyframes splashUp{from{opacity:0;transform:translateY(12px)}}
+@keyframes splashBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes splashGlow{to{transform:scale(1.12);opacity:0.7}}
+@media (prefers-reduced-motion:reduce){.owl-pupils,#level.show .lvl-card,#level.show .lvl-ico,.splash-glow,.splash-owl,.splash-logo,.splash-bar,.splash-bar i{animation:none}}
+.splash-owl svg{width:100%;height:100%;display:block;overflow:visible}
