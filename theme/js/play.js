@@ -1,7 +1,7 @@
 /*
  * Quiz round (prototype only): solo play, 10 True/False statements, 20 seconds for each one.
  * Each answer shows right/wrong straight away, then moves to the next question.
- * Without ?game= (the Daily Competition from Home) statements come from every category.
+ * Statements come from the whole question bank.
  * Needs demo-backend.js, i18n.js and questions.js.
  */
 (function () {
@@ -11,7 +11,6 @@
 
     var D = window.QP_DEMO, I = window.QP_I18N, BANK = window.QP_QUESTIONS || {};
     var p = new URLSearchParams(location.search);
-    var cat = parseInt(p.get('game'), 10) || 0;   // 0 = competition, all categories
     var level = D.LEVELS.filter(function (l) { return l.id === (parseInt(p.get('level'), 10) || 1); })[0] || D.LEVELS[0];
     var li = Math.max(0, I.LANGS.indexOf(I.current()));   // 0 en, 1 km, 2 zh
 
@@ -19,8 +18,8 @@
     function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
     function $(id) { return document.getElementById(id); }
 
-    // This category first, others only if it runs short; a text slot simply doesn't show the photo
-    var pool = shuffle(BANK[cat] || []).concat(shuffle([].concat.apply([], Object.keys(BANK).filter(function (k) { return +k !== cat; }).map(function (k) { return BANK[k]; }))));
+    // A text slot simply doesn't show the photo
+    var pool = shuffle([].concat.apply([], Object.keys(BANK).map(function (k) { return BANK[k]; })));
     var round = ROUND_PATTERN.split('').map(function (slot) {
         var at = slot === 'I' ? pool.findIndex(function (x) { return x.img; }) : 0;
         var q = pool.splice(Math.max(at, 0), 1)[0];
@@ -174,12 +173,12 @@
             log.unshift({
                 date: now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') +
                       ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
-                quiz: !cat ? 'Daily Competition' : D.CATEGORIES[cat] ? D.CATEGORIES[cat][0] : 'Quiz', icon: cat || 30, answered: answered, correct: correct
+                answered: answered, correct: correct
             });
             localStorage.setItem('qp_ld_activity', JSON.stringify(log.slice(0, 50)));
         } catch (e) {}
         location.href = 'result.html?' + new URLSearchParams({
-            res: correct >= Math.ceil(round.length * 0.6) ? 'win' : 'lose', game: cat, level: level.id,
+            res: correct >= Math.ceil(round.length * 0.6) ? 'win' : 'lose', level: level.id,
             real: score, correct: correct, answered: answered, total: round.length, time: used,
             quick: D.quick ? 1 : 0
         });
@@ -192,7 +191,7 @@
 
     // Exit asks for confirmation; the question timer keeps running meanwhile
     $('gp-exit').addEventListener('click', function () { bootstrap.Modal.getOrCreateInstance($('modalExit')).show(); });
-    $('gp-exit-yes').addEventListener('click', function () { done = true; clearInterval(timer); location.href = D.quick || !cat ? 'index.html' : 'game-detail.html?id=' + cat; });
+    $('gp-exit-yes').addEventListener('click', function () { done = true; clearInterval(timer); location.href = 'index.html'; });
 
     show();
 })();

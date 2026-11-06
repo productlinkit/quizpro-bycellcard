@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizy Flash</title>
+    <title>Quizpro</title>
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="theme/css/app.css">
     <link rel="stylesheet" href="theme/css/search.css">
     <link rel="stylesheet" href="theme/css/leaderboard.css">
-    <link rel="stylesheet" href="theme/floating-copy/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
     <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
@@ -45,6 +44,47 @@
             </div>
 
 
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <!-- Hand-drawn prizes in the owl's sticker style: scratch card with coin, phone sending data -->
+        <symbol id="artCredit" viewBox="0 0 120 96">
+            <g fill="none" stroke="#3B2A20" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 18l2.6 5.4L22 26l-5.4 2.6L14 34l-2.6-5.4L6 26l5.4-2.6z" fill="#FFC83D" stroke-width="2.4"/>
+                <path d="M106 4l1.8 3.8 3.8 1.8-3.8 1.8-1.8 3.8-1.8-3.8-3.8-1.8 3.8-1.8z" fill="#FFC83D" stroke-width="2"/>
+                <g transform="rotate(-7 60 48)">
+                    <rect x="16" y="16" width="90" height="62" rx="11" fill="#FF8A2B"/>
+                    <path d="M16 36V27a11 11 0 0 1 11-11h68a11 11 0 0 1 11 11v9z" fill="#E85D04"/>
+                    <path d="M28 26h26" stroke="#FFE3C2" stroke-width="3.6"/>
+                    <circle cx="93" cy="26" r="4" fill="#FFE3C2" stroke="none"/>
+                    <rect x="26" y="43" width="72" height="26" rx="7" fill="#C9D0DE"/>
+                    <path d="M33 43h27l-3 4 5 3-4 3 6 3-5 3 4 3-3 4H33a7 7 0 0 1-7-7V50a7 7 0 0 1 7-7z" fill="#FFF6DC"/>
+                    <path d="M72 50l14 0M70 57l18 0M73 63l10 0" stroke="#A9B2C4" stroke-width="2.4"/>
+                </g>
+                <g transform="rotate(14 96 74)">
+                    <circle cx="96" cy="74" r="14" fill="#FFC83D"/>
+                    <circle cx="96" cy="74" r="8.5" fill="#FFE08A" stroke-width="2.4"/>
+                    <path d="M96 69.5v9" stroke-width="2.6"/>
+                </g>
+                <path d="M72 86l.1.1M82 91l.1.1M64 90l.1.1" stroke-width="4"/>
+            </g>
+        </symbol>
+        <symbol id="artData" viewBox="0 0 120 96">
+            <g fill="none" stroke="#3B2A20" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 26a24 24 0 0 0 0 36" stroke="#FF8A2B" stroke-width="4.4"/>
+                <path d="M12 16a40 40 0 0 0 0 56" stroke="#FFC83D" stroke-width="4.4"/>
+                <path d="M97 26a24 24 0 0 1 0 36" stroke="#FF8A2B" stroke-width="4.4"/>
+                <path d="M108 16a40 40 0 0 1 0 56" stroke="#FFC83D" stroke-width="4.4"/>
+                <g transform="rotate(6 60 48)">
+                    <rect x="35" y="4" width="50" height="88" rx="12" fill="#2B2F5B"/>
+                    <rect x="40.5" y="14" width="39" height="66" rx="6" fill="#34D399" stroke-width="2.6"/>
+                    <path d="M54 9h12" stroke="#8B90B8" stroke-width="2.6"/>
+                    <path d="M54 86h12" stroke="#8B90B8" stroke-width="2.6"/>
+                    <path d="M46 72l6-7 6 5 8-9 6 6" stroke="#047857" stroke-width="2.8"/>
+                    <path d="M68 20l-6 10h6l-5 9 12-13h-7l5-6z" fill="#FFC83D" stroke-width="2.2"/>
+                </g>
+            </g>
+        </symbol>
+    </svg>
+
     <div class="lb-hero">
         <div class="lb-hero-top">
             <span class="lb-hero-ico"><span class="fa fa-trophy"></span></span>
@@ -57,33 +97,20 @@
         <div class="lb-tiers">
                 <div class="lb-tier t1">
                     <span class="lb-tier-rank">#1</span>
-                    <span class="lb-tier-img"><img src="theme/lucky-draw/img/prize-phone.jpg" alt=""></span>
-                    <b>Smartphone</b>
+                    <svg class="lb-art" viewBox="0 0 120 96" role="img" aria-label="$3"><use href="#artCredit"/><text transform="rotate(-7 60 48)" x="44" y="62" text-anchor="middle">$3</text></svg>
+                    <small>Cellcard Credit</small>
                 </div>
                 <div class="lb-tier t2">
-                    <span class="lb-tier-rank">#2 – #3</span>
-                    <span class="lb-tier-img"><img src="theme/lucky-draw/img/prize-earbuds.jpg" alt=""></span>
-                    <b>Wireless Earbuds</b>
+                    <span class="lb-tier-rank">#2</span>
+                    <svg class="lb-art" viewBox="0 0 120 96" role="img" aria-label="1GB"><use href="#artData"/><text class="on-screen" transform="rotate(6 60 48)" x="60" y="58" text-anchor="middle">1GB</text></svg>
+                    <small>Data</small>
                 </div>
                 <div class="lb-tier t3">
-                    <span class="lb-tier-rank">#4 – #5</span>
-                    <span class="lb-tier-img"><img src="theme/lucky-draw/img/prize-credit.jpg" alt=""></span>
-                    <b>Cellcard Credit</b>
+                    <span class="lb-tier-rank">#3</span>
+                    <svg class="lb-art" viewBox="0 0 120 96" role="img" aria-label="$1"><use href="#artCredit"/><text transform="rotate(-7 60 48)" x="44" y="62" text-anchor="middle">$1</text></svg>
+                    <small>Cellcard Credit</small>
                 </div>
         </div>
-    </div>
-
-    <div class="lb-me">
-        <div class="d-flex align-items-center">
-            <span class="lb-me-rank">#2</span>
-            <div class="leaderboard-winner-pict"><img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt=""></div>
-            <div class="lb-me-info">
-                <b>Your position</b>
-                <small><span class="coin"></span> 29,160 · <span class="lb-me-prize"><img src="theme/lucky-draw/img/prize-earbuds.jpg" alt=""> Wireless Earbuds</span></small>
-            </div>
-        </div>
-        <div class="lb-me-bar"><span style="width:89%"></span></div>
-        <div class="lb-me-next" id="lbNext" data-coins="3,510" data-prize="Smartphone"></div>
     </div>
 
     <div class="card-simple-outer lb-list">
@@ -95,7 +122,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">9876543210</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>27380</b>, <span class="qf-icon-clock"></span> 721.33</div>
-                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-phone.jpg" alt=""> <span>Smartphone</span></span>
+                        <span class="lb-prize"><span>$3 Cellcard Credit</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 32,670</div>
                 </div>
@@ -107,7 +134,7 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">1234567890 <span class="lb-you">You</span></h4>
                         <div class="leaderboard-winner-info-stats">Score <b>22260</b>, <span class="qf-icon-clock"></span> 580.67</div>
-                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-earbuds.jpg" alt=""> <span>Wireless Earbuds</span></span>
+                        <span class="lb-prize is-data"><span>1GB Data</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 29,160</div>
                 </div>
@@ -119,11 +146,12 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8551234567</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>19840</b>, <span class="qf-icon-clock"></span> 512.40</div>
-                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-earbuds.jpg" alt=""> <span>Wireless Earbuds</span></span>
+                        <span class="lb-prize"><span>$1 Cellcard Credit</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 24,310</div>
                 </div>
             </li>
+            <li class="lb-zone"><span><span class="fa fa-gift"></span> Prize zone ends here · reach the top 3 to win</span></li>
             <li class="leaderboard-winner">
                 <div class="d-flex align-items-center">
                     <span class="lb-rank lb-num"><span>4</span></span>
@@ -131,7 +159,6 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8559876543</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>17120</b>, <span class="qf-icon-clock"></span> 488.15</div>
-                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-credit.jpg" alt=""> <span>Cellcard Credit</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 21,050</div>
                 </div>
@@ -143,12 +170,10 @@
                     <div class="leaderboard-winner-info">
                         <h4 class="leaderboard-winner-info-name">8557654321</h4>
                         <div class="leaderboard-winner-info-stats">Score <b>15300</b>, <span class="qf-icon-clock"></span> 455.02</div>
-                        <span class="lb-prize"><img src="theme/lucky-draw/img/prize-credit.jpg" alt=""> <span>Cellcard Credit</span></span>
                     </div>
                     <div class="leaderboard-coin ms-auto"><span class="coin"></span> 18,430</div>
                 </div>
             </li>
-            <li class="lb-zone"><span><span class="fa fa-gift"></span> Prize zone ends here · reach the top 5 to win</span></li>
             <li class="leaderboard-winner">
                 <div class="d-flex align-items-center">
                     <span class="lb-rank lb-num"><span>6</span></span>
@@ -279,7 +304,7 @@
                     </div>
                     <form action="#" id="search-form" method="GET">
                     <div class="container-fluid box-wrapper">
-                        <h3 class="modal-level-title">Find Quiz</h3>
+                        <h3 class="modal-level-title">Find Player</h3>
                         <div class="input-group input-group-lg shadow">
                                                         <input type="text" class="form-control main-search" name="q" id="search-box" name="serach_keyword" placeholder="Search..." value="">
                             <button type="submit" class="btn button-primary"><span class="qf-icon-search"></span></button>
@@ -298,14 +323,6 @@
 
     <script src="theme/js/custom.js"></script>
     <script src="theme/js/search-suggest.js"></script>
-    <script>
-        (function () {
-            var el = document.getElementById('lbNext'); if (!el) return;
-            el.innerHTML = '<span class="fa fa-arrow-up"></span> ' + QP_I18N.f('{coins} coins to reach #1 and win a {prize}', {
-                coins: '<b>' + el.getAttribute('data-coins') + '</b>', prize: '<b>' + QP_I18N.t(el.getAttribute('data-prize')) + '</b>'
-            });
-        })();
-    </script>
 
 </body>
 </html>

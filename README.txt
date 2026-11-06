@@ -7,7 +7,6 @@ CARA BUKA
 
 HALAMAN (12)
   index.html          Home                      (/)
-  game-more.html      See More Quizzes          (/game/more)
   leaderboard.html    Leaderboard               (/game/leaderboard)
   profile.html        Profile                   (/profile)
   history.html        Game History              (/game/history)
@@ -15,9 +14,10 @@ HALAMAN (12)
   language.html       Languages                 (/language/more)
   rule.html           Rules and Policies        (/rule)
   contact.html        Contact Us                (/contact)
-  game-detail.html    Detail quiz World Map     (/game/detail/31)
   game-play.html      Layar main quiz           (/game/play/3)
   login.html          Login                     (/login)
+  result.html         Hasil setelah main
+  lucky-draw.html     Lucky Draw
 
 CSS / JS (struktur folder sama dengan server)
   theme/css/style.css                 CSS utama  <- paling sering diedit
@@ -27,7 +27,6 @@ CSS / JS (struktur folder sama dengan server)
   theme/js/quiz.js                    Logika main quiz (timer, swipe, jawab, skor)
   theme/js/custom.js                  Search, pilih level, ganti bahasa
   theme/fontello/...                  Icon font qf-icon-* (woff2 identik byte-per-byte)
-  theme/floating-copy/css/style.css   Tombol floating kanan bawah
 
 AKURASI
   Isi semua halaman & file CSS/JS sudah dicek cocok dengan server (diabaikan: spasi/indentasi).
@@ -51,3 +50,8 @@ TAMBAHAN (prototype, 1 Okt 2026)
   result.html        halaman hasil (aslinya /game/result/win|lose di server)
   lucky-draw.html, lucky-draw-admin.html, theme/lucky-draw/  menu Lucky Draw
   Cara jalan         : python3 -m http.server di folder ini, buka http://localhost:8000
+
+ALUR SEKARANG (Daily Competition)
+  Buka link -> splash 2,5 detik -> pilih level -> 10 soal True/False (5 foto, 5 teks), 20 detik per soal.
+  Leaderboard: hadiah hanya untuk juara 1-3 (pulsa/data Cellcard, nominal masih contoh).
+  Pergantian tampilan: theme/css/app.css (tombol, Home), theme/css/game.css (main quiz, hasil).

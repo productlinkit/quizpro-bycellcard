@@ -106,7 +106,7 @@
 
         // ---------- history ----------
         'Game History': ['ប្រវត្តិហ្គេម', '游戏记录'],
-        'Search quiz or level...': ['ស្វែងរកកម្រងសំណួរ ឬកម្រិត...', '搜索测验或难度...'],
+        'Search level...': ['ស្វែងរកកម្រិត...', '搜索难度...'],
         'Date range': ['ចន្លោះកាលបរិច្ឆេទ', '日期范围'],
         'All': ['ទាំងអស់', '全部'],
         'Today': ['ថ្ងៃនេះ', '今天'],
@@ -125,19 +125,19 @@
         // ---------- rules ----------
         'Tap a section to read the details.': ['ចុចលើផ្នែកណាមួយដើម្បីអានព័ត៌មានលម្អិត។', '点击任一部分查看详情。'],
         'General Rules': ['ច្បាប់ទូទៅ', '一般规则'],
-        'Each user must register an account to participate in quizzes and appear on the leaderboard.': ['អ្នកប្រើម្នាក់ៗត្រូវចុះឈ្មោះគណនី ដើម្បីចូលរួមកម្រងសំណួរ និងបង្ហាញលើតារាងពិន្ទុ។', '每位用户必须注册账号，才能参加测验并出现在排行榜上。'],
+        'Guests can play, but you need an account to save your score, appear on the leaderboard and collect Lucky Draw tickets.': ['ភ្ញៀវអាចលេងបាន ប៉ុន្តែអ្នកត្រូវមានគណនីដើម្បីរក្សាទុកពិន្ទុ បង្ហាញលើតារាងពិន្ទុ និងប្រមូលសំបុត្រចាប់រង្វាន់។', '访客可以游玩，但需要账号才能保存得分、进入排行榜并收集幸运抽奖券。'],
         'Users are responsible for the accuracy of their account information.': ['អ្នកប្រើទទួលខុសត្រូវលើភាពត្រឹមត្រូវនៃព័ត៌មានគណនីរបស់ខ្លួន។', '用户需对其账号信息的准确性负责。'],
         'Only one account per user is allowed. Multiple accounts will result in disqualification.': ['អ្នកប្រើម្នាក់អាចមានគណនីតែមួយប៉ុណ្ណោះ។ ការមានគណនីច្រើននឹងត្រូវដកសិទ្ធិ។', '每位用户只能拥有一个账号，多个账号将被取消资格。'],
         'Quiz Participation': ['ការចូលរួមកម្រងសំណួរ', '参与测验'],
-        'Quizzes are time-bound; ensure submission before the timer ends.': ['កម្រងសំណួរមានកំណត់ពេល សូមបញ្ជូនចម្លើយមុនពេលអស់ម៉ោង។', '测验有时间限制，请在计时结束前提交。'],
+        'Each Daily Competition has 10 True or False questions, with 20 seconds for each question. A question not answered in time counts as missed.': ['ការប្រកួតប្រចាំថ្ងៃនីមួយៗមានសំណួរ ត្រូវ ឬ ខុស ចំនួន ១០ ហើយសំណួរនីមួយៗមានពេល ២០ វិនាទី។ សំណួរដែលមិនបានឆ្លើយទាន់ពេលត្រូវរាប់ថាខកខាន។', '每场每日竞赛共10道判断题，每题限时20秒。未在时限内作答的题目视为未答。'],
         'Users must answer all questions without external help or resources unless stated otherwise.': ['អ្នកប្រើត្រូវឆ្លើយសំណួរទាំងអស់ដោយគ្មានជំនួយ ឬឯកសារពីខាងក្រៅ លើកលែងតែមានការបញ្ជាក់ផ្សេង។', '除非另有说明，用户必须在没有外部帮助或资料的情况下回答所有问题。'],
         'Use of automated tools, bots, or third-party software is strictly prohibited.': ['ហាមឃាត់ជាដាច់ខាតការប្រើឧបករណ៍ស្វ័យប្រវត្តិ បូត ឬកម្មវិធីភាគីទីបី។', '严禁使用自动化工具、机器人或第三方软件。'],
         'Leaderboard Criteria': ['លក្ខខណ្ឌតារាងពិន្ទុ', '排行榜规则'],
-        'Scores are calculated based on the number of correct answers and the time taken to complete the quiz.': ['ពិន្ទុត្រូវបានគណនាតាមចំនួនចម្លើយត្រូវ និងរយៈពេលដែលប្រើដើម្បីបញ្ចប់កម្រងសំណួរ។', '得分根据答对题数和完成测验所用时间计算。'],
+        'Each correct answer earns 10, 20 or 30 points, depending on the level you choose.': ['ចម្លើយត្រូវនីមួយៗទទួលបាន ១០ ២០ ឬ ៣០ ពិន្ទុ អាស្រ័យលើកម្រិតដែលអ្នកជ្រើសរើស។', '每答对一题可得10、20或30分，取决于所选难度。'],
         'In case of ties, rankings are determined by the submission time.': ['ក្នុងករណីពិន្ទុស្មើគ្នា ចំណាត់ថ្នាក់នឹងកំណត់តាមពេលវេលាបញ្ជូន។', '如得分相同，按提交时间决定排名。'],
         'Leaderboards are updated in real-time; any discrepancies must be reported within 24 hours.': ['តារាងពិន្ទុត្រូវបានធ្វើបច្ចុប្បន្នភាពភ្លាមៗ ភាពមិនត្រឹមត្រូវណាមួយត្រូវរាយការណ៍ក្នុងរយៈពេល ២៤ ម៉ោង។', '排行榜实时更新，如有异议须在24小时内反馈。'],
         'Rewards and Prizes': ['រង្វាន់', '奖励与奖品'],
-        'Prizes, if offered, will be distributed based on the final leaderboard at the end of the quiz period.': ['រង្វាន់ (ប្រសិនបើមាន) នឹងចែកជូនតាមតារាងពិន្ទុចុងក្រោយ នៅចុងរយៈពេលកម្រងសំណួរ។', '如设有奖品，将在测验期结束时根据最终排行榜发放。'],
+        'The top 3 players on the final monthly leaderboard win Cellcard credit or data.': ['អ្នកលេងកំពូល ៣ នៅលើតារាងពិន្ទុចុងក្រោយប្រចាំខែ ឈ្នះលុយ Cellcard ឬទិន្នន័យ។', '每月最终排行榜前3名可获得Cellcard话费或流量。'],
         'Users must verify their identity before claiming prizes.': ['អ្នកប្រើត្រូវផ្ទៀងផ្ទាត់អត្តសញ្ញាណមុនពេលទទួលរង្វាន់។', '用户领奖前须验证身份。'],
         'Prizes are non-transferable and cannot be exchanged for cash.': ['រង្វាន់មិនអាចផ្ទេរ ឬប្តូរជាសាច់ប្រាក់បានទេ។', '奖品不可转让，也不可兑换现金。'],
         'Fair Play and Conduct': ['ការលេងដោយយុត្តិធម៌ និងឥរិយាបថ', '公平竞赛与行为规范'],
@@ -265,10 +265,10 @@
         'Play Now & Earn Tickets': ['លេងឥឡូវ និងទទួលសំបុត្រ', '立即参与赢奖券'],
         'How to Earn Tickets': ['របៀបទទួលបានសំបុត្រ', '如何获得奖券'],
         '3 simple steps': ['៣ ជំហានងាយៗ', '简单3步'],
-        'Play quizzes': ['លេងកម្រងសំណួរ', '玩测验'],
-        'Any quiz during the campaign': ['កម្រងសំណួរណាមួយក្នុងរយៈពេលយុទ្ធនាការ', '活动期间任意测验'],
+        'Play Daily Competition': ['លេងការប្រកួតប្រចាំថ្ងៃ', '参加每日竞赛'],
+        'Every round during the campaign': ['គ្រប់វគ្គក្នុងរយៈពេលយុទ្ធនាការ', '活动期间的每一轮'],
         'Earn tickets': ['ទទួលសំបុត្រ', '获得奖券'],
-        'Added after every quiz': ['បន្ថែមបន្ទាប់ពីកម្រងសំណួរនីមួយៗ', '每次测验后发放'],
+        'Added after every round': ['បន្ថែមបន្ទាប់ពីវគ្គនីមួយៗ', '每轮结束后发放'],
         'Win prizes': ['ឈ្នះរង្វាន់', '赢取奖品'],
         'questions answered': ['សំណួរបានឆ្លើយ', '已答题'],
         'correct answers': ['ចម្លើយត្រូវ', '答对题'],
@@ -357,16 +357,9 @@
         // ---------- feedback round: solo game, levels, coming soon, leaderboard prizes, settings ----------
         'Collect tickets, win prizes': ['ប្រមូលសំបុត្រ ឈ្នះរង្វាន់', '集奖券，赢大奖'],
         'Join now': ['ចូលរួមឥឡូវ', '立即参与'],
-        'A random quiz · 5 questions · 30 sec': ['កម្រងសំណួរចៃដន្យ · ៥ សំណួរ · ៣០ វិនាទី', '随机测验 · 5道题 · 30秒'],
         'Start': ['ចាប់ផ្តើម', '开始'],
-        'Random Quiz': ['កម្រងសំណួរចៃដន្យ', '随机测验'],
-        '5 questions · 30 sec': ['៥ សំណួរ · ៣០ វិនាទី', '5道题 · 30秒'],
         'Login to earn Lucky Draw tickets': ['ចូលដើម្បីទទួលសំបុត្រចាប់រង្វាន់', '登录即可获得幸运抽奖券'],
         'Your score is not saved as a guest': ['ពិន្ទុរបស់អ្នកមិនត្រូវបានរក្សាទុកជាភ្ញៀវទេ', '访客模式下不会保存得分'],
-        'Quick Play': ['លេងរហ័ស', '快速开玩'],
-        'A random quiz, ready in one tap': ['កម្រងសំណួរចៃដន្យ ចុចម្តងលេងភ្លាម', '随机测验，一键开玩'],
-        'Feeling lucky?': ['មានសំណាងទេថ្ងៃនេះ?', '手气如何？'],
-        'Jump into a random quiz now': ['លេងកម្រងសំណួរចៃដន្យឥឡូវនេះ', '马上来一局随机测验'],
         'categories': ['ប្រភេទ', '个分类'],
         'questions': ['សំណួរ', '道题'],
         'sec': ['វិនាទី', '秒'],
@@ -399,9 +392,12 @@
         'Sound off': ['បិទសំឡេង', '声音已关闭'],
         'Change profile photo': ['ប្តូររូបភាពប្រវត្តិរូប', '更换头像'],
         'Prizes this month': ['រង្វាន់ប្រចាំខែនេះ', '本月奖品'],
-        'Your position': ['ចំណាត់ថ្នាក់របស់អ្នក', '你的排名'],
         'Prize zone ends here': ['តំបន់រង្វាន់បញ្ចប់ត្រឹមនេះ', '获奖区到此为止'],
-        'reach the top 5 to win': ['ឡើងដល់កំពូល ៥ ដើម្បីឈ្នះ', '进入前5名即可获奖'],
+        'reach the top 3 to win': ['ឡើងដល់កំពូល ៣ ដើម្បីឈ្នះ', '进入前3名即可获奖'],
+        'Data': ['ទិន្នន័យ', '流量'],
+        '1GB Data': ['ទិន្នន័យ 1GB', '1GB 流量'],
+        '$3 Cellcard Credit': ['$3 លុយ Cellcard', '$3 Cellcard 话费'],
+        '$1 Cellcard Credit': ['$1 លុយ Cellcard', '$1 Cellcard 话费'],
     };
 
     // Text with numbers or names. {1}/{2} = captured groups; t1/t2 = translate that group first.
@@ -456,8 +452,7 @@
         '+{n} Lucky Draw tickets': ['+{n} សំបុត្រចាប់រង្វាន់', '+{n} 张幸运抽奖券'],
         '{n} coins': ['{n} កាក់', '{n} 金币'],
         '{n} questions': ['{n} សំណួរ', '{n} 道题'],
-        '{n} sec': ['{n} វិនាទី', '{n} 秒'],
-        '{coins} coins to reach #1 and win a {prize}': ['ខ្វះ {coins} កាក់ទៀតដើម្បីឡើងលេខ ១ និងឈ្នះ {prize}', '还差 {coins} 金币即可登上第1名，赢得{prize}']
+        '{n} sec': ['{n} វិនាទី', '{n} 秒']
     };
 
     function current() {

@@ -98,7 +98,6 @@
 [data-theme="orange"] .search{background-color:#fff;color:#F7731B}
 [data-theme="orange"] .search:hover,[data-theme="orange"] .search:active{background-color:#FFEBD9;color:#F7731B}
 [data-theme="orange"] .ld-hero{background:linear-gradient(135deg,#13234F 0%,#2A4590 100%);box-shadow:0 8px 18px rgba(19,35,79,0.3)}
-[data-theme="orange"] .lb-hero{background:linear-gradient(135deg,#4338CA 0%,#6D63E8 100%);box-shadow:0 8px 18px rgba(67,56,202,0.3)}
 
 .owl-all{animation:owlBob 2.4s ease-in-out infinite}
 .owl-pupils{transition:transform .12s ease-out;animation:owlLook 3s .7s ease-in-out backwards}
@@ -163,3 +162,6 @@
 @keyframes splashGlow{to{transform:scale(1.12);opacity:0.7}}
 @media (prefers-reduced-motion:reduce){.owl-pupils,#level.show .lvl-card,#level.show .lvl-ico,.splash-glow,.splash-owl,.splash-logo,.splash-bar,.splash-bar i{animation:none}}
 .splash-owl svg{width:100%;height:100%;display:block;overflow:visible}
+
+/* history rows: every game is the Daily Competition, so one icon instead of category art */
+.history-list-pict .fa{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:12px;color:#fff;font-size:1.25rem;background:linear-gradient(160deg,#FF8E3C,#E85D04)}

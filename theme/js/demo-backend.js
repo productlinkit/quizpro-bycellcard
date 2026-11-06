@@ -57,24 +57,6 @@
         return;
     }
 
-    // ---------- Category data (from the copied pages) ----------
-    var CATEGORIES = {
-        1:  ['Sports', 'Common sports terms, famous players, rules of games, and memorable moments at sports events.'],
-        21: ['Movies & Music', 'Title of popular movies, cast, and memorable scene. Song title, singer, and composer.'],
-        22: ['Social Media', 'Social media terms, social media history, founder history, and their achievement.'],
-        25: ['Science', 'General knowledge of science, programming, physics, and chemical terms'],
-        26: ['Books', 'Title of popular books, novels, popular writers,'],
-        28: ['Vehicles', 'Vehicle name, engine, technology.'],
-        29: ['Maths', 'Basic Calculation, Number line, Integers and Variables, Algebraic.'],
-        30: ['General Knowledge', 'World History, popular news, a world phenomenon, general terms.'],
-        31: ['World Map & Flags', 'Name of the country, the capital city, president/leader, geography, demography'],
-        32: ['Animal', 'Name of animal, type of animal, animal ability'],
-        33: ['Food', 'Name of food, taste, ingredients, food country origin']
-    };
-    // Categories that have questions in theme/js/questions.js; the rest show "Coming soon"
-    var PLAYABLE = [31, 25, 29, 1, 32, 33];
-    function playable(id) { return PLAYABLE.indexOf(+id) !== -1; }
-
     // The copied pages use this server photo for the demo account; members without their own photo get the orange default
     var DEFAULT_AVATAR = SERVER + 'uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg';
     var ORANGE_AVATAR = 'data:image/svg+xml;utf8,' + encodeURIComponent(
@@ -132,10 +114,6 @@
 
     // ---------- Page wiring ----------
     document.addEventListener('DOMContentLoaded', function () {
-        // Keep quiz links inside the local copy
-        document.querySelectorAll('a[href*="demo.quizpro.mobi/game/detail/"]').forEach(function (a) {
-            a.href = 'game-detail.html?id=' + a.getAttribute('href').split('/').pop();
-        });
         // Logout asks for confirmation first
         document.querySelectorAll('a[data-logout], a[href$="/logout"]').forEach(function (a) {
             a.addEventListener('click', function (e) {
@@ -161,22 +139,6 @@
                 }
                 bootstrap.Modal.getOrCreateInstance(m).show();
             });
-        });
-
-        // Categories without questions yet: greyed out with a "Coming soon" tag, playable ones first
-        document.querySelectorAll('.quiz-box[href*="game-detail.html?id="]').forEach(function (a) {
-            if (playable(a.getAttribute('href').split('id=').pop())) return;
-            a.classList.add('is-soon');
-            a.setAttribute('aria-disabled', 'true');
-            a.insertAdjacentHTML('beforeend', '<span class="soon-tag">Coming soon</span>');
-            var col = a.parentNode;
-            if (col && col.parentNode) col.parentNode.appendChild(col);
-        });
-        document.addEventListener('click', function (e) {
-            var a = e.target.closest('a[href*="game-detail.html?id="]');
-            if (!a || playable(a.getAttribute('href').split('id=').pop())) return;
-            e.preventDefault();
-            toastMsg('<span class="fa fa-clock-o"></span> ' + t('Quizzes for this category are coming soon'));
         });
 
         // Home: tap the photo to change it
@@ -208,7 +170,6 @@
             // Profile tab: go to login, then come back to the profile
             document.querySelectorAll('.bottom-nav a[href="profile.html"]').forEach(function (a) { a.href = loginUrl('profile.html'); });
             // Leaderboard: no "You" row or position card for guests
-            var meCard = document.querySelector('.lb-me'); if (meCard) meCard.remove();
             document.querySelectorAll('.leaderboard-winner.is-you').forEach(function (li) {
                 li.classList.remove('is-you');
                 var tag = li.querySelector('.lb-you'); if (tag) tag.remove();
@@ -304,44 +265,6 @@
             });
         }
 
-        // Game detail: fill from ?id=, then Play opens the level picker (guests are asked to log in)
-        if (page === 'game-detail.html') {
-            var id = parseInt(param('id'), 10) || 31, c = CATEGORIES[id] || CATEGORIES[31];
-            var icon = SERVER + 'images/category/' + id + '/icon/' + id + '_01122022_icon_image.png';
-            var header = document.querySelector('.page-header .box-wrapper');
-            header.lastChild.textContent = ' ' + c[0] + ' ';
-            document.querySelector('.quiz-thumbnail img').src = icon;
-            document.querySelector('.quiz-info .section-title').textContent = c[0] + ' Quizzes';
-            document.querySelector('.quiz-info-content p').textContent = c[1];
-            document.title = 'Quizy Flash';
-            var meta = document.querySelectorAll('.quiz-info-meta .col-6');
-            if (meta.length === 2) {
-                meta[0].lastChild.textContent = ' ' + f('{n} questions', { n: 10 });
-                meta[1].lastChild.textContent = ' ' + f('{n} sec', { n: 20 });
-                meta[1].querySelector('.quiz-info-meta-circle').innerHTML = '<span class="fa fa-clock-o"></span>';
-            }
-            var play = document.getElementById('btnPlay');
-            play.setAttribute('gameId', id);
-            if (!playable(id)) {
-                play.classList.add('disabled', 'button-grey');
-                play.classList.remove('button-primary');
-                play.textContent = 'Coming soon';
-            }
-            var list = document.getElementById('search-result');
-            list.innerHTML = LEVELS.map(function (l) {
-                return '<a href="game-play.html?game=' + id + '&level=' + l.id + '" class="lvl-card lvl-' + l.id + '">' +
-                    '<span class="lvl-ico"><span class="fa ' + l.icon + '"></span></span>' +
-                    '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + f('{n} questions', { n: 10 }) + ' · ' + f('{n} sec', { n: 20 }) + '</small></span>' +
-                    '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span></a>';
-            }).join('');
-            document.addEventListener('click', function (e) {
-                if (!e.target.closest('#btnPlay')) return;
-                e.preventDefault(); e.stopPropagation();   // keep custom.js from loading the server's level list
-                if (!playable(id)) return;
-                bootstrap.Modal.getOrCreateInstance(document.getElementById(user ? 'level' : 'modalplay')).show();
-            }, true);
-        }
-
         // Level cards: touch screens have no hover, so the lift shows on press and stays a moment before leaving
         document.addEventListener('pointerdown', function (e) {
             var c = e.target.closest('.lvl-card'); if (c) c.classList.add('is-press');
@@ -373,6 +296,7 @@
                 document.getElementById('quickPlay').addEventListener('click', function (e) { e.preventDefault(); openLevels(); });
                 // Fresh open or refresh: splash, then straight to the level picker
                 var splash = document.getElementById('splash');
+                if (!splash && location.hash === '#play') openLevels();   // from a Play button on another page
                 if (splash) {
                     var splashEyes = splash.querySelector('.owl-pupils');
                     ['pointerdown', 'pointermove'].forEach(function (type) {
@@ -427,6 +351,5 @@
         }
     });
 
-    window.QP_DEMO = { CATEGORIES: CATEGORIES, LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl, quick: quick,
-        USER_AVATAR: USER_AVATAR, PLAYABLE: PLAYABLE, playable: playable };
+    window.QP_DEMO = { LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl, quick: quick, USER_AVATAR: USER_AVATAR };
 })();

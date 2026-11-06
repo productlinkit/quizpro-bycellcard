@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizy Flash</title>
+    <title>Quizpro</title>
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
@@ -93,7 +93,6 @@
             return s ? '<div><span class="ld-note ' + s + '">' + LD.status[s] + '</span></div>' : '';
         }
         function flag(text) { return '<span class="ld-flag">' + text + '</span>'; }
-        function iconImg(id) { return 'https://demo.quizpro.mobi//images/category/' + id + '/icon/' + id + '_01122022_icon_image.png'; }
         function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
         function shortDate(s) { return LD.fmtDate(s, false, true); }
         var I = window.QP_I18N || { t: function (x) { return x; }, f: function (x, v) { Object.keys(v || {}).forEach(function (k) { x = x.split('{' + k + '}').join(v[k]); }); return x; } };
@@ -124,7 +123,7 @@
             var cta = guest
                 ? '<a href="' + QP_DEMO.loginUrl('lucky-draw.html') + '" class="btn btn-lg button-green w-100 ld-cta">Login to Join</a>'
                 : up ? '<span class="btn btn-lg button-grey w-100 ld-cta disabled">' + I.f('Starts {d}', { d: shortDate(c.periodStart) }) + '</span>'
-                : '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta">Play Now &amp; Earn Tickets</a>';
+                : '<a href="index.html#play" class="btn btn-lg button-primary w-100 ld-cta">Play Now &amp; Earn Tickets</a>';
             return '<div class="ld-annot">' + note('hero') +
                 '<section class="ld-hero">' +
                     '<div class="ld-hero-top">' +
@@ -192,7 +191,7 @@
                         '<ol class="ld-draw-steps">' + steps.map(function (s) {
                             return '<li class="' + s[1] + '"><span>' + (s[1] === 'done' ? fa('fa-check') : s[1] === 'now' ? '<span class="fa fa-circle-o-notch fa-spin"></span>' : '') + '</span>' + s[0] + '</li>';
                         }).join('') + '</ol>' +
-                        '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta" id="ld-draw-cta">Keep Playing</a>' +
+                        '<a href="index.html#play" class="btn btn-lg button-primary w-100 ld-cta" id="ld-draw-cta">Keep Playing</a>' +
                         '<div class="ld-panel-foot">Results appear on this page' + flag('announcement time TBC') + ' · New tickets count for the next period' + flag('TBC') + '</div>' +
                     '</div>' +
                 '</section></div>';
@@ -276,8 +275,8 @@
         function howToEarn() {
             var r = C.ticketRule;
             var steps = [
-                ['gamepad', 'Play quizzes', 'Any quiz during the campaign'],
-                ['ticket', 'Earn tickets', 'Added after every quiz'],
+                ['gamepad', 'Play Daily Competition', 'Every round during the campaign'],
+                ['ticket', 'Earn tickets', 'Added after every round'],
                 ['trophy', 'Win prizes', I.f('Drawn on {d}', { d: shortDate(C.campaign.drawDate) })]
             ];
             return '<div class="ld-annot">' + note('howToEarn') +
@@ -316,9 +315,9 @@
             return rows.length ? rows.map(function (a) {
                 var n = LD.ticketsFor(a, r);
                 return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
-                    '<div class="history-list-pict"><img src="' + iconImg(a.icon) + '" alt=""></div>' +
+                    '<div class="history-list-pict"><span class="fa fa-trophy"></span></div>' +
                     '<div class="history-list-info">' +
-                        '<h4 class="history-list-info-name">' + esc(a.quiz) + ' quiz</h4>' +
+                        '<h4 class="history-list-info-name">Daily Competition</h4>' +
                         '<div class="history-list-info-stats">' +
                             '<span' + (r.basis === 'answered' ? ' class="ld-em"' : '') + '>' + a.answered + ' answered</span> · ' +
                             '<span' + (r.basis === 'correct' ? ' class="ld-em"' : '') + '>' + a.correct + ' correct</span></div>' +
@@ -387,7 +386,7 @@
                     '<div class="ld-result-prize">' + esc(P[1].item) + ' · ' + esc(P[1].rank) + '</div><div class="ld-result-text">Our team will contact you by SMS within 7 days.' + flag('claim process TBC') + '</div></section>'
                 : '<section class="ld-result lose"><span class="ld-result-ico">' + LD_ICON('wheel') + '</span><div class="ld-result-title">Not this time</div>' +
                     '<div class="ld-result-text">' + I.f(t === 1 ? 'Your {n} ticket was entered in the draw. Keep playing for the next Lucky Draw!' : 'Your {n} tickets were entered in the draw. Keep playing for the next Lucky Draw!', { n: t }) + '</div>' +
-                    '<a href="index.html#categories" class="btn btn-lg button-primary w-100 ld-cta">Play Now</a></section>';
+                    '<a href="index.html#play" class="btn btn-lg button-primary w-100 ld-cta">Play Now</a></section>';
             return '<div class="ld-annot">' + note('winners') + result +
                 '<section class="card-simple-outer ld-card-outer">' +
                     '<div class="ld-card-pad">' + secHead(LD_ICON('trophy'), 'Winner Announcement', I.f('Drawn on {d}', { d: LD.fmtDate(C.campaign.drawDate, true) })) + '</div>' +

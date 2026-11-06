@@ -2,7 +2,7 @@
  * Demo question bank (prototype only): True/False statements.
  * s = [English, Khmer, Chinese]; a = true when the statement is correct.
  * img = a real photo shown with the question (Wikimedia Commons, picked to match the subject).
- * Categories not listed here show as "Coming soon".
+ * Grouped by topic only to keep this file tidy; every round draws from all of them.
  */
 window.QP_QUESTIONS = {
     // World Map & Flags

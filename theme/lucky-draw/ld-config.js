@@ -64,12 +64,12 @@ window.LD_PAST_PERIODS = [
 
 // Demo activity for the logged-in sample user (answered + correct stored so either basis works)
 window.LD_DEMO_ACTIVITY = [
-  { date: '2026-10-14 20:41', quiz: 'Science', icon: 25, answered: 10, correct: 8 },
-  { date: '2026-10-14 08:12', quiz: 'Sports', icon: 1, answered: 10, correct: 6 },
-  { date: '2026-10-12 19:05', quiz: 'World Map & Flags', icon: 31, answered: 10, correct: 9 },
-  { date: '2026-10-09 12:30', quiz: 'Maths', icon: 29, answered: 7, correct: 3 },
-  { date: '2026-10-05 21:47', quiz: 'Food', icon: 33, answered: 10, correct: 7 },
-  { date: '2026-10-02 17:20', quiz: 'Animal', icon: 32, answered: 4, correct: 2 }
+  { date: '2026-10-14 20:41', answered: 10, correct: 8 },
+  { date: '2026-10-14 08:12', answered: 10, correct: 6 },
+  { date: '2026-10-12 19:05', answered: 10, correct: 9 },
+  { date: '2026-10-09 12:30', answered: 7, correct: 3 },
+  { date: '2026-10-05 21:47', answered: 10, correct: 7 },
+  { date: '2026-10-02 17:20', answered: 4, correct: 2 }
 ];
 
 window.LD = {
