@@ -55,7 +55,13 @@
         <img class="splash-logo" src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" alt="">
         <span class="splash-bar"><i></i></span>
     </div>
-    <script>try { if (sessionStorage.getItem('qp_splash')) document.getElementById('splash').remove(); } catch (e) {}</script>
+    <script>
+        // Splash on every fresh open or refresh; skipped only when coming back from another page of the app
+        (function () {
+            var nav = performance.getEntriesByType('navigation')[0];
+            if (document.referrer.indexOf(location.origin) === 0 && !(nav && nav.type === 'reload')) document.getElementById('splash').remove();
+        })();
+    </script>
 
             <div class="float-button">
             <a href="#">

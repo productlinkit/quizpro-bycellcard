@@ -371,10 +371,9 @@
                 }).join('');
                 function openLevels() { bootstrap.Modal.getOrCreateInstance(document.getElementById('level')).show(); }
                 document.getElementById('quickPlay').addEventListener('click', function (e) { e.preventDefault(); openLevels(); });
-                // First open of the app: splash, then straight to the level picker
+                // Fresh open or refresh: splash, then straight to the level picker
                 var splash = document.getElementById('splash');
                 if (splash) {
-                    try { sessionStorage.setItem('qp_splash', '1'); } catch (e) {}
                     var splashEyes = splash.querySelector('.owl-pupils');
                     ['pointerdown', 'pointermove'].forEach(function (type) {
                         splash.addEventListener(type, function (e) {
