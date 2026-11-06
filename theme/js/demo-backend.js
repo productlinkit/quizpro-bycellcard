@@ -82,11 +82,11 @@
         '<circle cx="50" cy="40" r="17" fill="#fff"/><path d="M18 88c3-17 16-27 32-27s29 10 32 27z" fill="#fff"/></svg>');
     var USER_AVATAR = (user && user.avatar) || ORANGE_AVATAR;
 
-    // A round is 5 questions in 30 seconds (see theme/js/play.js)
+    // A round is 10 questions, 20 seconds each (see theme/js/play.js)
     var LEVELS = [
-        { id: 1, title: 'Beginner', points: 10, icon: 'fa-leaf' },
-        { id: 2, title: 'Intermediate', points: 20, icon: 'fa-bolt' },
-        { id: 3, title: 'Advance', points: 30, icon: 'fa-fire' }
+        { id: 1, title: 'Beginner', points: 10, icon: 'fa-leaf', tagline: 'Easy questions to warm up' },
+        { id: 2, title: 'Intermediate', points: 20, icon: 'fa-bolt', tagline: 'A bit more challenging' },
+        { id: 3, title: 'Advance', points: 30, icon: 'fa-fire', tagline: 'For true quiz masters' }
     ];
 
     // ---------- Fake AJAX endpoints (custom.js) ----------
@@ -316,8 +316,8 @@
             document.title = 'Quizy Flash';
             var meta = document.querySelectorAll('.quiz-info-meta .col-6');
             if (meta.length === 2) {
-                meta[0].lastChild.textContent = ' ' + f('{n} questions', { n: 5 });
-                meta[1].lastChild.textContent = ' ' + f('{n} sec', { n: 30 });
+                meta[0].lastChild.textContent = ' ' + f('{n} questions', { n: 10 });
+                meta[1].lastChild.textContent = ' ' + f('{n} sec', { n: 20 });
                 meta[1].querySelector('.quiz-info-meta-circle').innerHTML = '<span class="fa fa-clock-o"></span>';
             }
             var play = document.getElementById('btnPlay');
@@ -331,7 +331,7 @@
             list.innerHTML = LEVELS.map(function (l) {
                 return '<a href="game-play.html?game=' + id + '&level=' + l.id + '" class="lvl-card lvl-' + l.id + '">' +
                     '<span class="lvl-ico"><span class="fa ' + l.icon + '"></span></span>' +
-                    '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + f('{n} questions', { n: 5 }) + ' · ' + f('{n} sec', { n: 30 }) + '</small></span>' +
+                    '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + f('{n} questions', { n: 10 }) + ' · ' + f('{n} sec', { n: 20 }) + '</small></span>' +
                     '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span></a>';
             }).join('');
             document.addEventListener('click', function (e) {
@@ -340,6 +340,23 @@
                 if (!playable(id)) return;
                 bootstrap.Modal.getOrCreateInstance(document.getElementById(user ? 'level' : 'modalplay')).show();
             }, true);
+        }
+
+        // Home: Daily Competition card opens a level picker first (guests can play too, via quick=1)
+        if (page === 'index.html') {
+            var homeList = document.getElementById('homeLevelList');
+            if (homeList) {
+                homeList.innerHTML = LEVELS.map(function (l) {
+                    return '<a href="game-play.html?quick=1&level=' + l.id + '" class="lvl-card lvl-' + l.id + '">' +
+                        '<span class="lvl-ico"><span class="fa ' + l.icon + '"></span></span>' +
+                        '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + t(l.tagline) + '</small></span>' +
+                        '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span></a>';
+                }).join('');
+                document.getElementById('quickPlay').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById('level')).show();
+                });
+            }
         }
 
         // Profile: theme picker and sound switch

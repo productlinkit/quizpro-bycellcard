@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="theme/css/app.css">
-    <link rel="stylesheet" href="theme/css/search.css">
     <link rel="stylesheet" href="theme/css/guest.css">
     <link rel="stylesheet" href="theme/floating-copy/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -36,11 +35,6 @@
                         </div>
                     </div>
 
-                    <div class="col-6 text-end">
-                        <a href="#" class="search" id="btnSearch">
-                            <span class="qf-icon-search"></span>
-                        </a>
-                    </div>
 
 
 
@@ -75,20 +69,10 @@
         </div>
     </div>
 
-    <a href="lucky-draw.html" class="ld-entry ld-entry-home">
-        <span class="ld-entry-ico"><img class="ld-ill" src="theme/lucky-draw/img/wheel.png" alt=""></span>
-        <span>
-            <span class="ld-entry-title d-block">Lucky Draw is live!</span>
-            <span class="ld-entry-sub d-block">Play quizzes, collect tickets, win prizes</span>
-        </span>
-        <span class="ld-entry-go qf-icon-arrow-right"></span>
-    </a>
-
-    <a href="#" class="ld-entry qp-entry" id="quickPlay">
-        <span class="qp-entry-copy">
-            <span class="qp-entry-btn"><span class="fa fa-play"></span> Play Now</span>
-        </span>
-        <span class="qp-entry-ill" aria-hidden="true">
+    <a href="#" class="comp-card" id="quickPlay">
+        <span class="comp-shell" aria-hidden="true"></span>
+        <span class="comp-time"><span class="fa fa-clock-o"></span> <span id="compCountdown">--:--:--</span></span>
+        <span class="comp-ill" aria-hidden="true">
             <svg viewBox="0 0 120 100">
                 <g class="owl-all">
                 <!-- wings -->
@@ -124,79 +108,23 @@
                 </g>
             </svg>
         </span>
+        <span class="comp-title">Daily Competition</span>
+        <span class="comp-rules">
+            <span><span class="fa fa-bolt"></span> 10 questions</span>
+            <span><span class="fa fa-clock-o"></span> 20 sec</span>
+            <span><span class="fa fa-check-circle"></span> True or False</span>
+        </span>
+        <span class="comp-btn"><span class="fa fa-play"></span> Play Now</span>
     </a>
 
-    <div class="featured-quiz pb-2" id="categories">
-        <h3 class="section-title mb-3">Categories</h3>
-        <div class="row gx-3">
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=1" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/1/icon/1_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Sports</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=21" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/21/icon/21_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Movies &amp; Music</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=22" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/22/icon/22_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Social Media</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=25" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/25/icon/25_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Science</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=26" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/26/icon/26_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Books</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=28" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/28/icon/28_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Vehicles</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=29" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/29/icon/29_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Maths</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=30" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/30/icon/30_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">General Knowledge</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=31" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/31/icon/31_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">World Map &amp; Flags</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=32" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/32/icon/32_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Animal</p>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-3">
-                        <a href="game-detail.html?id=33" class="quiz-box">
-                            <img src="https://demo.quizpro.mobi//images/category/33/icon/33_01122022_icon_image.png" alt="Quiz">
-                            <p class="quiz-box-title">Food</p>
-                        </a>
-                    </div>
-        </div>
-    </div>
+    <a href="lucky-draw.html" class="ld-entry ld-entry-home" id="homeTickets">
+        <span class="ld-entry-ico"><img class="ld-ill" src="theme/lucky-draw/img/ticket.png" alt=""></span>
+        <span>
+            <span class="ld-entry-title d-block">My tickets</span>
+            <span class="ld-entry-sub d-block" id="homeTicketCount">Collect tickets, win prizes</span>
+        </span>
+        <span class="ld-entry-go qf-icon-arrow-right"></span>
+    </a>
 
 
 
@@ -238,25 +166,8 @@
     </div>
 </div> </div>
 
-    <!-- language option model -->
-    <div class="modal fade modal-standard" tabindex="-1" role="dialog" id="modalLang">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background: #3EA9F5;">
-                    <img src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" width="80" alt="Logo">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <select name="lang" id="lang" style="font-size: 20px;">
-                                            <option value="sdfg">English</option>
-                                            <option value="ar">Arabic</option>
-                                            <option value="fr">French </option>
-                                    </select>
-            </div>
-        </div>
-    </div>
-    <!-- language option model -->
-
-    <div class="modal" tabindex="-1" id="search">
+    <!-- Choose your level, before the Daily Competition starts -->
+    <div class="modal" tabindex="-1" id="level">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-body modal-level">
@@ -265,19 +176,15 @@
                             <span class="qf-icon-close"></span>
                         </a>
                     </div>
-                    <form action="#" id="search-form" method="GET">
                     <div class="container-fluid box-wrapper">
-                        <h3 class="modal-level-title">Find Quiz</h3>
-                        <div class="input-group input-group-lg shadow">
-                                                        <input type="text" class="form-control main-search" name="q" id="search-box" name="serach_keyword" placeholder="Search..." value="">
-                            <button type="submit" class="btn button-primary"><span class="qf-icon-search"></span></button>
-                        </div>
+                        <h3 class="modal-level-title">Choose your level</h3>
+                        <div class="modal-level-option" id="homeLevelList"></div>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Choose your level -->
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
@@ -285,16 +192,55 @@
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
     <script src="theme/js/custom.js"></script>
-    <script src="theme/js/search-suggest.js"></script>
+    <script src="theme/lucky-draw/ld-config.js"></script>
     <script>
-        // Quick Play: the system picks a random category that has questions
+        // Home: members see how many Lucky Draw tickets they have collected
         (function () {
-            var D = window.QP_DEMO, card = document.getElementById('quickPlay');
-            if (!D || !card) return;
-            card.addEventListener('click', function (e) {
-                e.preventDefault();
-                var pick = D.PLAYABLE[Math.floor(Math.random() * D.PLAYABLE.length)];
-                location.href = 'game-play.html?game=' + pick + '&level=1&quick=1';
+            var el = document.getElementById('homeTicketCount');
+            if (!QP_DEMO.user) { document.getElementById('homeTickets').href = QP_DEMO.loginUrl('index.html'); el.textContent = 'Login to earn Lucky Draw tickets'; return; }
+            var n = LD_DEMO_ACTIVITY.reduce(function (t, a) { return t + LD.ticketsFor(a, LD_CONFIG.ticketRule); }, 0);
+            el.textContent = n + ' ticket' + (n === 1 ? '' : 's');
+        })();
+    </script>
+    <script>
+        // Daily Competition card: countdown to the next challenge, tilt and owl eyes follow the pointer, tap effects
+        (function () {
+            var card = document.getElementById('quickPlay'), ill = card.querySelector('.comp-ill'), btn = card.querySelector('.comp-btn');
+            var eyes = card.querySelector('.owl-pupils'), clock = document.getElementById('compCountdown');
+            function tick() {
+                var now = new Date(), end = new Date(now); end.setHours(24, 0, 0, 0);
+                var s = Math.floor((end - now) / 1000);
+                clock.textContent = [s / 3600, s / 60 % 60, s % 60].map(function (n) { return String(Math.floor(n)).padStart(2, '0'); }).join(':');
+            }
+            tick(); setInterval(tick, 1000);
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            function follow(e) {
+                var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+                card.style.setProperty('--px', x.toFixed(3));
+                card.style.setProperty('--py', y.toFixed(3));
+                card.classList.add('is-live');
+                eyes.style.transform = 'translate(' + (x * 5).toFixed(1) + 'px,' + ((y + 0.2) * 4).toFixed(1) + 'px)';
+            }
+            function rest() {
+                card.classList.remove('is-live');
+                card.style.removeProperty('--px'); card.style.removeProperty('--py');
+                eyes.style.transform = '';
+            }
+            card.addEventListener('pointermove', follow);
+            card.addEventListener('pointerdown', follow);
+            card.addEventListener('pointerleave', rest);
+            card.addEventListener('pointercancel', rest);
+            ill.addEventListener('click', function (e) {
+                e.preventDefault(); e.stopPropagation();
+                card.classList.remove('hop'); void card.offsetWidth; card.classList.add('hop');
+            });
+            ill.addEventListener('animationend', function (e) { if (e.animationName === 'owlJump') card.classList.remove('hop'); });
+            btn.addEventListener('pointerdown', function (e) {
+                var r = btn.getBoundingClientRect(), w = document.createElement('i');
+                w.className = 'comp-ripple';
+                w.style.left = (e.clientX - r.left) + 'px'; w.style.top = (e.clientY - r.top) + 'px';
+                btn.appendChild(w);
+                setTimeout(function () { w.remove(); }, 600);
             });
         })();
     </script>

@@ -22,17 +22,20 @@
 :root{--qp-bg:#3EA9F5;--qp-top:#1888D8}
 #level .modal-content{background:linear-gradient(180deg,var(--qp-top) 0,var(--qp-bg) 300px) var(--qp-bg)}
 #level .modal-level-title{color:#fff}
-.modal-level-option .lvl-card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:24px;padding:1rem;margin-bottom:12px;color:#0C092A;text-align:left;box-shadow:0 5px 10px rgba(12,9,42,0.08)}
+.modal-level-option .lvl-card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:24px;padding:1rem;margin-bottom:12px;color:#0C092A;text-align:left;box-shadow:0 5px 10px rgba(12,9,42,0.08);transition:transform .2s cubic-bezier(.2,.9,.3,1.3),box-shadow .2s}
 .modal-level-option .lvl-card:hover,.modal-level-option .lvl-card:focus{color:#0C092A}
+.modal-level-option .lvl-card:hover,.modal-level-option .lvl-card:focus-visible{transform:translateY(-4px) scale(1.015);box-shadow:0 22px 34px -14px rgba(12,9,42,0.45)}
+.modal-level-option .lvl-card:hover .lvl-ico,.modal-level-option .lvl-card:focus-visible .lvl-ico{transform:scale(1.1) rotate(-6deg)}
+.modal-level-option .lvl-card:hover .lvl-pts,.modal-level-option .lvl-card:focus-visible .lvl-pts{transform:translateX(-3px)}
 .modal-level-option .lvl-card:active{transform:scale(0.98)}
-.lvl-ico{width:56px;height:56px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem}
+.lvl-ico{width:56px;height:56px;flex-shrink:0;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;transition:transform .2s cubic-bezier(.2,.9,.3,1.5)}
 .lvl-1 .lvl-ico{background-color:#47c475}
 .lvl-2 .lvl-ico{background-color:#FE9E44}
 .lvl-3 .lvl-ico{background-color:#F4513B}
 .lvl-text{flex:1;min-width:0;line-height:1.25}
 .lvl-text b{display:block;font-size:1.0625rem}
 .lvl-text small{display:block;font-size:0.875rem;color:#969696;margin-top:2px}
-.lvl-pts{flex-shrink:0;background-color:#FE9E44;color:#fff;border-radius:50rem;padding:4px 10px 4px 4px;font-size:0.875rem;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.lvl-pts{transition:transform .2s;flex-shrink:0;background-color:#FE9E44;color:#fff;border-radius:50rem;padding:4px 10px 4px 4px;font-size:0.875rem;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .lvl-pts-badge{width:24px;height:24px;border-radius:50%;background:#fff;color:#FE9E44;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
 .lvl-pts-badge::before{margin:0 !important;width:auto !important}
 
@@ -58,21 +61,31 @@
 /* home: Lucky Draw banner in purple, Play Now banner in orange (same banner shape) */
 .ld-entry.ld-entry-home{background:linear-gradient(135deg,#13234F 0%,#2A4590 100%)}
 .ld-entry.ld-entry-home .ld-entry-ico{color:#13234F}
-/* Play Now: same banner as Lucky Draw, mirrored (text left, icon right), in orange */
-.ld-entry.qp-entry{background:#FFFFFF;color:#000000;padding:12px}
-.ld-entry.qp-entry::after{display:none}
-.ld-entry.qp-entry:hover,.ld-entry.qp-entry:focus{color:#000000}
-.qp-entry-copy{flex:1;min-width:0}
-.qp-entry .ld-entry-title,.qp-entry .ld-entry-sub{color:#000000}
-.qp-entry .ld-entry-sub{opacity:0.7}
-.qp-entry-btn{display:inline-flex;align-items:center;gap:8px;background:#FFEBD9;color:#000000;font-weight:bold;font-size:1.25rem;border-radius:50rem;padding:10px 22px}
-.qp-entry-btn .fa{color:#F7731B}
-.qp-entry-ill{position:relative;z-index:1;margin-left:auto;width:112px;height:92px;flex-shrink:0;display:block;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#FFF1A8 0%,#FFDD55 55%,#FFC81E 100%)}
-.qp-entry-ill svg{width:100%;height:100%;display:block;transform:translateY(4px)}
-.qp-float-a{animation:qpBob 3s ease-in-out infinite}
-.qp-float-b{animation:qpBob 2.6s ease-in-out .5s infinite}
-.qp-float-c{animation:qpBob 3.2s ease-in-out 1s infinite}
-@keyframes qpBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* home: Daily Competition: white card, owl sits half outside its top edge, tilts with the pointer */
+.comp-card{--px:0;--py:0;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;color:#0C092A;margin:58px 0 24px;padding:113.5px 1rem 24px;transform:perspective(800px) rotateX(calc(var(--py)*-9deg)) rotateY(calc(var(--px)*11deg)) scale(var(--s,1));transition:transform .3s ease-out;animation:compIn .6s cubic-bezier(.2,.9,.3,1.2) backwards}
+.comp-card.is-live{transition:transform .08s linear}
+.comp-card:active{--s:0.98}
+.comp-card:hover,.comp-card:focus{color:#0C092A}
+.comp-shell{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:#fff;box-shadow:var(--qp-lift)}
+.comp-ill{position:absolute;z-index:1;left:50%;top:-52px;width:170px;height:142px;margin-left:-85px;cursor:pointer;translate:calc(var(--px)*14px) calc(var(--py)*9px);filter:drop-shadow(0 12px 10px rgba(90,40,0,0.35));transition:scale .2s cubic-bezier(.2,.9,.3,1.5);animation:compDrop .6s .1s cubic-bezier(.3,1.5,.5,1) backwards}
+.comp-card:hover .comp-ill{scale:1.06}
+.comp-card:hover .owl-wing{animation-duration:.6s}
+.comp-ill svg{width:100%;height:100%;display:block;overflow:visible}
+.comp-card.hop .owl-all{animation:owlJump .6s cubic-bezier(.3,1.4,.5,1)}
+.comp-time{position:absolute;right:12px;top:12px;z-index:1;padding:3px 10px;border-radius:50rem;background:#FFEBD9;color:#C2410C;font-size:0.75rem;font-weight:bold;font-variant-numeric:tabular-nums}
+.comp-title{position:relative;z-index:1;font-size:1.5rem;font-weight:bold;line-height:1.2;translate:calc(var(--px)*6px) calc(var(--py)*4px)}
+.comp-rules{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:12px 0 20px}
+.comp-rules>span{background:#FFEBD9;border-radius:50rem;padding:5px 12px;font-size:0.8125rem;font-weight:bold;animation:compChip .4s cubic-bezier(.2,.9,.3,1.4) backwards;transition:translate .18s}
+.comp-rules>span:nth-child(1){animation-delay:.4s}
+.comp-rules>span:nth-child(2){animation-delay:.5s}
+.comp-rules>span:nth-child(3){animation-delay:.6s}
+.comp-card:hover .comp-rules>span{translate:0 -2px}
+.comp-rules .fa{color:#F7731B;margin-right:2px}
+.comp-btn{position:relative;z-index:1;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;color:#fff;font-weight:bold;font-size:1.25rem;line-height:1.3;border-radius:50rem;padding:0.8125rem 1.375rem;background:linear-gradient(160deg,#FF8E3C,#E85D04);box-shadow:0 3px 0 #B84703,0 8px 14px -8px rgba(232,93,4,0.6);transition:transform .1s,box-shadow .1s}
+.comp-card:active .comp-btn{transform:translateY(2px);box-shadow:0 1px 0 #B84703}
+.comp-btn::after{content:'';position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.65),transparent);transform:skewX(-20deg);animation:compShine 3.2s ease-in-out infinite}
+.comp-btn .fa{animation:compNudge 1.6s ease-in-out infinite}
+.comp-ripple{position:absolute;width:24px;height:24px;margin:-12px;border-radius:50%;background:rgba(255,255,255,0.65);pointer-events:none;animation:compRipple .6s ease-out forwards}
 
 /* orange theme: keep header search button and orange-on-orange items readable */
 [data-theme="orange"] .search{background-color:#fff;color:#F7731B}
@@ -80,14 +93,44 @@
 [data-theme="orange"] .ld-hero{background:linear-gradient(135deg,#13234F 0%,#2A4590 100%);box-shadow:0 8px 18px rgba(19,35,79,0.3)}
 [data-theme="orange"] .lb-hero{background:linear-gradient(135deg,#4338CA 0%,#6D63E8 100%);box-shadow:0 8px 18px rgba(67,56,202,0.3)}
 
-/* Play Now owl: bob, blink, wave, swinging tassel */
 .owl-all{animation:owlBob 2.4s ease-in-out infinite}
+.owl-pupils{transition:transform .12s ease-out}
 .owl-wing{transform-box:fill-box;transform-origin:20% 85%;animation:owlWave 1.6s ease-in-out infinite}
 .owl-lids{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:owlBlink 4s infinite}
 .owl-tassel{transform-box:fill-box;transform-origin:50% 0;animation:owlTassel 1.2s ease-in-out infinite}
+@keyframes compIn{from{opacity:0;transform:perspective(800px) translateY(26px) rotateX(10deg) scale(0.95)}}
+@keyframes compDrop{from{opacity:0;translate:0 -46px;scale:0.6}}
+@keyframes compRipple{to{transform:scale(16);opacity:0}}
+@keyframes compChip{from{opacity:0;transform:translateY(8px) scale(0.8)}}
+@keyframes compShine{0%,55%{left:-40%}100%{left:120%}}
+@keyframes compNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+@keyframes owlJump{0%{transform:translateY(0) scale(1)}35%{transform:translateY(-16px) scale(1.08) rotate(-4deg)}65%{transform:translateY(0) scale(0.96,1.04)}100%{transform:none}}
 @keyframes owlBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @keyframes owlWave{0%,100%{transform:rotate(0)}50%{transform:rotate(-22deg)}}
 @keyframes owlBlink{0%,92%,100%{transform:scaleY(0)}95%{transform:scaleY(1)}}
 @keyframes owlTassel{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
-@media (prefers-reduced-motion:reduce){.owl-all,.owl-wing,.owl-lids,.owl-tassel{animation:none}}
-[data-theme="orange"] .play-question{background:linear-gradient(135deg,#13234F 0%,#2A4590 100%)}
+@media (prefers-reduced-motion:reduce){.owl-all,.owl-wing,.owl-lids,.owl-tassel,.comp-card,.comp-ill,.comp-rules>span,.comp-btn::after,.comp-btn .fa{animation:none}}
+
+/* layered depth instead of flat cards and outlines */
+:root{--qp-lift:0 22px 40px -16px rgba(12,9,42,0.4),0 6px 14px -6px rgba(12,9,42,0.18)}
+.home-profile,.res-card,.res-stat{box-shadow:var(--qp-lift)}
+
+/* one button style for the whole app: pill, bold, raised edge that presses down */
+.btn{--edge:#C9CEDC;--glow:rgba(12,9,42,0.3);border:0;border-radius:50rem;font-weight:bold;line-height:1.3;padding:0.625rem 1.25rem;box-shadow:0 3px 0 var(--edge),0 8px 14px -8px var(--glow);transition:transform .1s,box-shadow .1s,filter .15s}
+.btn-lg{font-size:1.25rem;padding:0.8125rem 1.375rem}
+.btn.shadow-sm{box-shadow:0 3px 0 var(--edge),0 8px 14px -8px var(--glow) !important}
+.btn:hover{filter:brightness(1.05)}
+.btn:focus{box-shadow:0 3px 0 var(--edge),0 8px 14px -8px var(--glow)}
+.btn:focus-visible{outline:3px solid rgba(12,9,42,0.45);outline-offset:3px}
+.btn:active,.btn.shadow-sm:active{transform:translateY(2px);box-shadow:0 1px 0 var(--edge) !important}
+.button-primary,.button-primary:hover,.button-primary:focus{--edge:#B84703;--glow:rgba(232,93,4,0.6);background:linear-gradient(160deg,#FF8E3C,#E85D04);color:#fff}
+.button-green,.button-green:hover,.button-green:focus{--edge:#03543F;--glow:rgba(4,120,87,0.55);background:linear-gradient(160deg,#10a877,#047857);color:#fff}
+.btn-secondary,.btn-secondary:hover,.btn-secondary:focus{--edge:#C9CEDC;background:#EEF0F6;color:#0C092A}
+.confirm-danger,.confirm-danger:hover,.confirm-danger:focus,.unsub-confirm,.unsub-confirm:hover,.unsub-confirm:focus{background:none;box-shadow:none !important;color:#c81e2b;font-size:1rem}
+/* main button sitting directly on the page background: orange would disappear on the orange theme */
+.btn-on-bg,.btn-on-bg:hover,.btn-on-bg:focus{--edge:#D98A00;--glow:rgba(120,60,0,0.55);background:linear-gradient(160deg,#FFD866,#FFB800);color:#5A2A00}
+
+/* standard popups follow the app theme */
+.modal-standard .modal-content{border:0;border-radius:28px;overflow:hidden;box-shadow:0 30px 60px -18px rgba(12,9,42,0.55)}
+.modal-standard .modal-header{background:var(--qp-top) !important;border:0}
+.modal-standard .modal-footer{border:0;padding-bottom:1.25rem}

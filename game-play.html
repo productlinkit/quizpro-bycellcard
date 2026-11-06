@@ -13,42 +13,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
 </head>
-<body>
+<body class="play-page">
+    <div class="play-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="content-wrapper">
 
         <!-- Header: player, round timer, progress -->
         <div class="page-header-score game-header">
             <div class="container box-wrapper">
                 <div class="play-hud">
-                    <div class="game-player me">
-                        <div class="game-ava" id="gp-me">
-                            <img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="You">
-                        </div>
-                        <div class="game-info">
-                            <div class="game-name">You</div>
-                            <div class="game-score" id="gp-score">0</div>
-                        </div>
+                    <div class="play-score" id="gp-me">
+                        <span class="play-score-ico"><span class="fa fa-star"></span></span>
+                        <span class="play-score-body">
+                            <span class="play-score-label">Score</span>
+                            <span class="play-score-value" id="gp-score">0</span>
+                        </span>
                         <span class="game-gain" id="gp-gain"></span>
                     </div>
                     <div class="play-timer" id="gp-timer" aria-label="Time left">
-                        <svg viewBox="0 0 44 44" aria-hidden="true"><circle class="track" cx="22" cy="22" r="19"/><circle class="bar" id="gp-timer-bar" cx="22" cy="22" r="19"/></svg>
-                        <span id="gp-time">30</span>
-                    </div>
-                    <div class="play-cat">
-                        <span class="play-cat-ico"><img id="gp-cat-img" src="" alt=""></span>
+                        <span class="play-timer-fill" id="gp-timer-fill"></span>
+                        <span class="play-timer-num" id="gp-time">20</span>
                     </div>
                 </div>
                 <div class="play-progress" id="gp-dots" aria-hidden="true"></div>
-                <div class="play-count"><span id="gp-num">1</span> of <span id="gp-total">5</span></div>
+                <div class="play-count"><span id="gp-num">1</span> of <span id="gp-total">10</span></div>
             </div>
         </div>
 
         <div class="container box-wrapper play-body">
-            <div class="answer-toast" id="answerToast" aria-live="polite"></div>
-            <div class="play-question" id="gp-question"></div>
+            <div class="play-card" id="gp-card">
+                <div class="play-question-img" id="gp-qimg" aria-hidden="true"></div>
+                <div class="play-question" id="gp-question"></div>
+            </div>
             <ul class="play-options" id="gp-options"></ul>
             <button type="button" class="play-exit" id="gp-exit"><span class="fa fa-sign-out"></span> Exit quiz</button>
         </div>
+        <div class="answer-fb" id="answerFb" role="status" aria-live="polite"></div>
     </div>
 
     <!-- Exit confirmation -->

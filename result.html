@@ -55,7 +55,7 @@
             </div>
             <div class="res-answered"><span id="r-answered">0/10</span> <span>Questions answered</span></div>
 
-            <a href="lucky-draw.html" class="ld-entry text-start" id="r-ld">
+            <a href="lucky-draw.html" class="ld-entry ld-entry-home text-start" id="r-ld">
                 <span class="ld-entry-ico"><img class="ld-ill" src="theme/lucky-draw/img/ticket.png" alt=""></span>
                 <span>
                     <span class="ld-entry-title d-block" id="r-ld-title">+0 Lucky Draw tickets</span>
@@ -65,7 +65,7 @@
             </a>
 
             <div class="res-actions">
-                <a href="#" class="btn btn-lg button-primary res-btn" id="r-again"><span class="qf-icon-replay"></span> Play Again</a>
+                <a href="#" class="btn btn-lg btn-on-bg res-btn" id="r-again"><span class="qf-icon-replay"></span> Play Again</a>
                 <a href="index.html" class="btn btn-lg res-btn res-btn-ghost"><span class="qf-icon-home"></span> Home</a>
             </div>
         </div>
@@ -80,19 +80,15 @@
     (function () {
         var p = new URLSearchParams(location.search), I = window.QP_I18N;
         var level = QP_DEMO.LEVELS.filter(function (l) { return String(l.id) === p.get('level'); })[0] || QP_DEMO.LEVELS[0];
-        var total = +p.get('total') || 5, answered = +p.get('answered') || 0, correct = +p.get('correct') || 0;
+        var total = +p.get('total') || 10, answered = +p.get('answered') || 0, correct = +p.get('correct') || 0;
         var pass = Math.ceil(total * 0.6);
         document.getElementById('r-answered').textContent = answered + '/' + total;
         document.getElementById('r-level').textContent = level.title;
         document.getElementById('r-time').textContent = I.f('{n} sec', { n: +p.get('time') || 0 });
         var again = document.getElementById('r-again');
         if (QP_DEMO.quick) {
-            // Quick Play: play another random quiz straight away
-            again.addEventListener('click', function (e) {
-                e.preventDefault();
-                var P = QP_DEMO.PLAYABLE;
-                location.href = 'game-play.html?game=' + P[Math.floor(Math.random() * P.length)] + '&level=1&quick=1';
-            });
+            // Daily Competition: start another round straight away
+            again.href = 'game-play.html?quick=1';
         } else again.href = 'game-detail.html?id=' + (p.get('game') || 31);
 
         // Broken heart for the lose badge (Font Awesome 4.7 has none)
