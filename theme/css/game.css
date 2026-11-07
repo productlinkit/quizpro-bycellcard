@@ -50,7 +50,7 @@
 /* stats */
 .res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
 .res-stat{background:#fff;border-radius:18px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 5px 10px rgba(12,9,42,0.08);min-width:0}
-.res-stat b{font-size:1.125rem;color:#0C092A;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.res-stat b{font-size:1rem;color:#0C092A;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .res-stat small{font-size:0.6875rem;color:#969696;line-height:1.2}
 .res-stat-ico{width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:4px}
 .res-stat-ico{background:#EAEEF8;color:#2A4590}
@@ -58,7 +58,8 @@
 
 /* actions */
 .res-actions{display:flex;gap:8px;margin:4px 0 24px}
-.res-btn{flex:1}
+.res-btn{flex:1 1 0;min-width:0;font-size:1.0625rem;padding-left:0.5rem;padding-right:0.5rem;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:6px}
+.res-left{flex-shrink:0;min-width:22px;height:22px;padding:0 5px;border-radius:50rem;background:#5A2A00;color:#fff;font-size:0.8125rem;line-height:22px;text-align:center}
 .res-btn span::before{margin-right:4px}
 .res-btn-ghost,.res-btn-ghost:hover,.res-btn-ghost:focus{--edge:#DCE1EE;background:#fff;color:#13234F}
 

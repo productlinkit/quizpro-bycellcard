@@ -89,7 +89,7 @@
         var again = document.getElementById('r-again'), left = QP_DEMO.entriesLeft(level.id);
         if (left) {
             again.href = 'game-play.html?quick=1&level=' + level.id;
-            again.lastChild.textContent = ' ' + I.f('Play Again · {n} left', { n: left });
+            again.insertAdjacentHTML('beforeend', '<b class="res-left" aria-label="' + I.f('Entries left: {n}/{m}', { n: left, m: level.entries }) + '">' + left + '</b>');
         } else {
             again.classList.add('disabled');
             again.setAttribute('aria-disabled', 'true');
