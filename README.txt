@@ -7,7 +7,7 @@ CARA BUKA
 
 HALAMAN (12)
   index.html          Home                      (/)
-  leaderboard.html    Leaderboard               (/game/leaderboard)
+  leaderboard.html    Leaderboard (daftar user, tanpa hadiah)
   profile.html        Profile                   (/profile)
   history.html        Game History              (/game/history)
   profile-edit.html   Edit Profile              (/profile/edit)
@@ -53,5 +53,6 @@ TAMBAHAN (prototype, 1 Okt 2026)
 
 ALUR SEKARANG (Daily Competition)
   Buka link -> splash 2,5 detik -> pilih level -> 10 soal True/False (5 foto, 5 teks), 20 detik per soal.
-  Leaderboard: hadiah hanya untuk juara 1-3 (pulsa/data Cellcard, nominal masih contoh).
+  Jatah main per hari: Beginner 1, Intermediate 3, Advance 3 (reset tengah malam; index.html?reset=1 untuk demo).
+  Lucky Draw mingguan (Senin-Minggu), hanya grand prize. Poin tersimpan di Game History.
   Pergantian tampilan: theme/css/app.css (tombol, Home), theme/css/game.css (main quiz, hasil).

@@ -318,6 +318,15 @@
     <script src="theme/js/custom.js"></script>
     <script>
     (function () {
+        // Rounds played on this device come first, with the points they earned
+        var played = []; try { played = JSON.parse(localStorage.getItem('qp_ld_activity')) || []; } catch (e) {}
+        document.querySelector('.history').insertAdjacentHTML('afterbegin', played.filter(function (a) { return a.level; }).map(function (a) {
+            return '<li class="history-list"><div class="row gx-0"><div class="col-9"><div class="d-flex w-100">' +
+                '<div class="history-list-pict"><span class="fa fa-trophy"></span></div>' +
+                '<div class="history-list-info"><h4 class="history-list-info-name">Daily Competition</h4>' +
+                '<div class="history-list-info-stats">' + a.level + ', Score <b>' + a.points + '</b></div></div></div></div>' +
+                '<div class="col-3 text-end"><span class="history-list-date">' + a.date.slice(0, 10) + '</span></div></div></li>';
+        }).join(''));
         var rows = Array.prototype.slice.call(document.querySelectorAll('.history-list')).map(function (li) {
             return { li: li, date: li.querySelector('.history-list-date').textContent.trim(), text: li.textContent.toLowerCase().replace(/\s+/g, ' ') };
         });

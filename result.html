@@ -85,7 +85,16 @@
         document.getElementById('r-answered').textContent = answered + '/' + total;
         document.getElementById('r-level').textContent = level.title;
         document.getElementById('r-time').textContent = I.f('{n} sec', { n: +p.get('time') || 0 });
-        document.getElementById('r-again').href = 'game-play.html?quick=1&level=' + level.id;
+        // Play Again spends one of this level's entries, so it stops when they run out
+        var again = document.getElementById('r-again'), left = QP_DEMO.entriesLeft(level.id);
+        if (left) {
+            again.href = 'game-play.html?quick=1&level=' + level.id;
+            again.lastChild.textContent = ' ' + I.f('Play Again · {n} left', { n: left });
+        } else {
+            again.classList.add('disabled');
+            again.setAttribute('aria-disabled', 'true');
+            again.textContent = I.t('No entries left');
+        }
 
         // Broken heart for the lose badge (Font Awesome 4.7 has none)
         var BROKEN_HEART = '<svg class="res-badge-svg" viewBox="0 0 24 24" aria-hidden="true">' +

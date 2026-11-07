@@ -199,3 +199,4 @@
   .fb-sparks{display:none}
   .answer-fb.show .fb-owl{animation:none !important}
 }
+.res-btn.disabled{opacity:1;background:rgba(255,255,255,0.4);color:#7C2D12;box-shadow:none;font-size:1rem;display:flex;align-items:center;justify-content:center}

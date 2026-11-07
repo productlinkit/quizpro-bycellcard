@@ -4,7 +4,7 @@
 (function () {
     var input = document.getElementById('lbSearch');
     if (!input) return;
-    var list = document.querySelector('.lb-list'), empty = document.getElementById('lbEmpty'), zone = document.querySelector('.lb-zone');
+    var list = document.querySelector('.lb-list'), empty = document.getElementById('lbEmpty');
     var rows = Array.prototype.slice.call(document.querySelectorAll('.leaderboard-winner')).map(function (li) {
         return { li: li, name: li.querySelector('.leaderboard-winner-info-name').firstChild.textContent.trim() };
     });
@@ -16,7 +16,6 @@
             r.li.hidden = !ok;
             if (ok) shown++;
         });
-        if (zone) zone.hidden = !!raw;
         list.hidden = !shown;
         empty.hidden = !!shown;
         empty.textContent = shown ? '' : 'No player found for "' + raw + '"';

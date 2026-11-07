@@ -142,7 +142,7 @@
                             '<div class="ld-panel-time"><div class="ld-stat-label">' + (up ? 'Starts in' : 'Draw in') + '</div><div class="ld-countdown" id="ld-countdown"></div></div>' +
                         '</div>' +
                         '<div class="ld-panel-dates">' +
-                            '<div><span class="ld-mini-ico">' + LD_ICON('calendar') + '</span><div><div class="ld-stat-label">Campaign period</div><b>' + shortDate(c.periodStart) + ' – ' + shortDate(c.periodEnd) + '</b>' + flag('dates TBC') + '</div></div>' +
+                            '<div><span class="ld-mini-ico">' + LD_ICON('calendar') + '</span><div><div class="ld-stat-label">This week</div><b>' + shortDate(c.periodStart) + ' – ' + shortDate(c.periodEnd) + '</b>' + flag('dates TBC') + '</div></div>' +
                             '<div><span class="ld-mini-ico">' + LD_ICON('trophy') + '</span><div><div class="ld-stat-label">Draw date</div><b>' + shortDate(c.drawDate) + ' · ' + new Date(c.drawDate).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + '</b></div></div>' +
                         '</div>' +
                         cta +
@@ -155,7 +155,7 @@
         function tickCountdown() {
             var el = document.getElementById('ld-countdown');
             if (!el) return;
-            var now = state === 'upcoming' ? new Date('2026-09-27T09:00:00') : new Date('2026-10-15T09:00:00');
+            var now = state === 'upcoming' ? new Date(new Date(C.campaign.periodStart + 'T00:00:00').getTime() - 3 * 864e5) : new Date();
             now = new Date(now.getTime() + (Date.now() - loadedAt));
             var target = new Date(state === 'upcoming' ? C.campaign.periodStart + 'T00:00:00' : C.campaign.drawDate);
             var s = Math.floor(Math.max(0, target - now) / 1000);
@@ -277,9 +277,9 @@
         function howToEarn() {
             var r = C.ticketRule;
             var steps = [
-                ['gamepad', 'Play Daily Competition', 'Every round during the campaign'],
+                ['gamepad', 'Play Daily Competition', 'Every round this week'],
                 ['ticket', 'Earn tickets', 'Added after every round'],
-                ['trophy', 'Win prizes', I.f('Drawn on {d}', { d: shortDate(C.campaign.drawDate) })]
+                ['trophy', 'Win the grand prize', I.f('Drawn on {d}', { d: shortDate(C.campaign.drawDate) })]
             ];
             return '<div class="ld-annot">' + note('howToEarn') +
                 '<section class="card-simple ld-card">' +
@@ -297,16 +297,12 @@
             function winnersLabel(q) { return I.t(q + ' winner' + (q > 1 ? 's' : '')); }
             return '<div class="ld-annot">' + note('prizes') +
                 '<section class="card-simple ld-card">' +
-                    secHead(LD_ICON('gift'), 'Amazing Prizes', 'Up for grabs this period' + flag('prizes TBC')) +
+                    secHead(LD_ICON('gift'), 'Weekly Grand Prize', 'Up for grabs this week' + flag('prizes TBC')) +
                     '<div class="ld-prize-grand">' +
                         '<span class="ld-spark g1">' + SPARK + '</span><span class="ld-spark g2">' + SPARK + '</span>' +
                         (g.img ? '<span class="ld-prize-ico lg photo"><img class="ld-ill" src="' + g.img + '" alt="' + esc(g.item) + '"></span>' : '<span class="ld-prize-ico lg">' + LD_ICON(g.icon) + '</span>') +
                         '<div><span class="ld-prize-tag">' + esc(g.rank) + '</span><div class="ld-prize-name">' + esc(g.item) + '</div><div class="ld-prize-qty">' + winnersLabel(g.qty) + '</div></div>' +
                     '</div>' +
-                    '<div class="ld-prize-grid">' + list.slice(1).map(function (p) {
-                        return '<div class="ld-prize">' + (p.img ? '<span class="ld-prize-photo"><img src="' + p.img + '" alt="' + esc(p.item) + '"></span>' : '<span class="ld-prize-ico">' + LD_ICON(p.icon) + '</span>') +
-                            '<div><div class="ld-prize-name">' + esc(p.item) + '</div><div class="ld-prize-rank">' + esc(p.rank) + ' · ' + winnersLabel(p.qty) + '</div></div></div>';
-                    }).join('') + '</div>' +
                 '</section></div>';
         }
 
@@ -334,7 +330,7 @@
             var current =
                 '<div class="ld-track-stats">' +
                     '<div class="main"><span>Total tickets</span><b>' + t + '</b></div>' +
-                    '<div><span>Campaign period</span><b>' + shortDate(c.periodStart) + ' – ' + shortDate(c.periodEnd) + '</b></div>' +
+                    '<div><span>This week</span><b>' + shortDate(c.periodStart) + ' – ' + shortDate(c.periodEnd) + '</b></div>' +
                     '<div><span>Draw date</span><b>' + shortDate(c.drawDate) + '</b></div>' +
                 '</div>' +
                 '<div class="ld-track-sub"><span>Recent Activity</span>' + (rows.length ? '<em>' + rows.length + ' quizzes</em>' : '') + '</div>' +
@@ -344,7 +340,7 @@
                 return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
                     '<div class="ld-past-ico ' + (won ? 'won' : 'lost') + '">' + (won ? fa('fa-trophy') : BROKEN_TROPHY) + '</div>' +
                     '<div class="history-list-info">' +
-                        '<h4 class="history-list-info-name">' + esc(p.name) + '</h4>' +
+                        '<h4 class="history-list-info-name">' + I.f('Week of {d}', { d: shortDate(p.start) }) + '</h4>' +
                         '<div class="history-list-info-stats">' + shortDate(p.start) + ' – ' + LD.fmtDate(p.end) + '</div>' +
                         '<div class="history-list-date">' + I.f('Draw {d}', { d: LD.fmtDate(p.draw) }) + ' · <b class="' + (won ? 'ld-won' : '') + '">' + esc(p.result) + '</b></div>' +
                     '</div>' +
@@ -356,7 +352,7 @@
                     '<div class="ld-card-pad">' +
                         secHead(LD_ICON('ticket'), 'My Ticket Tracker', 'Your tickets and where they came from') +
                         '<div class="ld-tabs">' +
-                            '<button class="' + (trackerTab === 'current' ? 'on' : '') + '" data-tab="current">Current Period</button>' +
+                            '<button class="' + (trackerTab === 'current' ? 'on' : '') + '" data-tab="current">This Week</button>' +
                             '<button class="' + (trackerTab === 'history' ? 'on' : '') + '" data-tab="history">History</button>' +
                         '</div>' +
                     '</div>' +
@@ -369,7 +365,7 @@
             var c = C.campaign;
             return '<div class="ld-annot">' + note('period') +
                 '<section class="card-simple ld-card ld-period">' +
-                    '<div><span class="ld-mini-ico">' + LD_ICON('calendar') + '</span><div><div class="ld-stat-label">Campaign period</div><b>' + shortDate(c.periodStart) + ' – ' + LD.fmtDate(c.periodEnd) + '</b> <span class="ld-tag">Ended</span></div></div>' +
+                    '<div><span class="ld-mini-ico">' + LD_ICON('calendar') + '</span><div><div class="ld-stat-label">This week</div><b>' + shortDate(c.periodStart) + ' – ' + LD.fmtDate(c.periodEnd) + '</b> <span class="ld-tag">Ended</span></div></div>' +
                     '<div><span class="ld-mini-ico">' + LD_ICON('trophy') + '</span><div><div class="ld-stat-label">Draw date</div><b>' + LD.fmtDate(c.drawDate, true) + '</b> <span class="ld-tag live">Live</span></div></div>' +
                 '</section></div>';
         }
@@ -377,15 +373,10 @@
         // ---------- After the draw ----------
         function winners() {
             var win = state === 'completed-win', t = totalTickets(), P = C.campaign.prizes;
-            var list = [
-                ['09•••••4821', P[0], 'https://demo.quizpro.mobi//uploads/user/1/ava-eissa.png'],
-                ['09•••••1176', P[1], 'https://demo.quizpro.mobi//theme/images/dp.png'],
-                [win ? 'You' : '09•••••7302', P[1], 'https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg'],
-                ['09•••••5518', P[2], 'https://demo.quizpro.mobi//theme/images/dp.png']
-            ];
+            var list = [[win ? 'You' : '09•••••4821', P[0], win ? 'https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg' : 'https://demo.quizpro.mobi//uploads/user/1/ava-eissa.png']];
             var result = win
                 ? '<section class="ld-result win"><span class="ld-result-ico">' + LD_ICON('trophy') + '</span><div class="ld-result-title">Congratulations, you won!</div>' +
-                    '<div class="ld-result-prize">' + esc(P[1].item) + ' · ' + esc(P[1].rank) + '</div><div class="ld-result-text">Our team will contact you by SMS within 7 days.' + flag('claim process TBC') + '</div></section>'
+                    '<div class="ld-result-prize">' + esc(P[0].item) + ' · ' + esc(P[0].rank) + '</div><div class="ld-result-text">Our team will contact you by SMS within 7 days.' + flag('claim process TBC') + '</div></section>'
                 : '<section class="ld-result lose"><span class="ld-result-ico">' + LD_ICON('wheel') + '</span><div class="ld-result-title">Not this time</div>' +
                     '<div class="ld-result-text">' + I.f(t === 1 ? 'Your {n} ticket was entered in the draw. Keep playing for the next Lucky Draw!' : 'Your {n} tickets were entered in the draw. Keep playing for the next Lucky Draw!', { n: t }) + '</div>' +
                     '<a href="index.html#play" class="btn btn-lg button-primary w-100 ld-cta">Play Now</a></section>';
@@ -393,7 +384,7 @@
                 '<section class="card-simple-outer ld-card-outer">' +
                     '<div class="ld-card-pad">' + secHead(LD_ICON('trophy'), 'Winner Announcement', I.f('Drawn on {d}', { d: LD.fmtDate(C.campaign.drawDate, true) })) + '</div>' +
                     '<ul class="leaderboard">' + list.map(function (w, i) {
-                        var me = win && i === 2;
+                        var me = win;
                         return '<li class="leaderboard-winner' + (me ? ' ld-me' : '') + '"><div class="d-flex align-items-center w-100">' +
                             '<div class="leaderboard-winner-pict"><img src="' + w[2] + '" alt=""><span class="leaderboard-winner-rank ld-winner-rank">' + (i + 1) + '</span></div>' +
                             '<div class="leaderboard-winner-info"><h4 class="leaderboard-winner-info-name">' + w[0] + '</h4><div class="leaderboard-winner-info-stats">' + esc(w[1].item) + '</div></div>' +
@@ -408,7 +399,7 @@
                     '<li>Open to active QuizPro subscribers during the campaign period.' + flag('eligibility TBC') + '</li>' +
                     '<li>' + I.f('Tickets are earned from quizzes played between {a} and {b}.', { a: LD.fmtDate(C.campaign.periodStart), b: LD.fmtDate(C.campaign.periodEnd) }) + '</li>' +
                     '<li>Winners are selected at random from eligible entries on the draw date.</li>' +
-                    '<li>Each mobile number can win at most one prize per campaign.' + flag('TBC') + '</li>' +
+                    '<li>One winner is drawn each week, and tickets only count for the week they were earned.' + flag('TBC') + '</li>' +
                     '<li>Tickets are not transferable and cannot be exchanged for cash.</li>' +
                 '</ol></details></div>';
         }

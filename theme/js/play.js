@@ -14,6 +14,9 @@
     var level = D.LEVELS.filter(function (l) { return l.id === (parseInt(p.get('level'), 10) || 1); })[0] || D.LEVELS[0];
     var li = Math.max(0, I.LANGS.indexOf(I.current()));   // 0 en, 1 km, 2 zh
 
+    if (D.entriesLeft(level.id) <= 0) { location.replace('index.html#play'); return; }
+    D.useEntry(level.id);
+
     function text(v) { return typeof v === 'string' ? v : (v[li] || v[0]); }
     function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
     function $(id) { return document.getElementById(id); }
@@ -173,7 +176,7 @@
             log.unshift({
                 date: now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') +
                       ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
-                answered: answered, correct: correct
+                answered: answered, correct: correct, level: level.title, points: score
             });
             localStorage.setItem('qp_ld_activity', JSON.stringify(log.slice(0, 50)));
         } catch (e) {}

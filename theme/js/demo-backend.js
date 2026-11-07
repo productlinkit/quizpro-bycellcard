@@ -66,10 +66,23 @@
 
     // A round is 10 questions, 20 seconds each (see theme/js/play.js)
     var LEVELS = [
-        { id: 1, title: 'Beginner', points: 10, icon: 'fa-leaf', tagline: 'Easy questions to warm up' },
-        { id: 2, title: 'Intermediate', points: 20, icon: 'fa-bolt', tagline: 'A bit more challenging' },
-        { id: 3, title: 'Advance', points: 30, icon: 'fa-fire', tagline: 'For true quiz masters' }
+        { id: 1, title: 'Beginner', points: 10, entries: 1, icon: 'fa-leaf', tagline: 'Easy questions to warm up' },
+        { id: 2, title: 'Intermediate', points: 20, entries: 3, icon: 'fa-bolt', tagline: 'A bit more challenging' },
+        { id: 3, title: 'Advance', points: 30, entries: 3, icon: 'fa-fire', tagline: 'For true quiz masters' }
     ];
+
+    // Entries per level reset every day; a round uses one as soon as it starts. ?reset=1 clears them for demos.
+    var ENTRY_KEY = 'qp_entries_' + (user ? 'member' : 'guest');
+    if (param('reset') === '1') del(ENTRY_KEY);
+    function entryLog() {
+        var d = new Date(), day = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(), log = get(ENTRY_KEY);
+        return log && log.day === day ? log : { day: day, used: {} };
+    }
+    function entriesLeft(id) {
+        var l = LEVELS.filter(function (x) { return x.id === id; })[0];
+        return l ? Math.max(0, l.entries - (entryLog().used[id] || 0)) : 0;
+    }
+    function useEntry(id) { var log = entryLog(); log.used[id] = (log.used[id] || 0) + 1; set(ENTRY_KEY, log); }
 
     // ---------- Fake AJAX endpoints (custom.js) ----------
     var ROUTES = {
@@ -267,7 +280,7 @@
 
         // Level cards: touch screens have no hover, so the lift shows on press and stays a moment before leaving
         document.addEventListener('pointerdown', function (e) {
-            var c = e.target.closest('.lvl-card'); if (c) c.classList.add('is-press');
+            var c = e.target.closest('a.lvl-card'); if (c) c.classList.add('is-press');
         });
         ['pointerup', 'pointercancel'].forEach(function (type) {
             document.addEventListener(type, function () {
@@ -275,7 +288,7 @@
             });
         });
         document.addEventListener('click', function (e) {
-            var c = e.target.closest('.lvl-card');
+            var c = e.target.closest('a.lvl-card');
             if (!c || e.metaKey || e.ctrlKey) return;
             e.preventDefault();
             c.classList.add('is-press');
@@ -286,12 +299,23 @@
         if (page === 'index.html') {
             var homeList = document.getElementById('homeLevelList');
             if (homeList) {
-                homeList.innerHTML = LEVELS.map(function (l) {
-                    return '<a href="game-play.html?quick=1&level=' + l.id + '" class="lvl-card lvl-' + l.id + '">' +
-                        '<span class="lvl-ico"><span class="fa ' + l.icon + '"></span></span>' +
-                        '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + t(l.tagline) + '</small></span>' +
-                        '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span></a>';
-                }).join('');
+                var renderLevels = function () {
+                    homeList.innerHTML = LEVELS.map(function (l) {
+                        var left = entriesLeft(l.id), tag = left ? 'a href="game-play.html?quick=1&level=' + l.id + '"' : 'div aria-disabled="true"';
+                        return '<' + tag + ' class="lvl-card lvl-' + l.id + (left ? '' : ' is-out') + '">' +
+                            '<span class="lvl-ico"><span class="fa ' + l.icon + '"></span></span>' +
+                            '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + t(l.tagline) + '</small>' +
+                            '<em class="lvl-entries">' + (left ? f('Entries left: {n}/{m}', { n: left, m: l.entries }) : t('No entries left today')) + '</em></span>' +
+                            '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span>' +
+                            (left ? '</a>' : '</div>');
+                    }).join('');
+                };
+                renderLevels();
+                document.getElementById('level').addEventListener('show.bs.modal', renderLevels);
+                var banner = document.getElementById('levelBanner'), grand = window.LD_CONFIG && LD_CONFIG.campaign.prizes[0];
+                if (banner && grand) banner.innerHTML = '<span class="lvl-banner-photo"><img src="' + grand.img + '" alt=""></span>' +
+                    '<span class="lvl-banner-text"><em>' + t('Weekly Grand Prize') + '</em><b>' + t(grand.item) + '</b><small>' + t('Every round earns tickets') + '</small></span>' +
+                    '<span class="lvl-banner-go qf-icon-arrow-right"></span>';
                 function openLevels() { bootstrap.Modal.getOrCreateInstance(document.getElementById('level')).show(); }
                 document.getElementById('quickPlay').addEventListener('click', function (e) { e.preventDefault(); openLevels(); });
                 // Fresh open or refresh: splash, then straight to the level picker
@@ -351,5 +375,5 @@
         }
     });
 
-    window.QP_DEMO = { LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl, quick: quick, USER_AVATAR: USER_AVATAR };
+    window.QP_DEMO = { LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl, quick: quick, entriesLeft: entriesLeft, useEntry: useEntry, USER_AVATAR: USER_AVATAR };
 })();

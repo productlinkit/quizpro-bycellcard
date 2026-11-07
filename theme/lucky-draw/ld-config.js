@@ -3,17 +3,26 @@
  * Everything marked confirmed:false is NOT an agreed business rule yet.
  * Change values here; both the user page and the admin page read this file.
  */
+// The draw runs weekly, Monday to Sunday, so dates follow the calendar (offset 0 = this week, -1 = last week)
+window.LD_WEEK = (function () {
+  function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function day(week, plus) {
+    var d = new Date(); d.setHours(12, 0, 0, 0);
+    d.setDate(d.getDate() - (d.getDay() + 6) % 7 + week * 7 + plus);
+    return iso(d);
+  }
+  return { start: function (w) { return day(w, 0); }, end: function (w) { return day(w, 6); } };
+})();
+
 window.LD_CONFIG = {
   campaign: {
     name: 'QuizPro Lucky Draw',
-    periodStart: '2026-10-01',
-    periodEnd: '2026-10-31',
-    drawDate: '2026-11-03T15:00:00',
+    periodStart: LD_WEEK.start(0),
+    periodEnd: LD_WEEK.end(0),
+    drawDate: LD_WEEK.start(1) + 'T15:00:00',
     // Prize items are placeholders until the business confirms them
     prizes: [
-      { rank: 'Grand Prize', item: 'Smartphone', icon: 'phone', img: 'theme/lucky-draw/img/prize-phone.jpg', qty: 1 },
-      { rank: '2nd Prize', item: 'Wireless Earbuds', icon: 'earbuds', img: 'theme/lucky-draw/img/prize-earbuds.jpg', qty: 2 },
-      { rank: '3rd Prize', item: 'Cellcard Credit', icon: 'credit', img: 'theme/lucky-draw/img/prize-credit.jpg', qty: 5 }
+      { rank: 'Grand Prize', item: 'Smartphone', icon: 'phone', img: 'theme/lucky-draw/img/prize-phone.jpg', qty: 1 }
     ],
     confirmed: false
   },
@@ -24,7 +33,7 @@ window.LD_CONFIG = {
 
   // 'weighted' = each ticket is one entry (more tickets, more chances)
   // 'one-per-user' = every eligible user gets one entry regardless of ticket count
-  drawMethod: { type: 'weighted', winners: 8, backups: 2, confirmed: false },
+  drawMethod: { type: 'weighted', winners: 1, backups: 2, confirmed: false },
 
   // Proposed eligibility checks (admin side). confirmed:false = proposal from wireframe.
   eligibility: [
@@ -57,19 +66,16 @@ window.LD_CONFIG = {
 
 // Previous periods for the Ticket Tracker "History" tab (sample data)
 window.LD_PAST_PERIODS = [
-  { name: 'September 2026', start: '2026-09-01', end: '2026-09-30', draw: '2026-10-03', tickets: 14, result: 'Not won' },
-  { name: 'August 2026', start: '2026-08-01', end: '2026-08-31', draw: '2026-09-03', tickets: 6, result: 'Won · Cellcard Credit' },
-  { name: 'July 2026', start: '2026-07-01', end: '2026-07-31', draw: '2026-08-03', tickets: 3, result: 'Not won' }
+  { start: LD_WEEK.start(-1), end: LD_WEEK.end(-1), draw: LD_WEEK.start(0), tickets: 14, result: 'Not won' },
+  { start: LD_WEEK.start(-2), end: LD_WEEK.end(-2), draw: LD_WEEK.start(-1), tickets: 6, result: 'Won · Smartphone' },
+  { start: LD_WEEK.start(-3), end: LD_WEEK.end(-3), draw: LD_WEEK.start(-2), tickets: 3, result: 'Not won' }
 ];
 
 // Demo activity for the logged-in sample user (answered + correct stored so either basis works)
 window.LD_DEMO_ACTIVITY = [
-  { date: '2026-10-14 20:41', answered: 10, correct: 8 },
-  { date: '2026-10-14 08:12', answered: 10, correct: 6 },
-  { date: '2026-10-12 19:05', answered: 10, correct: 9 },
-  { date: '2026-10-09 12:30', answered: 7, correct: 3 },
-  { date: '2026-10-05 21:47', answered: 10, correct: 7 },
-  { date: '2026-10-02 17:20', answered: 4, correct: 2 }
+  { date: LD_WEEK.start(0) + ' 20:41', answered: 10, correct: 8 },
+  { date: LD_WEEK.start(0) + ' 08:12', answered: 10, correct: 6 },
+  { date: LD_WEEK.start(0) + ' 07:05', answered: 7, correct: 3 }
 ];
 
 window.LD = {
@@ -97,7 +103,11 @@ window.LD = {
 // Quizzes played in this demo copy (saved by demo-backend.js) come first in Ticket History
 (function () {
   try {
-    var played = JSON.parse(localStorage.getItem('qp_ld_activity')) || [];
+    // Tickets count for the week they were earned
+    var c = window.LD_CONFIG.campaign, played = (JSON.parse(localStorage.getItem('qp_ld_activity')) || []).filter(function (a) {
+      var day = a.date.slice(0, 10);
+      return day >= c.periodStart && day <= c.periodEnd;
+    });
     window.LD_DEMO_ACTIVITY = played.concat(window.LD_DEMO_ACTIVITY);
   } catch (e) {}
 })();
