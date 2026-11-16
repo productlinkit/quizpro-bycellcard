@@ -144,3 +144,11 @@
 .comp-ill,.splash-owl{filter:drop-shadow(0 12px 10px rgba(12,9,42,0.35))}
 @media (prefers-reduced-motion:reduce){.bike-all,.bike-wheel,.bike-puff circle,.bike-speed path,.bike-eye,.bike-lids{animation:none}}
 .fb-owl{width:74px;height:62px;left:2px;top:-4px;object-position:50% 50%;filter:drop-shadow(0 0 1.5px rgba(255,255,255,.95)) drop-shadow(0 6px 8px rgba(12,9,42,.45))}
+
+/* bottom nav: Play · Prize · Account (same look as before, three tabs with a small label) */
+.bottom-nav .col{min-width:33.333%}
+.bottom-nav .nav-box{padding-top:.75rem;padding-bottom:.625rem}
+.bottom-nav .nav-box-ico{display:flex;flex-direction:column;align-items:center;gap:2px}
+.bottom-nav .nav-label{font-size:.6875rem;font-weight:bold;line-height:1.2}
+.mq-lb-more{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;font-weight:bold;color:#FE9E44;text-decoration:none;border-top:1px solid #EFEEFC}
+.mq-lb-more:hover{color:#e8862b}

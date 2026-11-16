@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="theme/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="theme/css/leaderboard.css?v=3">
     <link rel="stylesheet" href="theme/lucky-draw/ld.css">
     <link rel="icon" type="image/png" href="theme/images/motorquiz-icon.png">
     <link rel="stylesheet" href="theme/css/motorquiz.css">
@@ -18,7 +19,7 @@
         <div class="page-header">
             <div class="box-wrapper mx-auto text-center position-relative">
                 <a href="index.html" class="page-header-back"><span class="qf-icon-back"></span></a>
-                Lucky Draw
+                Prize
             </div>
         </div>
 
@@ -26,13 +27,24 @@
 
         <div class="bottom-spacer" style="height: 65px;"></div>
         <div class="bottom-nav">
-            <div class="bottom-nav-bg row gx-0 box-wrapper mx-auto container-fluid">
-                <div class="col"><div class="nav-box"><a href="index.html" class="nav-box-ico"><span class="qf-icon-home"></span></a></div></div>
-                <div class="col active"><div class="nav-box"><a href="lucky-draw.html" class="nav-box-ico"><svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7M12 8v13M12 8S10.6 3.4 7.9 3.7C5.9 4 6.2 7.5 9 8M12 8s1.4-4.6 4.1-4.3c2 .3 1.7 3.8-1.1 4.3"/></svg></a></div></div>
-                <div class="col"><div class="nav-box"><a href="leaderboard.html" class="nav-box-ico"><span class="qf-icon-leaderboard"></span></a></div></div>
-                <div class="col"><div class="nav-box"><a href="profile.html" class="nav-box-ico"><span class="qf-icon-profile"></span></a></div></div>
+    <div class="bottom-nav-bg row gx-0 box-wrapper mx-auto container-fluid">
+        <div class="col">
+            <div class="nav-box">
+                <a href="index.html" class="nav-box-ico"><span class="qf-icon-game"></span><span class="nav-label">Play</span></a>
             </div>
         </div>
+        <div class="col active">
+            <div class="nav-box">
+                <a href="lucky-draw.html" class="nav-box-ico"><svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7M12 8v13M12 8S10.6 3.4 7.9 3.7C5.9 4 6.2 7.5 9 8M12 8s1.4-4.6 4.1-4.3c2 .3 1.7 3.8-1.1 4.3"/></svg><span class="nav-label">Prize</span></a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="nav-box">
+                <a href="profile.html" class="nav-box-ico"><span class="qf-icon-profile"></span><span class="nav-label">Account</span></a>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 
     <!-- Prototype review panel (not part of the product UI) -->
@@ -397,6 +409,27 @@
                 '</section></div>';
         }
 
+        // ---------- Monthly leaderboard standings (Top 5 win cash) ----------
+        function standings() {
+            var M = MQ.CONFIG, list = MQ.leaderboard(), top = list.slice(0, M.leaderboardPrizes.length), me = list.filter(function (p) { return p.me; })[0];
+            var MEDAL = ['gold', 'silver', 'bronze'];
+            function row(p) {
+                var medal = p.rank <= 3;
+                return '<li class="leaderboard-winner' + (medal ? ' top ' + MEDAL[p.rank - 1] : '') + (p.me ? ' is-you' : '') + '"><div class="d-flex align-items-center">' +
+                    (medal ? '<span class="lb-rank lb-medal ' + MEDAL[p.rank - 1] + '"><span class="lb-medal-ribbon"></span><span class="lb-medal-face">' + p.rank + '</span></span>'
+                           : '<span class="lb-rank lb-num"><span>' + p.rank + '</span></span>') +
+                    '<div class="leaderboard-winner-pict">' + (p.me ? '<img src="' + QP_DEMO.USER_AVATAR + '" alt="">' : '<span class="leaderboard-initial" style="background-color:' + p.color + '"><span class="qf-icon-profile"></span></span>') + '</div>' +
+                    '<div class="leaderboard-winner-info"><h4 class="leaderboard-winner-info-name">' + esc(p.name) + (p.me ? ' <span class="lb-you">You</span>' : '') + '</h4>' +
+                    '<div class="leaderboard-winner-info-stats"><b>' + p.points.toLocaleString('en-US') + '</b> points</div></div>' +
+                    (p.prize ? '<span class="mq-cash ms-auto">' + MQ.money(p.prize) + '</span>' : '') + '</div></li>';
+            }
+            return '<section class="card-simple-outer ld-card-outer">' +
+                    '<div class="ld-card-pad">' + secHead(LD_ICON('trophy'), 'Monthly Leaderboard', 'Top 5 win ' + M.leaderboardPrizes.map(MQ.money).join(' / ')) + '</div>' +
+                    '<ul class="leaderboard">' + top.map(row).join('') + (me && me.rank > top.length ? row(me) : '') + '</ul>' +
+                    '<a href="leaderboard.html" class="mq-lb-more">See full leaderboard <span class="qf-icon-arrow-right"></span></a>' +
+                '</section>';
+        }
+
         function terms() {
             return '<div class="ld-annot">' + note('terms') +
                 '<details class="card-simple ld-card ld-terms"><summary>' + fa('fa-file-text-o') + ' Terms &amp; Conditions</summary><ol>' +
@@ -411,10 +444,10 @@
         function render() {
             document.body.classList.toggle('ld-notes', notes);
             var html;
-            if (state === 'guest') html = hero() + howToEarn() + prizes();
-            else if (state === 'drawing') html = hero() + period() + prizes() + tracker();
-            else if (state.indexOf('completed') === 0) html = winners() + prizes() + tracker();
-            else html = hero() + howToEarn() + prizes() + tracker();
+            if (state === 'guest') html = hero() + howToEarn() + prizes() + standings();
+            else if (state === 'drawing') html = hero() + period() + prizes() + standings() + tracker();
+            else if (state.indexOf('completed') === 0) html = winners() + prizes() + standings() + tracker();
+            else html = hero() + howToEarn() + prizes() + standings() + tracker();
             html += terms();
             $root.innerHTML = html;
             startReel();
