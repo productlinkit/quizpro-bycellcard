@@ -17,7 +17,8 @@
     if (!plan || plan.left <= 0) { location.replace(plan ? 'index.html' : 'subscribe.html'); return; }
     var ROUND = Math.min(C.roundSize, plan.left);
     var D = window.QP_DEMO, lp = parseInt(new URLSearchParams(location.search).get('level'), 10);
-    var level = D.LEVELS.filter(function (l) { return l.id === lp; })[0] || D.LEVELS[0];   // every level: 1 point per correct answer
+    var level = D.LEVELS.filter(function (l) { return l.id === lp; })[0];   // every level: 1 point per correct answer
+    if (!level) { location.replace('index.html#play'); return; }            // a level is always chosen first
 
     function text(v) { return typeof v === 'string' ? v : (v[li] || v[0]); }
     function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
