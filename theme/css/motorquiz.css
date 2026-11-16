@@ -461,3 +461,7 @@
 .splash-bar{animation:splashUp .5s 1.6s ease-out backwards}
 .splash-bar i{animation-duration:2.9s !important}
 @media (prefers-reduced-motion:reduce){.splash-logo.mq-splash-logo,.splash-rays,.splash-ring{animation:none;opacity:1}.splash-ring{display:none}}
+/* Grand Prize card uses the same banner as the Play tab */
+.ld-prize-grand .ld-prize-ico.lg.photo{aspect-ratio:900/507;padding:0;background:none;box-shadow:0 8px 16px -10px rgba(160,60,0,.6);overflow:hidden;position:relative}
+.ld-prize-grand .ld-prize-ico.lg.photo img{object-fit:cover;filter:none;animation:none;border-radius:14px}
+.ld-prize-grand .ld-prize-ico.lg.photo::after{content:'';position:absolute;top:0;bottom:0;left:-50%;width:35%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);animation:mqShine 5s ease-in-out infinite}

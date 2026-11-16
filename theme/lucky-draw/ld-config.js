@@ -22,7 +22,7 @@ window.LD_CONFIG = {
     drawDate: LD_WEEK.start(1) + 'T15:00:00',
     // Confirmed: 1 motorbike every week, valued at $2,500. Draw dates/times are still placeholders.
     prizes: [
-      { rank: 'Grand Prize', item: 'Motorbike', value: 2500, icon: 'gift', img: 'theme/images/prize-motorbike.webp', qty: 1 }
+      { rank: 'Grand Prize', item: 'Motorbike', value: 2500, icon: 'gift', img: 'theme/images/daily-banner.webp', qty: 1 }
     ],
     confirmed: true,
     datesConfirmed: false
