@@ -314,6 +314,12 @@
                 var note = document.getElementById('levelLeft');
                 if (note) note.textContent = left ? f('{n} questions left in your plan', { n: left }) : t('No questions left in your plan');
             };
+            // Grand prize under the levels (prize details from the Lucky Draw config)
+            var grand = window.LD_CONFIG && LD_CONFIG.campaign.prizes[0];
+            if (grand && document.getElementById('levelPrizeName')) {
+                document.getElementById('levelPrizeName').textContent = t(grand.item);
+                document.getElementById('levelPrizeValue').textContent = f('Worth {v} · every week', { v: '$' + grand.value.toLocaleString('en-US') });
+            }
             var levelModal = document.getElementById('level');
             if (levelModal) levelModal.addEventListener('show.bs.modal', renderLevels);
             function canPlay() { var s = window.MQ && MQ.sub(); return !!(user && s && s.left > 0); }
