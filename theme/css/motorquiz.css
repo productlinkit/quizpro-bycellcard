@@ -442,3 +442,22 @@
 .mq-hero .comp-time{top:20px;right:20px}
 @media (prefers-reduced-motion:reduce){.mq-banner-shine{animation:none}}
 .mq-chip-time{font-variant-numeric:tabular-nums}
+
+/* Splash: logo only. Spins like a coin, rushes toward the viewer, then settles in slow motion */
+.splash-glow{margin-top:-150px}
+.splash-stage{position:relative;display:block;perspective:700px;margin-bottom:6px}
+.splash-logo.mq-splash-logo{display:block;height:auto;width:260px;max-width:72vw;margin:0;background:none;padding:0;transform-origin:50% 50%;
+    animation:mqLogoSpin 1.15s cubic-bezier(.3,.1,.4,1) both,mqLogoRush .32s 1.15s cubic-bezier(.5,0,.9,.4) forwards,mqLogoSettle 1.2s 1.47s cubic-bezier(.12,.75,.2,1) forwards,mqLogoGlow 2.4s 2.6s ease-in-out infinite}
+@keyframes mqLogoSpin{0%{opacity:0;transform:scale(.32) rotateY(-720deg)}25%{opacity:1}100%{opacity:1;transform:scale(.42) rotateY(0deg)}}
+@keyframes mqLogoRush{0%{transform:scale(.42);filter:blur(0)}100%{transform:scale(1.45);filter:blur(5px) drop-shadow(0 0 30px rgba(255,255,255,.9))}}
+@keyframes mqLogoSettle{0%{transform:scale(1.45);filter:blur(4px) drop-shadow(0 0 30px rgba(255,255,255,.9))}100%{transform:scale(1);filter:blur(0) drop-shadow(0 8px 14px rgba(120,40,0,.35))}}
+@keyframes mqLogoGlow{50%{filter:drop-shadow(0 0 16px rgba(255,255,255,.75)) drop-shadow(0 8px 14px rgba(120,40,0,.35))}}
+/* light burst + ring at the moment it rushes forward */
+.splash-rays{position:absolute;left:50%;top:50%;width:620px;height:620px;margin:-340px 0 0 -310px;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.28) 0 5deg,transparent 5deg 18deg);-webkit-mask:radial-gradient(circle,transparent 18%,#000 30%,transparent 70%);mask:radial-gradient(circle,transparent 18%,#000 30%,transparent 70%);opacity:0;animation:mqRays .9s 1.2s ease-out both,mqRaysSpin 14s 1.2s linear infinite}
+@keyframes mqRays{0%{opacity:0;transform:scale(.4)}35%{opacity:1}100%{opacity:.45;transform:scale(1)}}
+@keyframes mqRaysSpin{to{rotate:360deg}}
+.splash-ring{position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-130px 0 0 -100px;border-radius:50%;border:3px solid rgba(255,255,255,.85);opacity:0;animation:mqRing .8s 1.4s ease-out forwards}
+@keyframes mqRing{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(2.6)}}
+.splash-bar{animation:splashUp .5s 1.6s ease-out backwards}
+.splash-bar i{animation-duration:2.9s !important}
+@media (prefers-reduced-motion:reduce){.splash-logo.mq-splash-logo,.splash-rays,.splash-ring{animation:none;opacity:1}.splash-ring{display:none}}
