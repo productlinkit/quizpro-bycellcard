@@ -54,8 +54,10 @@
                 <div class="home-profile-status">1234567890</div>
             </div>
         </div>
-        <div class="mq-acct" id="acctSub"></div>
     </div>
+
+    <!-- My Subscription -->
+    <section class="mq-subcard" id="acctSub"></section>
 
     <div class="card-simple-outer">
         <ul class="menu">
@@ -188,31 +190,41 @@
         })();
     </script>
     <script>
-        // My plan: status, dates, plays left, points, entries and one clear next step (rules in motorquiz.js)
+        // My Subscription: plan, price, status, date, plays left and clear actions (rules in motorquiz.js)
         (function () {
             var root = document.getElementById('acctSub');
             function when(ms) { return QP_I18N.date(new Date(ms), { time: true, noYear: true }); }
-            function stat(v, label) { return '<div><b>' + v + '</b><span>' + label + '</span></div>'; }
             function paint() {
-                var s = MQ.sub(), st = MQ.stats(), html;
+                var s = MQ.sub();
                 if (!s) {
-                    html = '<div class="mq-acct-head"><div><span class="mq-acct-label">My plan</span><b>No active plan</b></div></div>' +
-                        '<p class="mq-acct-note">Subscribe to play and collect Lucky Draw entries.</p>' +
-                        '<a href="subscribe.html" class="btn btn-lg button-primary w-100">' + (MQ.trialAvailable() ? 'Start Free Trial' : 'Subscribe') + '</a>';
-                } else {
-                    var p = s.plan, name = p.trial ? 'Free 1-Day Trial' : p.name;
-                    var pill = p.trial ? '<span class="mq-pill on">Trial</span>' : s.cancelled ? '<span class="mq-pill off">Unsubscribed</span>' : '<span class="mq-pill on">Active</span>';
-                    var date = p.trial || s.cancelled ? 'Ends ' + when(s.periodEnd) : MQ.money(p.price) + '/' + p.per + ' · renews ' + when(s.periodEnd);
-                    var actions = p.trial ? '<a href="subscribe.html?change=1" class="btn btn-lg button-primary w-100">Subscribe Now</a>'
-                        : s.cancelled ? '<a href="subscribe.html" class="btn btn-lg button-primary w-100">Subscribe Again</a>'
-                        : '<a href="subscribe.html?change=1" class="btn mq-btn-outline w-100">Change Plan</a>' +
-                          '<button type="button" class="mq-acct-link" data-bs-toggle="modal" data-bs-target="#modalUnsub">Unsubscribe</button>';
-                    html = '<div class="mq-acct-head"><div><span class="mq-acct-label">My plan</span><b>' + name + '</b></div>' + pill + '</div>' +
-                        '<div class="mq-acct-date">' + date + '</div>' +
-                        '<div class="mq-acct-plays"><span>Plays left</span><b>' + s.left + '/' + p.questions + '</b></div>' +
-                        actions;
+                    var trial = MQ.trialAvailable();
+                    root.className = 'mq-subcard is-none';
+                    root.innerHTML = '<div class="mq-subcard-empty"><img src="theme/images/bike-happy.svg" alt="">' +
+                        '<b>No active plan</b><span>Subscribe to play the quiz and join the weekly motorbike draw.</span></div>' +
+                        '<div class="mq-subcard-body"><a href="subscribe.html" class="btn btn-lg button-primary w-100">' + (trial ? 'Start Free Trial' : 'Subscribe') + '</a></div>';
+                    return;
                 }
-                root.innerHTML = html;
+                var p = s.plan, kind = p.trial ? 'is-trial' : s.cancelled ? 'is-off' : 'is-on';
+                var status = p.trial ? 'Free Trial' : s.cancelled ? 'Unsubscribed' : 'Active';
+                var price = p.trial ? '<b>Free</b><small>for 1 day</small>' : '<b>' + MQ.money(p.price) + '</b><small>per ' + p.per + '</small>';
+                var dateLabel = p.trial ? 'Trial ends' : s.cancelled ? 'Active until' : 'Renews on';
+                var pct = Math.round(s.left / p.questions * 100);
+                var actions = p.trial ? '<a href="subscribe.html?change=1" class="btn btn-lg button-primary w-100">Subscribe Now</a>'
+                    : s.cancelled ? '<a href="subscribe.html" class="btn btn-lg button-primary w-100">Subscribe Again</a>'
+                    : '<div class="mq-subcard-actions"><a href="subscribe.html?change=1" class="btn btn-lg button-primary">Change Plan</a>' +
+                      '<button type="button" class="btn btn-lg mq-btn-quiet" data-bs-toggle="modal" data-bs-target="#modalUnsub">Unsubscribe</button></div>';
+                root.className = 'mq-subcard ' + kind;
+                root.innerHTML =
+                    '<div class="mq-subcard-head"><span class="mq-subcard-deco" aria-hidden="true"></span>' +
+                        '<div class="mq-subcard-top"><span class="mq-subcard-label">My Subscription</span><span class="mq-subcard-status"><i></i>' + status + '</span></div>' +
+                        '<div class="mq-subcard-plan"><b>' + (p.trial ? 'Free 1-Day Trial' : p.name) + '</b><span class="mq-subcard-price">' + price + '</span></div>' +
+                    '</div>' +
+                    '<div class="mq-subcard-body">' +
+                        '<div class="mq-subcard-row"><span class="mq-subcard-ico fa fa-calendar"></span><span>' + dateLabel + '</span><b>' + when(s.periodEnd) + '</b></div>' +
+                        '<div class="mq-subcard-row"><span class="mq-subcard-ico fa fa-tachometer"></span><span>Plays left</span><b>' + s.left + '/' + p.questions + '</b></div>' +
+                        '<span class="mq-fuel-bar mq-subcard-bar' + (pct <= 30 ? ' low' : '') + '"><i style="width:' + pct + '%"></i></span>' +
+                        actions +
+                    '</div>';
             }
             document.getElementById('btnUnsubConfirm').addEventListener('click', function () {
                 MQ.cancel(); paint();
