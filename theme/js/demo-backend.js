@@ -314,10 +314,6 @@
                 var note = document.getElementById('levelLeft');
                 if (note) note.textContent = left ? f('{n} questions left in your plan', { n: left }) : t('No questions left in your plan');
             };
-            var banner = document.getElementById('levelBanner'), grand = window.LD_CONFIG && LD_CONFIG.campaign.prizes[0];
-            if (banner && grand) banner.innerHTML = '<span class="lvl-banner-photo"><img src="' + grand.img + '" alt=""></span>' +
-                '<span class="lvl-banner-text"><em>' + t('Weekly Grand Prize') + '</em><b>' + t(grand.item) + '</b><small>' + t('Every 5 correct answers = +1 entry') + '</small></span>' +
-                '<span class="lvl-banner-go qf-icon-arrow-right"></span>';
             var levelModal = document.getElementById('level');
             if (levelModal) levelModal.addEventListener('show.bs.modal', renderLevels);
             function canPlay() { var s = window.MQ && MQ.sub(); return !!(user && s && s.left > 0); }

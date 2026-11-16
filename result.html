@@ -56,20 +56,6 @@
             </div>
             <div class="res-answered"><span id="r-answered">0/10</span> <span>Questions answered</span> · <span id="r-level">Beginner</span></div>
 
-            <div class="mq-card text-start" id="r-mq">
-                <div class="mq-stats" style="margin-top:0">
-                    <div class="mq-stat"><span class="mq-stat-ico q"><span class="fa fa-question"></span></span><b id="r-left">0</b><small>Questions left</small></div>
-                    <div class="mq-stat"><span class="mq-stat-ico p"><span class="fa fa-star"></span></span><b id="r-total">0</b><small>Total points</small></div>
-                    <div class="mq-stat"><span class="mq-stat-ico e"><span class="fa fa-ticket"></span></span><b id="r-entries">0</b><small>Draw entries</small></div>
-                </div>
-                <div class="mq-bonus">
-                    <div class="mq-bonus-top"><span><span class="fa fa-ticket"></span> Next bonus entry</span><b id="r-prog">0/5 correct</b></div>
-                    <div class="mq-bonus-dots" id="r-prog-dots"></div>
-                    <div class="mq-bonus-note" id="r-prog-note"></div>
-                </div>
-                <a href="lucky-draw.html" class="d-flex align-items-center justify-content-between mt-3 text-decoration-none fw-bold" style="color:var(--mq-orange)"><span><span class="fa fa-trophy"></span> Weekly Motorbike Lucky Draw</span><span class="fa fa-angle-right"></span></a>
-            </div>
-
             <div class="res-actions">
                 <a href="#" class="btn btn-lg btn-on-bg res-btn" id="r-again"><span class="qf-icon-replay"></span> Play Again</a>
                 <a href="index.html" class="btn btn-lg res-btn res-btn-ghost"><span class="qf-icon-home"></span> Home</a>
@@ -93,15 +79,7 @@
         document.getElementById('r-bonus').textContent = '+' + (+p.get('bonus') || 0);
         document.getElementById('r-time').textContent = I.f('{n} sec', { n: +p.get('time') || 0 });
 
-        // Plan, points and entries after this round
-        var plan = MQ.sub(), st = MQ.stats(), need = C.bonus.everyCorrect;
-        document.getElementById('r-left').textContent = plan ? plan.left : 0;
-        document.getElementById('r-total').textContent = st.points.toLocaleString('en-US');
-        document.getElementById('r-entries').textContent = st.entries;
-        document.getElementById('r-prog').textContent = st.progress + '/' + need + ' correct';
-        document.getElementById('r-prog-dots').style.gridTemplateColumns = 'repeat(' + need + ',1fr)';
-        document.getElementById('r-prog-dots').innerHTML = Array.apply(null, Array(need)).map(function (x, i) { return '<i class="' + (i < st.progress ? 'on' : '') + '"></i>'; }).join('');
-        document.getElementById('r-prog-note').textContent = (need - st.progress) + ' more correct answer' + (need - st.progress === 1 ? '' : 's') + ' = +' + C.bonus.entries + ' Lucky Draw entry';
+        var plan = MQ.sub();
 
         // Play Again while the plan still has questions
         var again = document.getElementById('r-again');

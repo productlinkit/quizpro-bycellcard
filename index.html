@@ -90,17 +90,9 @@
             <span><span class="fa fa-check-circle"></span> True or False</span>
         </span>
         <span class="comp-btn"><span class="fa fa-play"></span> <span id="compBtn">Play Now</span></span>
-        <span class="comp-plan" id="compPlan"></span>
     </a>
 
-    <a href="lucky-draw.html" class="ld-entry ld-entry-home" id="homeTickets">
-        <span class="ld-entry-ico"><img class="ld-ill" src="theme/lucky-draw/img/ticket.png" alt=""></span>
-        <span>
-            <span class="ld-entry-title d-block" id="homeTicketTitle">My Lucky Draw entries</span>
-            <span class="ld-entry-sub d-block" id="homeTicketCount">Win a motorbike every week</span>
-        </span>
-        <span class="ld-entry-go qf-icon-arrow-right"></span>
-    </a>
+
 
 
 
@@ -144,7 +136,6 @@
                         <h3 class="modal-level-title">Choose your level</h3>
                         <p class="mq-level-left" id="levelLeft"></p>
                         <div class="modal-level-option" id="homeLevelList"></div>
-                        <a href="lucky-draw.html" class="lvl-banner" id="levelBanner"></a>
                     </div>
                 </div>
             </div>
@@ -161,28 +152,16 @@
     <script src="theme/js/custom.js"></script>
     <script src="theme/lucky-draw/ld-config.js"></script>
     <script>
-        // Home: plan status, questions left, points and Lucky Draw entries (rules in theme/js/motorquiz.js)
+        // Home: plan status and questions left (rules in theme/js/motorquiz.js)
         (function () {
-            var C = MQ.CONFIG, user = QP_DEMO.user, s = user && MQ.sub(), st = MQ.stats();
+            var user = QP_DEMO.user, s = user && MQ.sub(), st = MQ.stats();
             function $(id) { return document.getElementById(id); }
             var pts = document.querySelector('.home-profile-points');
             if (pts) pts.lastChild.textContent = ' ' + st.points.toLocaleString('en-US');
-            if (!user) {
-                $('homeTickets').href = QP_DEMO.loginUrl('index.html');
-                $('homeTicketCount').textContent = 'Login to earn Lucky Draw entries';
-                $('compBtn').textContent = 'Start Free Trial';
-                return;
-            }
+            if (!user) { $('compBtn').textContent = 'Start Free Trial'; return; }
             document.querySelectorAll('.home-profile-status').forEach(function (el) { el.textContent = s ? (s.plan.trial ? 'Free Trial' : s.plan.name) : 'No active plan'; });
-            $('homeTicketTitle').textContent = st.entries + ' Lucky Draw entr' + (st.entries === 1 ? 'y' : 'ies');
-            $('homeTicketCount').textContent = 'Next bonus entry: ' + st.progress + '/' + C.bonus.everyCorrect + ' correct';
-            if (!s) {
-                $('compBtn').textContent = MQ.trialAvailable() ? 'Start Free Trial' : 'Subscribe Now';
-                $('compPlan').textContent = 'Choose a plan to play';
-                return;
-            }
+            if (!s) { $('compBtn').textContent = MQ.trialAvailable() ? 'Start Free Trial' : 'Subscribe Now'; return; }
             $('compQs').textContent = s.left + '/' + s.plan.questions + ' questions left';
-            $('compPlan').innerHTML = (s.plan.trial ? 'Free 1-Day Trial' : s.plan.name) + ' · ' + st.points.toLocaleString('en-US') + ' points · ' + st.entries + ' entries';
             if (!s.left) $('compBtn').textContent = 'All questions played';
         })();
     </script>

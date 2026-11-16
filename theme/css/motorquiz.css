@@ -182,3 +182,5 @@
 .mq-spinner{display:block;width:48px;height:48px;margin:0 auto 16px;border-radius:50%;border:4px solid var(--mq-soft);border-top-color:var(--mq-orange);animation:mqSpin .8s linear infinite}
 @keyframes mqSpin{to{transform:rotate(360deg)}}
 .mq-level-left{color:#fff;text-align:center;font-size:.875rem;font-weight:bold;margin:-8px 0 18px;opacity:.95}
+.mq-acct-plays{display:flex;align-items:center;justify-content:space-between;background:#F7F7FA;border-radius:14px;padding:10px 14px;margin:12px 0;font-size:.875rem;color:var(--mq-muted)}
+.mq-acct-plays b{color:var(--mq-ink);font-size:1rem}

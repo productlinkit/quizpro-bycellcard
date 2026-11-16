@@ -67,7 +67,6 @@
     function drawPlan() {
         var st = MQ.stats(), need = C.bonus.everyCorrect, s = MQ.sub();
         $('gp-left').textContent = s ? s.left : 0;
-        $('gp-entries').textContent = st.entries;
         $('gp-bonus').textContent = st.progress + '/' + need;
         $('gp-bonus-fill').style.width = (st.progress / need * 100) + '%';
     }
@@ -170,7 +169,6 @@
             correct++; streak++; score += POINTS;
             gotBonus = MQ.addCorrect(); if (gotBonus) bonus += C.bonus.entries;
             drawPlan();
-            if (gotBonus) { $('gp-entry-chip').classList.remove('pop'); void $('gp-entry-chip').offsetWidth; $('gp-entry-chip').classList.add('pop'); }
             $('gp-score').textContent = score;
             $('gp-score').classList.remove('pop'); void $('gp-score').offsetWidth; $('gp-score').classList.add('pop');
             $('gp-gain').textContent = '+' + POINTS;

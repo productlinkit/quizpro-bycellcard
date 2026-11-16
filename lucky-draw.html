@@ -108,13 +108,6 @@
         function fa(name) { return '<span class="fa ' + name + '"></span>'; }
         // The win trophy split in two: each piece is the same glyph clipped along one jagged line
         var BROKEN_TROPHY = '<i class="fa fa-trophy ld-shard l"></i><i class="fa fa-trophy ld-shard r"></i>';
-        function ruleText() {
-            var r = C.ticketRule;
-            return I.f('You get {tickets} for every {every}.', {
-                tickets: '<b>' + I.f(r.tickets > 1 ? '{n} tickets' : '{n} ticket', { n: r.tickets }) + '</b>',
-                every: '<b>' + I.f('{n} ' + LD.basisLabel(r), { n: r.every }) + '</b>'
-            });
-        }
 
         // Entries = plan entries (Daily 1, Weekly 7) + 1 bonus entry for every 5 correct answers (theme/js/motorquiz.js)
         var MS = MQ.stats();
@@ -284,24 +277,6 @@
             }
         }
 
-        // ---------- How to earn ----------
-        function howToEarn() {
-            var r = C.ticketRule;
-            var steps = [
-                ['gamepad', 'Subscribe', 'Daily: 1 entry · Weekly: 7 entries'],
-                ['ticket', 'Answer correctly', '+1 entry every 5 correct'],
-                ['trophy', 'Win the motorbike', I.f('Drawn on {d}', { d: shortDate(C.campaign.drawDate) })]
-            ];
-            return '<div class="ld-annot">' + note('howToEarn') +
-                '<section class="card-simple ld-card">' +
-                    secHead(LD_ICON('idea'), 'How to Earn Entries', '3 simple steps') +
-                    '<div class="ld-steps-h">' + steps.map(function (s, i) {
-                        return '<div class="ld-step-h"><span class="ld-step-ico">' + LD_ICON(s[0]) + '<i>' + (i + 1) + '</i></span><b>' + s[1] + '</b><small>' + s[2] + '</small></div>';
-                    }).join('') + '</div>' +
-                    '<div class="ld-rule">' + LD_ICON('ticket') + '<span>Daily Plan gives <b>1 entry</b>, Weekly Plan gives <b>7 entries</b>, and every <b>5 correct answers</b> give <b>1 more entry</b>.</span></div>' +
-                '</section></div>';
-        }
-
         // ---------- Prizes ----------
         function prizes() {
             var list = C.campaign.prizes, g = list[0];
@@ -314,65 +289,6 @@
                         (g.img ? '<span class="ld-prize-ico lg photo"><img class="ld-ill" src="' + g.img + '" alt="' + esc(g.item) + '"></span>' : '<span class="ld-prize-ico lg">' + LD_ICON(g.icon) + '</span>') +
                         '<div><span class="ld-prize-tag">' + esc(g.rank) + '</span><div class="ld-prize-name">' + esc(g.item) + '</div><div class="ld-prize-qty">' + (g.value ? 'Worth ' + MQ.money(g.value) + ' · ' : '') + winnersLabel(g.qty) + '</div></div>' +
                     '</div>' +
-                '</section></div>';
-        }
-
-        // ---------- Ticket tracker ----------
-        var trackerTab = 'current';
-        function activityRows(rows) {
-            var r = C.ticketRule;
-            return rows.length ? rows.map(function (a) {
-                var n = a.bonus;
-                if (a.plan) return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
-                    '<div class="history-list-pict"><span class="fa fa-mobile"></span></div>' +
-                    '<div class="history-list-info"><h4 class="history-list-info-name">Plan entries</h4>' +
-                        '<div class="history-list-info-stats">Included with your subscription</div></div>' +
-                    '<span class="ld-plus">+' + n + ' ' + fa('fa-ticket') + '</span></div></li>';
-                return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
-                    '<div class="history-list-pict"><span class="fa fa-trophy"></span></div>' +
-                    '<div class="history-list-info">' +
-                        '<h4 class="history-list-info-name">Daily Competition</h4>' +
-                        '<div class="history-list-info-stats">' +
-                            a.answered + ' answered · <span class="ld-em">' + a.correct + ' correct</span></div>' +
-                            '' +
-                        '<div class="history-list-date">' + LD.fmtDate(a.date, true) + '</div>' +
-                    '</div>' +
-                    '<span class="ld-plus' + (n ? '' : ' zero') + '">+' + n + ' ' + fa('fa-ticket') + '</span>' +
-                '</div></li>';
-            }).join('') : '<li class="ld-empty">' + LD_ICON('ticket') + '<b>No entries yet</b>Subscribe and play to earn your first entry.</li>';
-        }
-        function tracker() {
-            var c = C.campaign, t = totalTickets(), rows = activity();
-            var current =
-                '<div class="ld-track-stats">' +
-                    '<div class="main"><span>Total entries</span><b>' + t + '</b></div>' +
-                    '<div><span>This week</span><b>' + shortDate(c.periodStart) + ' – ' + shortDate(c.periodEnd) + '</b></div>' +
-                    '<div><span>Draw date</span><b>' + shortDate(c.drawDate) + '</b></div>' +
-                '</div>' +
-                '<div class="ld-track-sub"><span>Recent Activity</span>' + '<em>Next bonus: ' + (state === 'active-empty' ? 0 : MS.progress) + '/5 correct</em>' + '</div>' +
-                '<ul class="history ld-history">' + activityRows(rows) + '</ul>';
-            var past = LD_PAST_PERIODS.map(function (p) {
-                var won = /^won/i.test(p.result);
-                return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
-                    '<div class="ld-past-ico ' + (won ? 'won' : 'lost') + '">' + (won ? fa('fa-trophy') : BROKEN_TROPHY) + '</div>' +
-                    '<div class="history-list-info">' +
-                        '<h4 class="history-list-info-name">' + I.f('Week of {d}', { d: shortDate(p.start) }) + '</h4>' +
-                        '<div class="history-list-info-stats">' + shortDate(p.start) + ' – ' + LD.fmtDate(p.end) + '</div>' +
-                        '<div class="history-list-date">' + I.f('Draw {d}', { d: LD.fmtDate(p.draw) }) + ' · <b class="' + (won ? 'ld-won' : '') + '">' + esc(p.result) + '</b></div>' +
-                    '</div>' +
-                    '<span class="ld-plus zero">' + p.tickets + ' ' + fa('fa-ticket') + '</span>' +
-                '</div></li>';
-            }).join('');
-            return '<div class="ld-annot">' + note('history') +
-                '<section class="card-simple-outer ld-card-outer">' +
-                    '<div class="ld-card-pad">' +
-                        secHead(LD_ICON('ticket'), 'My Entry Tracker', 'Your entries and where they came from') +
-                        '<div class="ld-tabs">' +
-                            '<button class="' + (trackerTab === 'current' ? 'on' : '') + '" data-tab="current">This Week</button>' +
-                            '<button class="' + (trackerTab === 'history' ? 'on' : '') + '" data-tab="history">History</button>' +
-                        '</div>' +
-                    '</div>' +
-                    (trackerTab === 'current' ? current : '<ul class="history ld-history">' + past + '</ul>') +
                 '</section></div>';
         }
 
@@ -430,25 +346,12 @@
                 '</section>';
         }
 
-        function terms() {
-            return '<div class="ld-annot">' + note('terms') +
-                '<details class="card-simple ld-card ld-terms"><summary>' + fa('fa-file-text-o') + ' Terms &amp; Conditions</summary><ol>' +
-                    '<li>Open to active MotorQuiz subscribers during the campaign period.' + flag('eligibility TBC') + '</li>' +
-                    '<li>' + I.f('Entries are earned between {a} and {b}.', { a: LD.fmtDate(C.campaign.periodStart), b: LD.fmtDate(C.campaign.periodEnd) }) + '</li>' +
-                    '<li>Winners are selected at random from eligible entries on the draw date.</li>' +
-                    '<li>One winner is drawn each week, and entries only count for the week they were earned.' + flag('TBC') + '</li>' +
-                    '<li>Entries are not transferable and cannot be exchanged for cash.</li>' +
-                '</ol></details></div>';
-        }
-
         function render() {
             document.body.classList.toggle('ld-notes', notes);
             var html;
-            if (state === 'guest') html = hero() + howToEarn() + prizes() + standings();
-            else if (state === 'drawing') html = hero() + period() + prizes() + standings() + tracker();
-            else if (state.indexOf('completed') === 0) html = winners() + prizes() + standings() + tracker();
-            else html = hero() + howToEarn() + prizes() + standings() + tracker();
-            html += terms();
+            if (state === 'drawing') html = hero() + period() + prizes() + standings();
+            else if (state.indexOf('completed') === 0) html = winners() + prizes() + standings();
+            else html = hero() + prizes() + standings();
             $root.innerHTML = html;
             startReel();
             if (state === 'drawing') startDrawSequence(); else drawRun++;
@@ -468,10 +371,6 @@
             document.getElementById('ld-method').value = C.drawMethod.type;
             document.getElementById('ld-notes-toggle').checked = notes;
         }
-        $root.addEventListener('click', function (e) {
-            var b = e.target.closest('[data-tab]'); if (!b) return;
-            trackerTab = b.getAttribute('data-tab'); render();
-        });
         document.getElementById('ld-states').addEventListener('click', function (e) {
             var b = e.target.closest('[data-state]'); if (!b) return;
             state = b.getAttribute('data-state'); render();

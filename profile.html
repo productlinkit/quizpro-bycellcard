@@ -209,7 +209,7 @@
                           '<button type="button" class="mq-acct-link" data-bs-toggle="modal" data-bs-target="#modalUnsub">Unsubscribe</button>';
                     html = '<div class="mq-acct-head"><div><span class="mq-acct-label">My plan</span><b>' + name + '</b></div>' + pill + '</div>' +
                         '<div class="mq-acct-date">' + date + '</div>' +
-                        '<div class="mq-acct-stats">' + stat(s.left + '/' + p.questions, 'Plays left') + stat(st.points.toLocaleString('en-US'), 'Points') + stat(st.entries, 'Entries') + '</div>' +
+                        '<div class="mq-acct-plays"><span>Plays left</span><b>' + s.left + '/' + p.questions + '</b></div>' +
                         actions;
                 }
                 root.innerHTML = html;
