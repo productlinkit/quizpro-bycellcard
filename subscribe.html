@@ -56,6 +56,32 @@
         </div>
     </div>
 
+    <!-- Payment: charged to the Cellcard balance, confirmed with an SMS code (demo; method pending confirmation) -->
+    <div class="modal fade mq-sheet" tabindex="-1" id="modalPay" data-bs-backdrop="static" aria-labelledby="payTitle">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <span class="mq-sheet-grab" aria-hidden="true"></span>
+                <div id="payForm">
+                    <h3 class="mq-sheet-title" id="payTitle">Payment</h3>
+                    <p class="mq-sheet-text">Pay with your Cellcard balance</p>
+                    <ul class="mq-sheet-list" id="payList"></ul>
+                    <label class="mq-otp-label" for="payCode">Enter the 4-digit code sent by SMS to <b id="payNumber"></b></label>
+                    <input class="mq-otp" id="payCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4" placeholder="••••" aria-describedby="payErr">
+                    <div class="mq-otp-err" id="payErr" role="alert"></div>
+                    <button type="button" class="mq-otp-resend" id="payResend" disabled>Resend code</button>
+                    <button type="button" class="btn btn-lg button-primary w-100" id="payBtn" disabled>Pay</button>
+                    <button type="button" class="mq-sheet-link" data-bs-dismiss="modal">Cancel</button>
+                    <p class="mq-demo-hint">Demo: any 4 digits work · 0000 = insufficient balance</p>
+                </div>
+                <div class="mq-pay-wait" id="payWait" hidden>
+                    <span class="mq-spinner" aria-hidden="true"></span>
+                    <h3 class="mq-sheet-title">Processing payment…</h3>
+                    <p class="mq-sheet-text mb-0">Please don't close this page.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Done -->
     <div class="modal fade mq-sheet" tabindex="-1" id="modalDone" data-bs-backdrop="static" aria-labelledby="doneTitle">
         <div class="modal-dialog">
@@ -82,7 +108,9 @@
         function entries(n) { return n + ' lucky draw entr' + (n === 1 ? 'y' : 'ies'); }
 
         // Coming from login with a plan already active: carry on to where the user was going
-        if (s && !change) { location.replace(QP_DEMO.safeNext()); return; }
+        if (s && !s.cancelled && !change) { location.replace(QP_DEMO.safeNext()); return; }
+        var again = s && s.cancelled;   // unsubscribed: plan still runs to its end date, user can subscribe again
+        if (again) { $('subHeading').textContent = 'Subscribe Again'; $('subBack').href = 'profile.html'; $('introTitle').textContent = 'Pick a plan to keep playing after ' + QP_I18N.date(new Date(s.periodEnd), { noYear: true }) + '.'; }
         if (p.get('next')) $('subBack').href = QP_DEMO.safeNext();
         if (change) { $('subHeading').textContent = 'Change Plan'; $('subBack').href = 'profile.html'; $('introTitle').textContent = 'Switch to another plan.'; }
 
@@ -96,7 +124,7 @@
         } else $('orLine').textContent = change ? 'Your options' : 'Plans';
 
         // Plans: only the confirmed benefits are listed
-        var current = s && !s.plan.trial ? s.plan.id : null, chosen = current === 'daily' ? 'weekly' : 'daily';
+        var current = s && !s.plan.trial && !s.cancelled ? s.plan.id : null, chosen = current === 'daily' ? 'weekly' : 'daily';
         function render() {
             $('plans').innerHTML = C.plans.map(function (pl) {
                 var on = pl.id === chosen, mine = pl.id === current;
@@ -128,20 +156,68 @@
                 : '<li><span>Price</span><b>' + MQ.money(pl.price) + ' / ' + pl.per + '</b></li>' +
                   '<li><span>Quiz questions</span><b>' + pl.questions + '</b></li>' +
                   '<li><span>Lucky draw entries</span><b>' + pl.entries + '</b></li>';
-            $('cfYes').textContent = isTrial ? 'Start Free Trial' : 'Confirm & Subscribe';
+            $('cfYes').textContent = isTrial ? 'Start Free Trial' : 'Continue to Payment';
             bootstrap.Modal.getOrCreateInstance($('modalConfirm')).show();
         }
         $('btnSubscribe').addEventListener('click', function () { ask(chosen); });
-        $('cfYes').addEventListener('click', function () {
-            MQ.subscribe(pending);
-            var pl = MQ.plan(pending);
-            bootstrap.Modal.getOrCreateInstance($('modalConfirm')).hide();
-            $('doneTitle').textContent = pending === 'trial' ? 'Your free trial has started!' : 'You\'re subscribed!';
-            $('doneText').innerHTML = pending === 'trial'
+        function done(id) {
+            MQ.subscribe(id);
+            var pl = MQ.plan(id);
+            $('doneTitle').textContent = id === 'trial' ? 'Your free trial has started!' : 'Payment successful!';
+            $('doneText').innerHTML = id === 'trial'
                 ? 'Answer correctly to earn points and Lucky Draw entries.'
                 : '<b>' + pl.name + '</b> is active: ' + pl.questions + ' questions and ' + entries(pl.entries) + ' ' + (pl.per === 'day' ? 'today' : 'this week') + '.';
-            setTimeout(function () { bootstrap.Modal.getOrCreateInstance($('modalDone')).show(); }, 300);
+            bootstrap.Modal.getOrCreateInstance($('modalDone')).show();
+        }
+        $('cfYes').addEventListener('click', function () {
+            bootstrap.Modal.getOrCreateInstance($('modalConfirm')).hide();
+            setTimeout(function () { pending === 'trial' ? done('trial') : openPay(); }, 300);
         });
+
+        // ---------- Payment ----------
+        var code = $('payCode'), payBtn = $('payBtn'), resendTimer = null;
+        function masked() { var n = String(QP_DEMO.user.msisdn); return n.length > 6 ? n.slice(0, 3) + '•••' + n.slice(-3) : n; }
+        function startResend() {
+            var left = 30; clearInterval(resendTimer);
+            $('payResend').disabled = true; $('payResend').textContent = 'Resend code in ' + left + 's';
+            resendTimer = setInterval(function () {
+                if (--left <= 0) { clearInterval(resendTimer); $('payResend').disabled = false; $('payResend').textContent = 'Resend code'; }
+                else $('payResend').textContent = 'Resend code in ' + left + 's';
+            }, 1000);
+        }
+        function openPay() {
+            var pl = MQ.plan(pending);
+            $('payList').innerHTML = '<li><span>Plan</span><b>' + pl.name + '</b></li><li><span>Amount</span><b>' + MQ.money(pl.price) + ' / ' + pl.per + '</b></li>' +
+                '<li><span>Pay with</span><b>Cellcard balance</b></li>';
+            $('payNumber').textContent = masked();
+            code.value = ''; $('payErr').textContent = ''; code.classList.remove('bad');
+            payBtn.disabled = true; payBtn.textContent = 'Pay ' + MQ.money(pl.price);
+            $('payForm').hidden = false; $('payWait').hidden = true;
+            startResend();
+            bootstrap.Modal.getOrCreateInstance($('modalPay')).show();
+            setTimeout(function () { code.focus(); }, 400);
+        }
+        code.addEventListener('input', function () {
+            code.value = code.value.replace(/\D/g, '').slice(0, 4);
+            payBtn.disabled = code.value.length !== 4;
+            $('payErr').textContent = ''; code.classList.remove('bad');
+        });
+        $('payResend').addEventListener('click', function () { startResend(); $('payErr').textContent = ''; code.value = ''; payBtn.disabled = true; code.focus(); });
+        payBtn.addEventListener('click', function () {
+            $('payForm').hidden = true; $('payWait').hidden = false;
+            setTimeout(function () {
+                if (code.value === '0000') {
+                    $('payForm').hidden = false; $('payWait').hidden = true;
+                    $('payErr').textContent = 'Payment failed: not enough Cellcard balance. Top up and try again.';
+                    code.classList.add('bad'); code.value = ''; payBtn.disabled = true;
+                    return;
+                }
+                clearInterval(resendTimer);
+                bootstrap.Modal.getOrCreateInstance($('modalPay')).hide();
+                setTimeout(function () { done(pending); }, 300);
+            }, 1600);
+        });
+        $('modalPay').addEventListener('hidden.bs.modal', function () { clearInterval(resendTimer); });
     })();
     </script>
 </body>

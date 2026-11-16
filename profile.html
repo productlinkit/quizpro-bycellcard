@@ -53,12 +53,8 @@
                 </a>
                 <div class="home-profile-status">1234567890</div>
             </div>
-            <span class="badge background-success profile-sub-badge" id="subBadge">Subscriber</span>
         </div>
-        <div class="profile-sub">
-            <div class="profile-sub-text" id="subText"></div>
-            <button type="button" class="profile-unsub" id="btnUnsub" data-bs-toggle="modal" data-bs-target="#modalUnsub">Unsubscribe</button>
-        </div>
+        <div class="mq-acct" id="acctSub"></div>
     </div>
 
     <div class="card-simple-outer">
@@ -155,17 +151,18 @@
     </div>
     <!-- language option model -->
 
-    <div class="modal fade modal-standard" tabindex="-1" id="modalUnsub">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content unsub-modal">
-                <h3 class="modal-level-title mb-2">Unsubscribe?</h3>
-                <p class="unsub-modal-text">You will stop being charged and stop getting new questions and Lucky Draw entries. <span class="mq-tbc">cancellation rule TBC</span></p>
-                <button type="button" class="btn btn-lg button-primary w-100 mb-2" data-bs-dismiss="modal">Stay Subscribed</button>
-                <button type="button" class="btn btn-lg unsub-confirm w-100" id="btnUnsubConfirm" data-bs-dismiss="modal">Yes, Unsubscribe</button>
+    <div class="modal fade mq-sheet" tabindex="-1" id="modalUnsub" aria-labelledby="unsubTitle">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <span class="mq-sheet-grab" aria-hidden="true"></span>
+                <div class="mq-sheet-art"><img src="theme/images/bike-sad.svg" alt=""></div>
+                <h3 class="mq-sheet-title" id="unsubTitle">Unsubscribe?</h3>
+                <p class="mq-sheet-text" id="unsubText">You will stop being charged and won't get new questions or Lucky Draw entries.</p>
+                <button type="button" class="btn btn-lg button-primary w-100" data-bs-dismiss="modal">Keep My Plan</button>
+                <button type="button" class="mq-sheet-link is-danger" id="btnUnsubConfirm" data-bs-dismiss="modal">Yes, unsubscribe</button>
             </div>
         </div>
     </div>
-
     <div class="modal fade" tabindex="-1" id="modalTheme">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content theme-sheet">
@@ -191,30 +188,37 @@
         })();
     </script>
     <script>
-        // Subscription: active plan, plays left and entries; Subscribe / Change plan / Unsubscribe (rules in motorquiz.js)
+        // My plan: status, dates, plays left, points, entries and one clear next step (rules in motorquiz.js)
         (function () {
-            var C = MQ.CONFIG, badge = document.getElementById('subBadge'), text = document.getElementById('subText'), btn = document.getElementById('btnUnsub');
+            var root = document.getElementById('acctSub');
             function when(ms) { return QP_I18N.date(new Date(ms), { time: true, noYear: true }); }
+            function stat(v, label) { return '<div><b>' + v + '</b><span>' + label + '</span></div>'; }
             function paint() {
-                var s = MQ.sub(), st = MQ.stats(), off = !s || s.cancelled;
-                badge.textContent = !s ? 'Not Subscribed' : s.plan.trial ? 'Free Trial' : s.cancelled ? 'Unsubscribed' : 'Subscriber';
-                badge.className = 'badge profile-sub-badge ' + (off ? 'button-grey' : 'background-success');
-                text.innerHTML = !s
-                    ? 'Subscribe to play MotorQuiz and collect Lucky Draw entries'
-                    : '<b>' + (s.plan.trial ? 'Free 1-Day Trial' : s.plan.name + ' · ' + MQ.money(s.plan.price) + '/' + s.plan.per) + '</b> · ' + (s.plan.trial || s.cancelled ? 'ends ' : 'renews ') + when(s.periodEnd) +
-                      '<br>' + s.left + '/' + s.plan.questions + ' plays left · ' + st.points.toLocaleString('en-US') + ' points · ' + st.entries + ' Lucky Draw entr' + (st.entries === 1 ? 'y' : 'ies') +
-                      (s.plan.trial && !C.trial.confirmed ? ' <span class="mq-tbc">trial allowance TBC</span>' : '') +
-                      (s.cancelled ? '' : '<br><a href="subscribe.html?change=1" style="color:#FE9E44;font-weight:bold">' + (s.plan.trial ? 'Subscribe Now' : 'Change Plan') + '</a>');
-                btn.textContent = off || s.plan.trial ? 'Subscribe' : 'Unsubscribe';
-                btn.classList.toggle('is-subscribe', off || s.plan.trial);
-                if (off || s.plan.trial) btn.removeAttribute('data-bs-toggle'); else btn.setAttribute('data-bs-toggle', 'modal');
+                var s = MQ.sub(), st = MQ.stats(), html;
+                if (!s) {
+                    html = '<div class="mq-acct-head"><div><span class="mq-acct-label">My plan</span><b>No active plan</b></div></div>' +
+                        '<p class="mq-acct-note">Subscribe to play and collect Lucky Draw entries.</p>' +
+                        '<a href="subscribe.html" class="btn btn-lg button-primary w-100">' + (MQ.trialAvailable() ? 'Start Free Trial' : 'Subscribe') + '</a>';
+                } else {
+                    var p = s.plan, name = p.trial ? 'Free 1-Day Trial' : p.name;
+                    var pill = p.trial ? '<span class="mq-pill on">Trial</span>' : s.cancelled ? '<span class="mq-pill off">Unsubscribed</span>' : '<span class="mq-pill on">Active</span>';
+                    var date = p.trial || s.cancelled ? 'Ends ' + when(s.periodEnd) : MQ.money(p.price) + '/' + p.per + ' · renews ' + when(s.periodEnd);
+                    var actions = p.trial ? '<a href="subscribe.html?change=1" class="btn btn-lg button-primary w-100">Subscribe Now</a>'
+                        : s.cancelled ? '<a href="subscribe.html" class="btn btn-lg button-primary w-100">Subscribe Again</a>'
+                        : '<a href="subscribe.html?change=1" class="btn mq-btn-outline w-100">Change Plan</a>' +
+                          '<button type="button" class="mq-acct-link" data-bs-toggle="modal" data-bs-target="#modalUnsub">Unsubscribe</button>';
+                    html = '<div class="mq-acct-head"><div><span class="mq-acct-label">My plan</span><b>' + name + '</b></div>' + pill + '</div>' +
+                        '<div class="mq-acct-date">' + date + '</div>' +
+                        '<div class="mq-acct-stats">' + stat(s.left + '/' + p.questions, 'Plays left') + stat(st.points.toLocaleString('en-US'), 'Points') + stat(st.entries, 'Entries') + '</div>' +
+                        actions;
+                }
+                root.innerHTML = html;
             }
-            btn.addEventListener('click', function () {
-                var s = MQ.sub();
-                if (s && s.cancelled) { MQ.resume(); paint(); }
-                else if (!s || s.plan.trial) location.href = s ? 'subscribe.html?change=1' : 'subscribe.html';
+            document.getElementById('btnUnsubConfirm').addEventListener('click', function () {
+                MQ.cancel(); paint();
+                var t = document.createElement('div'); t.className = 'saved-toast info'; t.textContent = 'You have unsubscribed';
+                document.body.appendChild(t); setTimeout(function () { t.classList.add('hide'); }, 1800); setTimeout(function () { t.remove(); }, 2300);
             });
-            document.getElementById('btnUnsubConfirm').addEventListener('click', function () { MQ.cancel(); paint(); });
             paint();
         })();
     </script>

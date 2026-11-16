@@ -45,7 +45,9 @@
             { id: 'eligibility', label: 'Prize eligibility and claim process (draw and leaderboard)' },
             { id: 'planChange', label: 'Switching between Daily and Weekly while a plan is active' },
             { id: 'cancellation', label: 'What the user keeps after unsubscribing (demo: plays on until the paid period ends)' },
-            { id: 'billingTerms', label: 'Billing, renewal and failed-payment terms' }
+            { id: 'billingTerms', label: 'Billing, renewal and failed-payment terms' },
+            { id: 'payment', label: 'Payment method and confirmation step (demo: Cellcard balance + 4-digit SMS code)' },
+            { id: 'resubscribe', label: 'Subscribing again while an unsubscribed plan is still running (demo: new plan starts now)' }
         ],
         // Placeholder choices for the pending rules above (change here)
         rules: {
