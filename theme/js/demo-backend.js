@@ -179,7 +179,7 @@
                     '<div class="avatar guest-avatar"><span class="qf-icon-profile"></span></div>' +
                     '<div class="flex-grow-1 ms-2 min-w-0"><div class="home-profile-name">Hi, Guest!</div>' +
                     '<div class="home-profile-status">Login to play &amp; win a motorbike</div></div>' +
-                    '<a href="' + loginUrl() + '" class="btn button-green guest-login">Login</a>' +
+                    '<a href="' + loginUrl() + '" class="btn button-primary guest-login">Login</a>' +
                 '</div>';
             // Profile tab: go to login, then come back to the profile
             document.querySelectorAll('.bottom-nav a[href="profile.html"]').forEach(function (a) { a.href = loginUrl('profile.html'); });

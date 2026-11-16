@@ -235,3 +235,45 @@
 .mq-me-guest:hover{color:var(--mq-ink)}
 .mq-lb-card .mq-lb-more{margin:0 -16px;border-top:0}
 @media (prefers-reduced-motion:reduce){.mq-pod-crown{animation:none}}
+
+/* Home: Daily Competition as a little road scene, the bike rides on it; questions left = fuel gauge */
+.comp-card.mq-hero{margin-top:6px;padding:10px 1rem 22px}
+.mq-scene{position:relative;z-index:1;display:block;width:calc(100% + 1rem);height:188px;margin:0 -.5rem 16px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#FFD39B 0%,#FFEBD2 62%,#FFF4E6 100%)}
+.mq-sun{position:absolute;right:46px;top:26px;width:46px;height:46px;border-radius:50%;background:#FFCC5F;box-shadow:0 0 0 10px rgba(255,204,95,.28),0 0 0 22px rgba(255,204,95,.14);animation:mqSun 3.6s ease-in-out infinite}
+@keyframes mqSun{50%{box-shadow:0 0 0 14px rgba(255,204,95,.3),0 0 0 28px rgba(255,204,95,.12)}}
+.mq-cloud{position:absolute;height:14px;border-radius:14px;background:#fff;opacity:.9;animation:mqCloud linear infinite}
+.mq-cloud::before,.mq-cloud::after{content:'';position:absolute;bottom:4px;border-radius:50%;background:#fff}
+.mq-cloud::before{left:10px;width:20px;height:20px}
+.mq-cloud::after{left:24px;width:26px;height:26px}
+.mq-cloud.c1{width:64px;top:30px;animation-duration:22s}
+.mq-cloud.c2{width:48px;top:58px;animation-duration:30s;animation-delay:-12s;opacity:.75}
+.mq-cloud.c3{width:56px;top:18px;animation-duration:26s;animation-delay:-20s;opacity:.6}
+@keyframes mqCloud{from{left:110%}to{left:-30%}}
+.mq-hill{position:absolute;bottom:40px;border-radius:50% 50% 0 0;width:220%;animation:mqHills linear infinite}
+.mq-hill.h1{height:70px;left:0;background:radial-gradient(60px 44px at 12% 100%,#FFB36B 98%,transparent) repeat-x;background-size:180px 70px;animation-duration:16s;opacity:.75}
+.mq-hill.h2{height:52px;left:0;background:radial-gradient(70px 40px at 30% 100%,#FE9E44 98%,transparent) repeat-x;background-size:150px 52px;animation-duration:9s}
+@keyframes mqHills{to{transform:translateX(-50%)}}
+.mq-road{position:absolute;left:0;right:0;bottom:0;height:42px;background:#2B2F5B;border-top:4px solid #3E4475}
+.mq-lane{position:absolute;left:0;right:0;top:17px;height:4px;background:repeating-linear-gradient(90deg,#FFCC5F 0 22px,transparent 22px 44px);animation:mqLane .5s linear infinite}
+@keyframes mqLane{to{background-position:-44px 0}}
+.mq-wind i{position:absolute;left:18px;height:3px;border-radius:3px;background:rgba(255,255,255,.85);animation:mqWind .9s ease-in infinite}
+.mq-wind i:nth-child(1){top:96px;width:34px}
+.mq-wind i:nth-child(2){top:112px;width:22px;animation-delay:.3s}
+.mq-wind i:nth-child(3){top:128px;width:28px;animation-delay:.6s}
+@keyframes mqWind{0%{transform:translateX(60px);opacity:0}30%{opacity:1}100%{transform:translateX(-30px);opacity:0}}
+.mq-hero .comp-ill{top:auto;bottom:26px;width:150px;height:125px;margin-left:-75px;filter:drop-shadow(0 8px 6px rgba(12,9,42,.35))}
+.mq-hero .bike-puff circle{animation-duration:.9s}
+.mq-hero .bike-wheel{animation-duration:.45s}
+.mq-hero .bike-speed{display:none}
+.mq-hero .comp-time{z-index:2;top:20px;right:20px;background:rgba(255,255,255,.9)}
+.mq-hero .comp-rules{margin:10px 0 14px}
+.mq-fuel{position:relative;z-index:1;display:block;width:100%;background:#FFF6EE;border-radius:16px;padding:10px 12px 12px;margin-bottom:16px;text-align:left}
+.mq-fuel[hidden]{display:none}
+.mq-fuel-top{display:flex;align-items:center;justify-content:space-between;font-size:.8125rem;font-weight:bold;color:#5d5b70}
+.mq-fuel-top .fa{color:#F7731B;margin-right:4px}
+.mq-fuel-top b{font-size:1rem;color:var(--mq-ink)}
+.mq-fuel-bar{position:relative;display:block;height:10px;margin-top:8px;border-radius:10px;background:#FFE2C4;overflow:hidden}
+.mq-fuel-bar::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 2px),rgba(255,255,255,.9) calc(10% - 2px) 10%)}
+.mq-fuel-bar i{display:block;height:100%;width:100%;border-radius:10px;background:linear-gradient(90deg,#FFB36B,#F7731B);transition:width .6s ease}
+.mq-fuel.low .mq-fuel-bar i{background:linear-gradient(90deg,#F4513B,#F77B5B)}
+@media (prefers-reduced-motion:reduce){.mq-sun,.mq-cloud,.mq-hill,.mq-lane,.mq-wind i{animation:none}}
