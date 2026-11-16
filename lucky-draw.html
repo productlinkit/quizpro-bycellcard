@@ -409,26 +409,40 @@
                 '</section></div>';
         }
 
-        // ---------- Monthly leaderboard standings (Top 5 win cash) ----------
+        // ---------- Monthly leaderboard: podium for the top 3, rows for 4-5, then the user's own rank ----------
         function standings() {
-            var M = MQ.CONFIG, list = MQ.leaderboard(), top = list.slice(0, M.leaderboardPrizes.length), me = list.filter(function (p) { return p.me; })[0];
-            var MEDAL = ['gold', 'silver', 'bronze'];
-            function row(p) {
-                var medal = p.rank <= 3;
-                return '<li class="leaderboard-winner' + (medal ? ' top ' + MEDAL[p.rank - 1] : '') + (p.me ? ' is-you' : '') + '"><div class="d-flex align-items-center">' +
-                    (medal ? '<span class="lb-rank lb-medal ' + MEDAL[p.rank - 1] + '"><span class="lb-medal-ribbon"></span><span class="lb-medal-face">' + p.rank + '</span></span>'
-                           : '<span class="lb-rank lb-num"><span>' + p.rank + '</span></span>') +
-                    '<div class="leaderboard-winner-pict">' + (p.me ? '<img src="' + QP_DEMO.USER_AVATAR + '" alt="">' : '<span class="leaderboard-initial" style="background-color:' + p.color + '"><span class="qf-icon-profile"></span></span>') + '</div>' +
-                    '<div class="leaderboard-winner-info"><h4 class="leaderboard-winner-info-name">' + esc(p.name) + (p.me ? ' <span class="lb-you">You</span>' : '') + '</h4>' +
-                    '<div class="leaderboard-winner-info-stats"><b>' + p.points.toLocaleString('en-US') + '</b> points</div></div>' +
-                    (p.prize ? '<span class="mq-cash ms-auto">' + MQ.money(p.prize) + '</span>' : '') + '</div></li>';
+            var M = MQ.CONFIG, list = MQ.leaderboard(), N = M.leaderboardPrizes.length, top = list.slice(0, N), me = list.filter(function (p) { return p.me; })[0];
+            var now = new Date(), days = Math.ceil((new Date(now.getFullYear(), now.getMonth() + 1, 1) - now) / 864e5);
+            function ava(p, cls) {
+                return '<span class="' + cls + '">' + (p.me ? '<img src="' + QP_DEMO.USER_AVATAR + '" alt="">' : '<span style="background:' + p.color + '"><span class="qf-icon-profile"></span></span>') + '</span>';
             }
-            return '<section class="card-simple-outer ld-card-outer">' +
-                    '<div class="ld-card-pad">' + secHead(LD_ICON('trophy'), 'Top 5 Players', 'Cash prizes every month') +
-                        '<div class="mq-rewards">' + M.leaderboardPrizes.map(function (v, i) { return '<div><span>' + ['1st', '2nd', '3rd', '4th', '5th'][i] + ' Place</span><b>' + MQ.money(v) + '</b></div>'; }).join('') + '</div>' +
-                        '<div class="mq-standings-label">This month\'s standings</div>' +
-                    '</div>' +
-                    '<ul class="leaderboard">' + top.map(row).join('') + (me && me.rank > top.length ? row(me) : '') + '</ul>' +
+            function name(p) { return esc(p.name) + (p.me ? ' <em class="mq-lb-you">You</em>' : ''); }
+            function pts(p) { return p.points.toLocaleString('en-US') + ' pts'; }
+            var podium = [top[1], top[0], top[2]].map(function (p) {
+                return '<div class="mq-pod r' + p.rank + (p.me ? ' is-me' : '') + '">' +
+                    (p.rank === 1 ? '<span class="mq-pod-crown qf-icon-crown" aria-hidden="true"></span>' : '') +
+                    ava(p, 'mq-pod-ava') + '<span class="mq-pod-name">' + name(p) + '</span><span class="mq-pod-pts">' + pts(p) + '</span>' +
+                    '<span class="mq-pod-cash">' + MQ.money(p.prize) + '</span>' +
+                    '<span class="mq-pod-step"><b>' + p.rank + '</b></span></div>';
+            }).join('');
+            var rows = top.slice(3).map(function (p) {
+                return '<li class="' + (p.me ? 'is-me' : '') + '"><span class="mq-row-rank">' + p.rank + '</span>' + ava(p, 'mq-row-ava') +
+                    '<span class="mq-row-name">' + name(p) + '<small>' + pts(p) + '</small></span><span class="mq-row-cash">' + MQ.money(p.prize) + '</span></li>';
+            }).join('');
+            var mine = '';
+            if (me) {
+                var last = top[N - 1].points, inTop = me.rank <= N, pct = inTop ? 100 : Math.max(6, Math.round(me.points / last * 100));
+                mine = '<div class="mq-me">' + ava(me, 'mq-row-ava') +
+                    '<div class="mq-me-main"><div class="mq-me-top"><b>Your rank #' + me.rank + '</b><span>' + pts(me) + '</span></div>' +
+                    '<span class="mq-me-bar"><i style="width:' + pct + '%"></i></span>' +
+                    '<small>' + (inTop ? 'You\'re in the Top ' + N + '. Keep playing to stay there!' : (last - me.points + 1) + ' more points to reach the Top ' + N) + '</small></div></div>';
+            } else mine = '<a class="mq-me mq-me-guest" href="' + QP_DEMO.loginUrl('lucky-draw.html') + '"><b>Login to join the leaderboard</b><span class="qf-icon-arrow-right"></span></a>';
+            return '<section class="mq-lb-card">' +
+                    '<div class="mq-lb-head"><div><b>Top ' + N + ' Players</b><small>1 point per correct answer</small></div>' +
+                        '<span class="mq-lb-month">' + now.toLocaleString('en-GB', { month: 'long' }) + ' · ' + days + ' day' + (days === 1 ? '' : 's') + ' left</span></div>' +
+                    '<div class="mq-podium">' + podium + '</div>' +
+                    '<ul class="mq-rows">' + rows + '</ul>' +
+                    mine +
                     '<a href="leaderboard.html" class="mq-lb-more">See full leaderboard <span class="qf-icon-arrow-right"></span></a>' +
                 '</section>';
         }
