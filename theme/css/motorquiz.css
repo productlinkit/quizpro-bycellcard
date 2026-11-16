@@ -486,3 +486,9 @@
 .mq-level-prize-text b{font-size:1.0625rem;margin-top:3px}
 .mq-level-prize-text small{font-size:.75rem}
 .mq-level-prize-go{top:50%;bottom:auto;right:12px;margin-top:-15px}
+/* Prize tab: Grand Prize as a side-by-side card (banner left, details right) */
+.ld-prize-grand{flex-direction:row;align-items:center;text-align:left;gap:12px;padding:10px}
+.ld-prize-grand .ld-prize-ico.lg.photo{width:46%;max-width:180px;flex-shrink:0}
+.ld-prize-grand>div{flex:1;min-width:0}
+.ld-prize-grand .ld-prize-name{font-size:1.25rem}
+.ld-prize-grand .ld-prize-qty{font-size:.75rem}
