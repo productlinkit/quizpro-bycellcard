@@ -1,13 +1,12 @@
 /* MotorQuiz additions (plans, play allowance, entries). Uses the existing QuizPro look and colours. */
 :root{--mq-orange:#FE9E44;--mq-ink:#0C092A;--mq-muted:#969696;--mq-green:#47c475;--mq-gold:#FFCC5F;--mq-soft:#FFEBD9}
 
-/* logo: the brand logo is navy & orange, so it sits on a white chip over the coloured header */
+/* logo: white MotorQuiz logo straight on the coloured header (no background) */
 .logo{width:auto;height:44px}
-.logo a{display:inline-flex;align-items:center;height:100%;background:#fff;border-radius:12px;padding:4px 10px;box-shadow:0 5px 10px rgba(12,9,42,0.12)}
+.logo a{display:inline-flex;align-items:center;height:100%}
 .logo .mq-logo-img{height:100%;width:auto;object-fit:contain}
-.splash-logo.mq-logo-img{height:64px;background:#fff;border-radius:16px;padding:8px 14px}
-.modal-header .mq-logo-img{height:34px;background:#fff;border-radius:10px;padding:3px 8px}
-.login .mq-logo-img{background:#fff;border-radius:16px;padding:8px 14px}
+.splash-logo.mq-logo-img{height:72px}
+.modal-header .mq-logo-img{height:34px}
 
 /* pending business rule marker */
 .mq-tbc{display:inline-block;vertical-align:middle;font-size:.625rem;font-weight:bold;letter-spacing:.02em;text-transform:uppercase;background:#FFF6D6;color:#9A6300;border:1px dashed #F0B43C;border-radius:50rem;padding:1px 7px;margin-left:4px;white-space:nowrap}

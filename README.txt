@@ -2,7 +2,7 @@ MOTORQUIZ (revisi dari QuizPro, Nov 2026) - portal quiz langganan Cellcard Cambo
 Cara jalan: python3 -m http.server di folder ini, buka http://localhost:8000 (index.html?reset=1 = hapus data demo)
 
 ALUR   Login -> subscribe.html (Free 1-Day Trial / Daily / Weekly) -> Play -> poin & entry Lucky Draw
-DESAIN  tampilan QuizPro lama dipertahankan (warna, font, owl, nav 4 tab); hanya logo MotorQuiz (theme/images/motorquiz-logo.png)
+DESAIN  tampilan QuizPro lama dipertahankan (warna, font, owl, nav 4 tab); hanya logo MotorQuiz putih (theme/images/motorquiz-logo-white.png)
 
 ATURAN TERKONFIRMASI  (theme/js/motorquiz.js -> CONFIG)
   Daily Plan  $0.15/hari  : 10 soal, 1 entry
@@ -17,7 +17,7 @@ BELUM TERKONFIRMASI  (CONFIG.pending, tampil di UI dengan label "TBC")
   ganti plan, unsubscribe, syarat billing. Semua nilai sementara diatur di motorquiz.js / lucky-draw/ld-config.js.
 
 FILE BARU   theme/js/motorquiz.js (plan, sisa soal, poin, entry, leaderboard), theme/css/motorquiz.css (komponen baru, warna lama),
-            subscribe.html, theme/images/motorbike.svg, motorquiz-logo.png, motorquiz-icon.png
+            subscribe.html, theme/images/motorbike.svg, motorquiz-logo-white.png, motorquiz-icon.png
 CATATAN     Teks baru MotorQuiz baru dalam Bahasa Inggris (terjemahan Khmer/Chinese belum ditambahkan di i18n.js).
 
 ========================================================================
