@@ -352,3 +352,76 @@
 .mq-mybar-btn{flex-shrink:0;border-radius:50rem;font-weight:bold;padding:8px 16px}
 .mq-full:not(.searching) li.is-pod{display:none}
 .mq-full.searching .mq-zone{display:none !important}
+
+/* ===== Leaderboard with depth (prize pool, stage, raised rows, glass bar) ===== */
+.mq-pool{background:radial-gradient(120% 90% at 85% 0%,rgba(255,204,95,.25) 0,transparent 55%),linear-gradient(140deg,#1B2E66 0%,#13234F 55%,#0E1A3D 100%);box-shadow:0 18px 30px -18px rgba(12,9,42,.8),inset 0 1px 0 rgba(255,255,255,.12)}
+.mq-pool-shine{position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.14),transparent);transform:skewX(-18deg);animation:mqShine 4.5s ease-in-out infinite}
+@keyframes mqShine{0%,55%{left:-60%}100%{left:130%}}
+.mq-spark{position:absolute;width:12px;height:12px;fill:#FFCC5F;animation:mqTwinkle 2.4s ease-in-out infinite}
+.mq-spark svg{width:100%;height:100%;display:block}
+.mq-spark.s1{right:96px;top:20px}.mq-spark.s2{right:22px;top:84px;width:9px;height:9px;animation-delay:.8s}.mq-spark.s3{right:120px;top:70px;width:7px;height:7px;animation-delay:1.5s}
+@keyframes mqTwinkle{0%,100%{opacity:.2;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
+.mq-pool-total{font-size:2.5rem;background:linear-gradient(180deg,#FFE9A3,#FFB800);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25))}
+.mq-pool-trophy{width:78px;height:78px;flex-shrink:0;filter:drop-shadow(0 10px 14px rgba(0,0,0,.4)) drop-shadow(0 0 18px rgba(255,204,95,.35))}
+.mq-pool-trophy .ld-ill{width:100%;height:100%}
+.mq-pool-count{background:none;padding:0;gap:10px}
+.mq-tiles{display:inline-flex;gap:5px}
+.mq-tiles span{display:inline-flex;align-items:baseline;gap:1px;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:4px 8px;font-size:.6875rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.mq-tiles b{font-size:1rem}
+.mq-pool-prizes div{background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+.mq-pool-prizes div:first-child{background:linear-gradient(180deg,rgba(255,214,102,.45),rgba(255,184,0,.18));border-color:rgba(255,214,102,.5)}
+
+/* stage: dark, spotlights, confetti dots, 3D podium */
+.mq-stage{position:relative;overflow:hidden;border-radius:24px;padding:10px 14px 0;margin-bottom:18px;background:radial-gradient(80% 60% at 50% 0%,rgba(255,255,255,.16) 0,transparent 70%),linear-gradient(180deg,#2A4590 0%,#13234F 100%);box-shadow:0 18px 30px -18px rgba(12,9,42,.8)}
+.mq-stage[hidden]{display:none}
+.mq-beam{position:absolute;top:-30px;width:90px;height:260px;background:linear-gradient(180deg,rgba(255,236,190,.35),transparent 80%);filter:blur(2px);transform-origin:50% 0;animation:mqBeam 5s ease-in-out infinite}
+.mq-beam.b1{left:6%;transform:rotate(-22deg)}.mq-beam.b2{left:calc(50% - 45px);opacity:.9;animation-delay:-1.5s}.mq-beam.b3{right:6%;transform:rotate(22deg);animation-delay:-3s}
+@keyframes mqBeam{50%{opacity:.45}}
+.mq-dots i{position:absolute;width:6px;height:9px;border-radius:2px;opacity:.85;animation:mqFall 4s linear infinite}
+.mq-dots i:nth-child(odd){background:#FFCC5F}.mq-dots i:nth-child(even){background:#FE9E44}.mq-dots i:nth-child(3n){background:#fff}
+.mq-dots i:nth-child(1){left:12%;animation-delay:0s}.mq-dots i:nth-child(2){left:26%;animation-delay:-1.2s}.mq-dots i:nth-child(3){left:40%;animation-delay:-2.6s}.mq-dots i:nth-child(4){left:55%;animation-delay:-.6s}
+.mq-dots i:nth-child(5){left:66%;animation-delay:-3.1s}.mq-dots i:nth-child(6){left:78%;animation-delay:-1.8s}.mq-dots i:nth-child(7){left:88%;animation-delay:-2.2s}.mq-dots i:nth-child(8){left:33%;animation-delay:-3.6s}
+@keyframes mqFall{0%{top:-12px;transform:rotate(0)}100%{top:70%;transform:rotate(320deg);opacity:0}}
+.mq-stage .mq-podium{position:relative;margin-top:14px}
+.mq-stage .mq-pod-name{color:#fff}
+.mq-stage .mq-pod-pts{color:rgba(255,255,255,.7)}
+.mq-stage .mq-pod.is-me .mq-pod-name{color:#FFCC5F}
+.mq-pod{animation:mqPodIn .6s cubic-bezier(.2,.9,.3,1.3) backwards}
+.mq-pod.r2{animation-delay:.12s}.mq-pod.r3{animation-delay:.24s}
+@keyframes mqPodIn{from{opacity:0;transform:translateY(30px)}}
+.mq-pod-ava{box-shadow:0 0 0 4px rgba(255,255,255,.08),0 0 22px var(--glow,rgba(255,255,255,.15)),0 10px 16px -8px rgba(0,0,0,.6)}
+.mq-pod.r1{--glow:rgba(255,204,95,.65)}.mq-pod.r2{--glow:rgba(200,210,230,.45)}.mq-pod.r3{--glow:rgba(230,150,90,.5)}
+.mq-pod-crown{filter:drop-shadow(0 0 8px rgba(255,204,95,.8))}
+.mq-pod-cash{background:linear-gradient(180deg,#FFF6D6,#FFE29A);border:1px solid #F3C557;color:#8A5300;box-shadow:0 4px 8px -4px rgba(0,0,0,.4),inset 0 1px 0 #fff}
+.mq-pod.r1 .mq-pod-cash{background:linear-gradient(180deg,#FFD866,#F5A800);border-color:#FFE9A3;color:#4A2A00;box-shadow:0 6px 14px -4px rgba(245,168,0,.7),inset 0 1px 0 rgba(255,255,255,.7)}
+.mq-pod-step{position:relative;border-radius:10px 10px 0 0;box-shadow:inset 0 8px 0 rgba(255,255,255,.55),inset 0 -14px 20px rgba(0,0,0,.12),inset -10px 0 14px rgba(0,0,0,.08)}
+.mq-pod-step::before{content:'';position:absolute;left:4px;right:4px;top:-7px;height:9px;border-radius:8px 8px 2px 2px;background:var(--step);filter:brightness(1.12);transform:perspective(60px) rotateX(35deg)}
+.mq-pod-step b{position:relative;margin-top:6px;font-size:1.625rem;color:rgba(255,255,255,.95);text-shadow:0 2px 0 rgba(0,0,0,.18),0 -1px 0 rgba(255,255,255,.4)}
+.mq-pod.r2 .mq-pod-step b{color:#7F8AA0;text-shadow:0 1px 0 #fff}
+.mq-pod.r1 .mq-pod-step{--step:linear-gradient(180deg,#FFE48A,#F7B500)}
+.mq-pod.r3 .mq-pod-step{--step:linear-gradient(180deg,#F6C9A2,#D9844A)}
+
+/* rows as raised cards on the page */
+.mq-full{background:transparent;box-shadow:none;overflow:visible}
+.mq-full .mq-rows{display:grid;gap:8px}
+.mq-full .mq-rows li{background:#fff;border:0;border-radius:18px;padding:11px 14px;box-shadow:0 8px 16px -12px rgba(12,9,42,.55),inset 0 -2px 0 rgba(12,9,42,.04);animation:mqRowIn .45s cubic-bezier(.2,.9,.3,1.2) backwards;animation-delay:calc(var(--i,0) * .05s + .3s)}
+@keyframes mqRowIn{from{opacity:0;transform:translateY(14px)}}
+.mq-full .mq-rows li.is-cash{background:linear-gradient(90deg,#FFF7E6,#fff 70%)}
+.mq-full .mq-rows li.is-me{background:linear-gradient(#FFF4E8,#FFF4E8) padding-box,linear-gradient(135deg,#FE9E44,#FFCC5F) border-box;border:2px solid transparent;box-shadow:0 10px 22px -10px rgba(247,115,27,.55)}
+.mq-full .mq-row-rank{background:linear-gradient(180deg,#F7F7FB,#E8E8F0);color:#5d5b70;box-shadow:inset 0 1px 0 #fff,0 2px 4px -2px rgba(0,0,0,.25)}
+.mq-full li.is-cash .mq-row-rank{background:linear-gradient(180deg,#FFE9B8,#FFC970);color:#7A4A00}
+.mq-full .mq-row-ava{box-shadow:0 4px 8px -4px rgba(0,0,0,.35)}
+.mq-full .mq-row-cash{background:linear-gradient(180deg,#FFF6D6,#FFE29A);color:#8A5300;box-shadow:inset 0 1px 0 #fff,0 3px 6px -3px rgba(0,0,0,.3)}
+.mq-full .mq-zone{background:none;border:0;padding:2px 8px !important;box-shadow:none;animation:none}
+.mq-full .mq-zone::before{border-top-color:rgba(255,255,255,.7)}
+.mq-full .mq-zone span{background:#FFA654;color:#fff;border-radius:50rem;padding:2px 10px}
+
+/* your rank: glass bar with a shining progress */
+.mq-mybar-in{background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:2px solid rgba(255,255,255,.9);box-shadow:0 14px 30px -10px rgba(12,9,42,.45)}
+.mq-me-bar i{position:relative;background:linear-gradient(90deg,#FFB36B,#F7731B);overflow:hidden}
+.mq-me-bar i::after{content:'';position:absolute;top:0;bottom:0;width:30%;left:-30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);animation:mqBarShine 2.2s ease-in-out infinite}
+@keyframes mqBarShine{to{left:120%}}
+@media (prefers-reduced-motion:reduce){.mq-pool-shine,.mq-spark,.mq-beam,.mq-dots i,.mq-pod,.mq-full .mq-rows li,.mq-me-bar i::after{animation:none}}
+.mq-full .mq-rows li.mq-zone{background:none;box-shadow:none;border:0}
+.mq-stage-in{margin:16px -4px 0;border-radius:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.mq-lb-card .mq-stage-in+.mq-rows{border-top:0}

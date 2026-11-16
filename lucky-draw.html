@@ -440,7 +440,9 @@
             return '<section class="mq-lb-card">' +
                     '<div class="mq-lb-head"><div><b>Top ' + N + ' Players</b><small>1 point per correct answer</small></div>' +
                         '<span class="mq-lb-month">' + now.toLocaleString('en-GB', { month: 'long' }) + ' · ' + days + ' day' + (days === 1 ? '' : 's') + ' left</span></div>' +
-                    '<div class="mq-podium">' + podium + '</div>' +
+                    '<div class="mq-stage mq-stage-in"><span class="mq-beam b1" aria-hidden="true"></span><span class="mq-beam b2" aria-hidden="true"></span><span class="mq-beam b3" aria-hidden="true"></span>' +
+                        '<span class="mq-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>' +
+                        '<div class="mq-podium">' + podium + '</div></div>' +
                     '<ul class="mq-rows">' + rows + '</ul>' +
                     mine +
                     '<a href="leaderboard.html" class="mq-lb-more">See full leaderboard <span class="qf-icon-arrow-right"></span></a>' +
