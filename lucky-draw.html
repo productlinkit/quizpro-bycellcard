@@ -121,7 +121,10 @@
         function activity() {
             if (state === 'active-empty' || state === 'upcoming') return [];
             var rows = MS.rounds.filter(function (r) { return r.bonus; });
-            return MS.planEntries ? [{ plan: true, bonus: MS.planEntries }].concat(rows) : rows;
+            // one row per plan billing (Daily +1 each day, Weekly +7 per week, trial placeholder)
+            var plans = MS.planLog.length ? MS.planLog.map(function (l) { return { plan: l.plan, at: l.at, bonus: l.n }; })
+                : MS.planEntries ? [{ plan: null, bonus: MS.planEntries }] : [];
+            return plans.concat(rows);
         }
         function totalTickets() { return state === 'active-empty' || state === 'upcoming' ? 0 : MS.entries; }
 
@@ -323,11 +326,19 @@
             var r = C.ticketRule;
             return rows.length ? rows.map(function (a) {
                 var n = a.bonus;
-                if (a.plan) return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
-                    '<div class="history-list-pict"><span class="fa fa-mobile"></span></div>' +
-                    '<div class="history-list-info"><h4 class="history-list-info-name">Plan entries</h4>' +
-                        '<div class="history-list-info-stats">Included with your subscription</div></div>' +
-                    '<span class="ld-plus">+' + n + ' ' + fa('fa-ticket') + '</span></div></li>';
+                if ('plan' in a) {
+                    var pl = a.plan && MQ.plan(a.plan);
+                    var title = pl ? (pl.trial ? 'Free 1-Day Trial' : pl.name) : 'Plan entries';
+                    var note = !pl ? 'Included with your subscription'
+                        : pl.trial ? 'Trial entries (pending confirmation)'
+                        : pl.entries + ' entr' + (pl.entries === 1 ? 'y' : 'ies') + ' per ' + pl.per + ' (' + MQ.money(pl.price) + '/' + pl.per + ')';
+                    return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
+                        '<div class="history-list-pict"><span class="fa fa-mobile"></span></div>' +
+                        '<div class="history-list-info"><h4 class="history-list-info-name">' + title + '</h4>' +
+                            '<div class="history-list-info-stats">' + note + '</div>' +
+                            (a.at ? '<div class="history-list-date">Billed ' + I.date(new Date(a.at), { time: true }) + '</div>' : '') + '</div>' +
+                        '<span class="ld-plus">+' + n + ' ' + fa('fa-ticket') + '</span></div></li>';
+                }
                 return '<li class="history-list"><div class="d-flex w-100 align-items-center">' +
                     '<div class="history-list-pict"><span class="fa fa-trophy"></span></div>' +
                     '<div class="history-list-info">' +

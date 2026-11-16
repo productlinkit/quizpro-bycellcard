@@ -83,7 +83,7 @@
             if (now >= s.start + len) return null;    // trial or cancelled plan runs to the end of its period
         } else {
             while (now >= s.periodStart + len) {       // renewals that happened since the last visit
-                s.periodStart += len; s.used = 0; credit(p.entries, 'plan');
+                s.periodStart += len; s.used = 0; credit(p.entries, 'plan', p.id, s.periodStart);
             }
             save(S);
         }
@@ -94,19 +94,24 @@
     function week() {
         var k = weekKey();
         if (!S.week || S.week.key !== k) {
-            S.week = { key: k, plan: 0, bonus: 0, rounds: [] };
+            S.week = { key: k, plan: 0, bonus: 0, rounds: [], planLog: [] };
             if (!CONFIG.rules.bonusCarryOver) S.progress = 0;
             save(S);
         }
         return S.week;
     }
-    function credit(n, kind) { var w = week(); w[kind] += n; save(S); }
+    // Plan entries are logged per billing (plan + date) so the tracker can show where each one came from
+    function credit(n, kind, planId, at) {
+        var w = week(); w[kind] += n;
+        if (kind === 'plan') (w.planLog = w.planLog || []).unshift({ plan: planId, at: at || Date.now(), n: n });
+        save(S);
+    }
 
     function subscribe(id) {
         var p = plan(id); if (!p) return;
         if (p.trial) S.trialUsed = true;
         S.sub = { plan: id, start: Date.now(), periodStart: Date.now(), used: 0 };
-        credit(p.entries, 'plan');
+        credit(p.entries, 'plan', p.id);
         save(S);
     }
     function cancel() { if (S.sub) { S.sub.cancelled = true; save(S); } }
@@ -136,7 +141,7 @@
         return {
             points: S.points || 0,
             monthPoints: S.month && S.month.key === m ? S.month.points : 0,
-            entries: w.plan + w.bonus, planEntries: w.plan, bonusEntries: w.bonus,
+            entries: w.plan + w.bonus, planEntries: w.plan, bonusEntries: w.bonus, planLog: w.planLog || [],
             progress: S.progress || 0, rounds: w.rounds
         };
     }
