@@ -92,3 +92,28 @@
 .comp-plan:empty{display:none}
 .mq-plan.on{border-color:#0C092A}
 .mq-trial>.flex-grow-1{flex:1 1 0}
+
+/* bike mascot (replaces the owl): idles on its suspension, wheels spin, exhaust puffs,
+   headlight eye looks around and blinks, tap = wheelie */
+.bike-all{transform-box:view-box;transform-origin:30px 93px;animation:bikeIdle 1.1s ease-in-out infinite}
+.bike-wheel{transform-box:fill-box;transform-origin:50% 50%;animation:bikeSpin 1.1s linear infinite}
+.comp-card:hover .bike-wheel{animation-duration:.35s}
+.bike-puff circle{transform-box:fill-box;transform-origin:50% 50%;animation:bikePuff 1.4s ease-out infinite}
+.bike-puff circle+circle{animation-delay:.7s}
+.bike-speed path{animation:bikeSpeed 1.1s ease-in-out infinite}
+.bike-eye{transition:transform .12s ease-out;animation:bikeLook 3s .7s ease-in-out backwards}
+.is-live .bike-eye,.is-live.splash .bike-eye{animation:none}
+.splash .bike-eye{animation:bikeLook 2.2s .3s ease-in-out backwards}
+.bike-lids{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:bikeBlink 4s infinite}
+.comp-card.hop .bike-all{animation:bikeWheelie .7s cubic-bezier(.3,1.4,.5,1)}
+.comp-card.hop .bike-wheel{animation-duration:.25s}
+@keyframes bikeIdle{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}
+@keyframes bikeSpin{to{transform:rotate(360deg)}}
+@keyframes bikePuff{0%{transform:translate(6px,2px) scale(.4);opacity:0}25%{opacity:1}100%{transform:translate(-8px,-6px) scale(1.3);opacity:0}}
+@keyframes bikeSpeed{0%,100%{opacity:.2;transform:translateX(3px)}50%{opacity:.9;transform:none}}
+@keyframes bikeLook{0%,100%{transform:none}12%,26%{transform:translate(-2.5px,0)}38%,52%{transform:translate(2px,-1px)}64%,76%{transform:translate(0,1.5px)}88%{transform:translate(-1.5px,-1px)}}
+@keyframes bikeBlink{0%,92%,100%{transform:scaleY(0)}95%{transform:scaleY(1)}}
+@keyframes bikeWheelie{0%{transform:none}35%{transform:rotate(-16deg) translateY(-4px)}70%{transform:rotate(-4deg)}100%{transform:none}}
+.comp-ill,.splash-owl{filter:drop-shadow(0 12px 10px rgba(12,9,42,0.35))}
+@media (prefers-reduced-motion:reduce){.bike-all,.bike-wheel,.bike-puff circle,.bike-speed path,.bike-eye,.bike-lids{animation:none}}
+.fb-owl{width:74px;height:62px;left:2px;top:-4px;object-position:50% 50%;filter:drop-shadow(0 0 1.5px rgba(255,255,255,.95)) drop-shadow(0 6px 8px rgba(12,9,42,.45))}

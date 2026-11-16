@@ -30,7 +30,7 @@
         return { q: text(q.s), answer: q.a ? 0 : 1, img: slot === 'I' ? q.img : null };   // button 0 = True, 1 = False
     });
     round.forEach(function (q) { if (q.img) new Image().src = q.img; });
-    var OWLS = { ok: 'theme/images/owl-happy.png', bad: 'theme/images/owl-sad.png', time: 'theme/images/owl-sad.png' };
+    var OWLS = { ok: 'theme/images/bike-happy.svg', bad: 'theme/images/bike-sad.svg', time: 'theme/images/bike-sad.svg' };   // MotorQuiz bike mascot
     new Image().src = OWLS.ok; new Image().src = OWLS.bad;
 
     // ---------- Sound (on unless turned off in Profile) ----------

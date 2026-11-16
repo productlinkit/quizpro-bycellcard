@@ -308,7 +308,7 @@
             });
             var splash = document.getElementById('splash');
             if (splash) {
-                var splashEyes = splash.querySelector('.owl-pupils');
+                var splashEyes = splash.querySelector('.bike-eye');
                 ['pointerdown', 'pointermove'].forEach(function (type) {
                     splash.addEventListener(type, function (e) {
                         splash.classList.add('is-live');
