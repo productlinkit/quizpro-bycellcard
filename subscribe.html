@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="theme/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
+    <link rel="icon" type="image/png" href="theme/images/motorquiz-icon.png">
     <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body>
@@ -52,7 +52,7 @@
     <div class="modal fade modal-standard" tabindex="-1" id="modalConfirm">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content confirm-modal">
-                <span class="confirm-ico" style="background:var(--mq-sky);color:var(--mq-blue)"><span class="fa fa-mobile"></span></span>
+                <span class="confirm-ico" style="background:var(--mq-soft);color:var(--mq-orange)"><span class="fa fa-mobile"></span></span>
                 <h3 class="modal-level-title mb-2" id="cfTitle">Confirm plan</h3>
                 <p class="confirm-text" id="cfText"></p>
                 <button type="button" class="btn btn-lg button-primary w-100 mb-2" id="cfYes">Confirm</button>
@@ -98,7 +98,7 @@
                 '<span class="mq-trial-ico"><span class="fa fa-gift"></span></span>' +
                 '<span class="flex-grow-1" style="min-width:0"><small style="font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:.625rem">New user promotion</small>' +
                 '<b>Free 1-Day Trial</b><small>Try MotorQuiz free for 1 day' + (C.trial.confirmed ? '' : ' <span class="mq-tbc">trial details TBC</span>') + '</small></span>' +
-                '<button type="button" class="btn btn-lg button-gold w-100" id="btnTrial"><span class="fa fa-gift"></span> Start Free Trial</button></div>';
+                '<button type="button" class="btn btn-lg button-green w-100" id="btnTrial"><span class="fa fa-gift"></span> Start Free Trial</button></div>';
             $('btnTrial').addEventListener('click', function () { ask('trial'); });
         } else $('orLine').textContent = change ? 'Your options' : 'Choose a plan';
 

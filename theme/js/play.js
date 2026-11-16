@@ -139,7 +139,7 @@
 
     // Small burst under the chip; stays above the question card
     function sparks() {
-        var colors = ['#F6C445', '#34d399', '#60a5fa', '#f472b6'], out = '';
+        var colors = ['#FFCC5F', '#34d399', '#60a5fa', '#f472b6'], out = '';
         for (var n = 0; n < 10; n++) {
             var a = Math.PI * n / 9, d = 44 + Math.random() * 26;
             out += '<i style="--x:' + Math.round(Math.cos(a) * d * 1.6) + 'px;--y:' + Math.round(Math.sin(a) * d * 0.5) + 'px;background:' + colors[n % colors.length] + '"></i>';

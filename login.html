@@ -9,24 +9,22 @@
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="theme/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
+    <link rel="icon" type="image/png" href="theme/images/motorquiz-icon.png">
 
     <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body class="login">
     <div class="content-wrapper">
         <div class="container box-wrapper">
-            <div class="text-center pt-4 pb-4 text-white">
-                <span class="mq-logo lg mb-3"><svg class="mq-logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1F6BFF"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="44.8 15" transform="rotate(135 16 16)"/><path d="M16 16 L21.5 10.5" stroke="#F6C445" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.8" fill="#F6C445"/><path d="M21.5 21.5 L26 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg><span>Motor<b>Quiz</b></span></span>
-                <img src="theme/images/motorbike.svg" alt="" style="display:block;width:180px;margin:0 auto 10px;filter:drop-shadow(0 12px 12px rgba(0,0,0,.35))">
-                <p class="mb-0 fw-bold">Login with your Cellcard number</p>
-                <p class="mb-0 small" style="opacity:.8">Then choose a plan and start playing</p>
+            <div class="text-center pt-5 pb-4 text-white">
+                <img class="mq-logo-img mb-2" src="theme/images/motorquiz-logo.png" alt="MotorQuiz" style="height:64px">
+                <p class="mb-0">Sign In to Play the Quiz</p>
             </div>
                         <div class="card-simple">
                 <form action="#" class="form" method="post">
                     <input type="hidden" name="_token" value="CSRF_PLACEHOLDER">
                                         <div class="mb-3">
-                        <input type="number" class="form-control shadow-sm" name="msisdn" placeholder="Cellcard number (MSISDN)" id="msisdn" value="">
+                        <input type="number" class="form-control shadow-sm" name="msisdn" placeholder="MSISDN" id="msisdn" value="">
                         <small class="text-danger"></small>
                     </div>
                     <div class="mb-3">
@@ -40,7 +38,7 @@
                     </div>
 
                     <input type="submit" class="btn btn-lg button-primary w-100" value="Login" >
-                    <a href="index.html" class="d-block text-center mt-3 fw-bold" style="color:#969696">Browse as guest</a>
+                    <a href="index.html" class="d-block text-center mt-3 fw-bold" style="color:#969696">Continue as guest</a>
 
                 </form>
             </div>
