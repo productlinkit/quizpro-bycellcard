@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="theme/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" type="image/png" href="theme/images/motorquiz-icon.png">
+    <link rel="stylesheet" href="theme/lucky-draw/ld.css">
     <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
-<body>
+<body class="mq-sub-page">
     <div class="content-wrapper">
         <div class="page-header">
             <div class="box-wrapper mx-auto text-center position-relative">
@@ -21,55 +22,56 @@
             </div>
         </div>
 
-        <div class="container box-wrapper pb-4">
-            <div class="mq-flow" aria-label="Steps">
-                <span class="on"><i class="fa fa-check" style="font-size:.5625rem;opacity:1"></i> Login</span><span class="fa fa-chevron-right"></span>
-                <span class="on"><i>2</i> Choose plan</span><span class="fa fa-chevron-right"></span>
-                <span><i>3</i> Play quiz</span><span class="fa fa-chevron-right"></span>
-                <span><i>4</i> Win prizes</span>
-            </div>
-
-            <div class="mq-prize" style="padding-bottom:12px">
-                <span class="mq-prize-value"><small>Worth</small><span id="prizeValue">$2,500</span></span>
-                <span class="mq-prize-tag"><span class="fa fa-trophy"></span> Every week</span>
-                <div class="mq-prize-title" style="font-size:1.25rem">Win a <b>Motorbike</b></div>
-                <div class="mq-prize-sub">Every plan earns Lucky Draw entries</div>
-                <img class="mq-prize-bike" src="theme/images/motorbike.svg" alt="Motorbike grand prize" style="width:62%">
+        <div class="container box-wrapper">
+            <!-- Intro: animated bike mascot -->
+            <div class="mq-intro">
+                <span class="mq-intro-bike" aria-hidden="true"><svg viewBox="0 0 120 100"><g class="bike-puff"><circle cx="12" cy="80" r="4" fill="#fff" stroke="#C9CEDC" stroke-width="1.5"/><circle cx="5" cy="74" r="3" fill="#fff" stroke="#C9CEDC" stroke-width="1.5"/></g><g class="bike-all"><g class="bike-speed" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"><path d="M2 52h10M0 60h7"/></g><g class="bike-wheel"><circle cx="30" cy="78" r="15" fill="#2B2F5B" stroke="#1B1F3B" stroke-width="2.5"/><circle cx="30" cy="78" r="8.5" fill="#E9ECF5" stroke="#1B1F3B" stroke-width="2"/><path d="M30 70.5v15M22.5 78h15M24.7 72.7l10.6 10.6M35.3 72.7l-10.6 10.6" stroke="#FE9E44" stroke-width="2" stroke-linecap="round"/><circle cx="30" cy="78" r="3" fill="#FE9E44" stroke="#1B1F3B" stroke-width="1.5"/></g><g class="bike-wheel"><circle cx="92" cy="78" r="15" fill="#2B2F5B" stroke="#1B1F3B" stroke-width="2.5"/><circle cx="92" cy="78" r="8.5" fill="#E9ECF5" stroke="#1B1F3B" stroke-width="2"/><path d="M92 70.5v15M84.5 78h15M86.7 72.7l10.6 10.6M97.3 72.7l-10.6 10.6" stroke="#FE9E44" stroke-width="2" stroke-linecap="round"/><circle cx="92" cy="78" r="3" fill="#FE9E44" stroke="#1B1F3B" stroke-width="1.5"/></g><path d="M96 38 L92 78" stroke="#9AA6BF" stroke-width="4.5" stroke-linecap="round"/><path d="M28 81 L58 77 C61 77 62 81 59 82 L31 86 C27 86 25 82 28 81 Z" fill="#C9CEDC" stroke="#1B1F3B" stroke-width="2" stroke-linejoin="round"/><path d="M12 68 C14 52 28 45 46 46 L72 49 C79 50 81 57 81 63 L81 70 L52 70 C48 62 40 59 31 59 C21 59 15 63 13 70 Z" fill="#3557C2" stroke="#1B1F3B" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 60 C34 55 54 55 76 58" stroke="#FE9E44" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M9 62 L15 58 L16 65 L10 67 Z" fill="#F4513B" stroke="#1B1F3B" stroke-width="1.5" stroke-linejoin="round"/><path d="M22 46 C28 37 54 37 64 42 C67 44 65 48 61 48 L27 50 C22 50 20 48 22 46 Z" fill="#2B2F5B" stroke="#1B1F3B" stroke-width="2.5" stroke-linejoin="round"/><path d="M52 70 H82 L85 76 H55 Z" fill="#2B2F5B" stroke="#1B1F3B" stroke-width="2" stroke-linejoin="round"/><path d="M76 72 C77 56 82 42 88 30 L106 34 C102 48 101 60 102 74 Z" fill="#3557C2" stroke="#1B1F3B" stroke-width="2.5" stroke-linejoin="round"/><path d="M78 72 C82 61 102 61 108 72" stroke="#1B1F3B" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M78 72 C82 62 102 62 108 72" stroke="#2B2F5B" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M80 26 L104 21" stroke="#1B1F3B" stroke-width="4.5" stroke-linecap="round"/><path d="M84 25 L80 13" stroke="#1B1F3B" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="79" cy="11" rx="5" ry="3.5" fill="#2B2F5B" stroke="#1B1F3B" stroke-width="2"/><circle cx="96" cy="39" r="8" fill="#fff" stroke="#1B1F3B" stroke-width="2.5"/><g class="bike-eye"><circle cx="97" cy="40" r="3.8" fill="#2B1D14"/><circle cx="98.4" cy="38.4" r="1.3" fill="#fff"/></g><g class="bike-lids"><circle cx="96" cy="39" r="8" fill="#3557C2" stroke="#1B1F3B" stroke-width="2.5"/></g><path d="M90 52 q5 5 10 0" fill="none" stroke="#1B1F3B" stroke-width="2.2" stroke-linecap="round"/><circle cx="86" cy="50" r="2.8" fill="#FF8FA3" opacity=".7"/></g></svg></span>
+                <div>
+                    <h2 class="mq-intro-title" id="introTitle">Pick a plan, start playing</h2>
+                    <p class="mq-intro-sub">Every plan earns Lucky Draw entries for the weekly motorbike.</p>
+                </div>
             </div>
 
             <!-- New user promotion -->
             <div id="trialBox"></div>
 
-            <div class="mq-or" id="orLine">or subscribe</div>
-            <div class="mq-plans" id="plans" role="radiogroup" aria-label="Subscription plans"></div>
+            <div class="mq-section-label" id="orLine">Or choose a plan</div>
+            <div class="mq-plan-list" id="plans" role="radiogroup" aria-label="Subscription plans"></div>
+            <p class="mq-legal">Charged to your Cellcard balance and renews automatically until you unsubscribe. <span class="mq-tbc">billing T&amp;C TBC</span></p>
+        </div>
 
-            <button type="button" class="btn btn-lg button-primary w-100 mt-3" id="btnSubscribe" style="padding:14px">Subscribe Now</button>
-            <p class="mq-legal">Charged to your Cellcard balance. Plans renew automatically until you unsubscribe in Account. <span class="mq-tbc" style="background:rgba(255,241,214,.9)">billing T&amp;C TBC</span></p>
+        <!-- Sticky call to action -->
+        <div class="mq-cta-bar">
+            <div class="box-wrapper mx-auto">
+                <button type="button" class="btn btn-lg button-primary w-100" id="btnSubscribe">Subscribe Now</button>
+            </div>
         </div>
     </div>
 
-    <!-- Confirm -->
-    <div class="modal fade modal-standard" tabindex="-1" id="modalConfirm">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content confirm-modal">
-                <span class="confirm-ico" style="background:var(--mq-soft);color:var(--mq-orange)"><span class="fa fa-mobile"></span></span>
-                <h3 class="modal-level-title mb-2" id="cfTitle">Confirm plan</h3>
-                <p class="confirm-text" id="cfText"></p>
-                <button type="button" class="btn btn-lg button-primary w-100 mb-2" id="cfYes">Confirm</button>
-                <button type="button" class="btn btn-lg button-grey w-100" data-bs-dismiss="modal">Cancel</button>
+    <!-- Confirm (bottom sheet on phones, centred dialog on wider screens) -->
+    <div class="modal fade mq-sheet" tabindex="-1" id="modalConfirm" aria-labelledby="cfTitle">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <span class="mq-sheet-grab" aria-hidden="true"></span>
+                <div class="mq-sheet-art" id="cfArt"></div>
+                <h3 class="mq-sheet-title" id="cfTitle">Confirm plan</h3>
+                <p class="mq-sheet-text" id="cfText"></p>
+                <ul class="mq-sheet-list" id="cfList"></ul>
+                <button type="button" class="btn btn-lg button-primary w-100" id="cfYes">Confirm</button>
+                <button type="button" class="mq-sheet-link" data-bs-dismiss="modal">Not now</button>
             </div>
         </div>
     </div>
 
     <!-- Done -->
-    <div class="modal fade modal-standard" tabindex="-1" id="modalDone" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content confirm-modal">
-                <span class="confirm-ico" style="background:#E3F7EE;color:#128A55"><span class="fa fa-check"></span></span>
-                <h3 class="modal-level-title mb-2" id="doneTitle">You're in!</h3>
-                <p class="confirm-text" id="doneText"></p>
-                <a href="game-play.html" class="btn btn-lg button-primary w-100 mb-2"><span class="fa fa-play"></span> Play Now</a>
-                <a href="index.html" class="btn btn-lg button-grey w-100">Go to Play tab</a>
+    <div class="modal fade mq-sheet" tabindex="-1" id="modalDone" data-bs-backdrop="static" aria-labelledby="doneTitle">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="mq-sheet-art is-done"><span class="mq-confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><img src="theme/images/bike-happy.svg" alt=""></div>
+                <h3 class="mq-sheet-title" id="doneTitle">You're in!</h3>
+                <p class="mq-sheet-text" id="doneText"></p>
+                <a href="game-play.html" class="btn btn-lg button-primary w-100"><span class="fa fa-play"></span> Play Now</a>
+                <a href="index.html" class="mq-sheet-link">Go to Home</a>
             </div>
         </div>
     </div>
@@ -79,26 +81,25 @@
     <script src="theme/js/motorquiz.js"></script>
     <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
+    <script src="theme/lucky-draw/ld-icons.js"></script>
     <script>
     (function () {
         var C = MQ.CONFIG, p = new URLSearchParams(location.search), change = p.get('change') === '1', s = MQ.sub();
         function $(id) { return document.getElementById(id); }
+        function entries(n) { return n + ' lucky draw entr' + (n === 1 ? 'y' : 'ies'); }
 
         // Coming from login with a plan already active: carry on to where the user was going
         if (s && !change) { location.replace(QP_DEMO.safeNext()); return; }
         if (p.get('next')) $('subBack').href = QP_DEMO.safeNext();
-        if (change) { $('subHeading').textContent = 'Change Plan'; $('subBack').href = 'profile.html'; document.querySelector('.mq-flow').remove(); }
-
-        $('prizeValue').textContent = MQ.money(C.grandPrize.value);
+        if (change) { $('subHeading').textContent = 'Change Plan'; $('subBack').href = 'profile.html'; $('introTitle').textContent = 'Switch your plan'; }
 
         // Free 1-Day Trial for new users (what it includes is pending confirmation)
         var trial = MQ.trialAvailable() && !s;
         if (trial) {
-            $('trialBox').innerHTML = '<div class="mq-trial flex-wrap">' +
-                '<span class="mq-trial-ico"><span class="fa fa-gift"></span></span>' +
-                '<span class="flex-grow-1" style="min-width:0"><small style="font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:.625rem">New user promotion</small>' +
-                '<b>Free 1-Day Trial</b><small>Try MotorQuiz free for 1 day' + (C.trial.confirmed ? '' : ' <span class="mq-tbc">trial details TBC</span>') + '</small></span>' +
-                '<button type="button" class="btn btn-lg button-green w-100" id="btnTrial"><span class="fa fa-gift"></span> Start Free Trial</button></div>';
+            $('trialBox').innerHTML = '<div class="mq-trial-card">' +
+                '<span class="mq-trial-art">' + LD_ICON('gift') + '</span>' +
+                '<span class="mq-trial-text"><em>New user promotion</em><b>Free 1-Day Trial</b><small>No charge for 1 day' + (C.trial.confirmed ? '' : ' <span class="mq-tbc">details TBC</span>') + '</small></span>' +
+                '<button type="button" class="btn mq-btn-outline" id="btnTrial">Start Free Trial</button></div>';
             $('btnTrial').addEventListener('click', function () { ask('trial'); });
         } else $('orLine').textContent = change ? 'Your options' : 'Choose a plan';
 
@@ -107,16 +108,17 @@
         function render() {
             $('plans').innerHTML = C.plans.map(function (pl) {
                 var on = pl.id === chosen, mine = pl.id === current;
-                return '<button type="button" class="mq-plan' + (on ? ' on' : '') + '" role="radio" aria-checked="' + on + '" data-plan="' + pl.id + '"' + (mine ? ' disabled style="opacity:.6"' : '') + '>' +
-                    (mine ? '<span class="mq-plan-badge" style="background:#128A55">Current plan</span>' : pl.id === 'weekly' ? '<span class="mq-plan-badge">Most questions</span>' : '') +
-                    '<div class="mq-plan-top"><div><div class="mq-plan-name">' + pl.name + '</div></div>' +
-                        '<div class="mq-plan-price"><b>' + MQ.money(pl.price) + '</b><small>per ' + pl.per + '</small></div></div>' +
-                    '<ul><li><span class="fa fa-question"></span>' + pl.questions + ' quiz questions</li>' +
-                        '<li><span class="fa fa-ticket gold"></span>' + pl.entries + ' lucky draw entr' + (pl.entries === 1 ? 'y' : 'ies') + '</li></ul>' +
+                return '<button type="button" class="mq-opt' + (on ? ' on' : '') + '" role="radio" aria-checked="' + on + '" data-plan="' + pl.id + '"' + (mine ? ' disabled' : '') + '>' +
+                    '<span class="mq-radio" aria-hidden="true"></span>' +
+                    '<span class="mq-opt-main"><span class="mq-opt-name">' + pl.name +
+                        (mine ? '<span class="mq-tag">Current</span>' : pl.id === 'weekly' ? '<span class="mq-tag">Most questions</span>' : '') + '</span>' +
+                        '<span class="mq-opt-perks"><span><img src="theme/lucky-draw/img/idea.png" alt="">' + pl.questions + ' questions</span>' +
+                        '<span><img src="theme/lucky-draw/img/ticket.png" alt="">' + entries(pl.entries) + '</span></span></span>' +
+                    '<span class="mq-opt-price"><b>' + MQ.money(pl.price) + '</b><small>/' + pl.per + '</small></span>' +
                 '</button>';
             }).join('');
             var pl = MQ.plan(chosen);
-            $('btnSubscribe').textContent = (change ? 'Switch to ' : 'Subscribe Now · ') + (change ? pl.name : MQ.money(pl.price) + '/' + pl.per);
+            $('btnSubscribe').textContent = change ? 'Switch to ' + pl.name : 'Subscribe Now · ' + MQ.money(pl.price) + '/' + pl.per;
         }
         $('plans').addEventListener('click', function (e) {
             var b = e.target.closest('[data-plan]'); if (!b || b.disabled) return;
@@ -127,13 +129,16 @@
         var pending = null;
         function ask(id) {
             pending = id;
-            var pl = MQ.plan(id);
-            $('cfTitle').textContent = id === 'trial' ? 'Start your free trial?' : (change ? 'Switch to ' : 'Subscribe to ') + pl.name + '?';
-            $('cfText').innerHTML = id === 'trial'
-                ? 'Free for 1 day. You will not be charged during the trial.'
-                : 'You will be charged <b>' + MQ.money(pl.price) + ' per ' + pl.per + '</b> from your Cellcard balance. Each ' + pl.per + ' you get ' + pl.questions + ' quiz questions and ' + pl.entries + ' lucky draw entr' + (pl.entries === 1 ? 'y' : 'ies') + '.' +
-                  (change ? ' <span class="mq-tbc">plan switch rule TBC</span>' : '');
-            $('cfYes').textContent = id === 'trial' ? 'Start Free Trial' : 'Confirm & Subscribe';
+            var pl = MQ.plan(id), isTrial = id === 'trial';
+            $('cfArt').innerHTML = isTrial ? '<span class="mq-sheet-ill">' + LD_ICON('gift') + '</span>' : '<img src="theme/images/bike-happy.svg" alt="">';
+            $('cfTitle').textContent = isTrial ? 'Start your free trial?' : (change ? 'Switch to ' : 'Subscribe to ') + pl.name + '?';
+            $('cfText').innerHTML = isTrial ? 'Try MotorQuiz free for 1 day. You won\'t be charged during the trial.' : 'Charged to your Cellcard balance.' + (change ? ' <span class="mq-tbc">plan switch rule TBC</span>' : '');
+            $('cfList').innerHTML = isTrial
+                ? '<li><span>Price</span><b>Free</b></li><li><span>Duration</span><b>1 day</b></li>'
+                : '<li><span>Price</span><b>' + MQ.money(pl.price) + ' / ' + pl.per + '</b></li>' +
+                  '<li><span><img src="theme/lucky-draw/img/idea.png" alt="">Quiz questions</span><b>' + pl.questions + '</b></li>' +
+                  '<li><span><img src="theme/lucky-draw/img/ticket.png" alt="">Lucky draw entries</span><b>' + pl.entries + '</b></li>';
+            $('cfYes').textContent = isTrial ? 'Start Free Trial' : 'Confirm & Subscribe';
             bootstrap.Modal.getOrCreateInstance($('modalConfirm')).show();
         }
         $('btnSubscribe').addEventListener('click', function () { ask(chosen); });
@@ -143,9 +148,9 @@
             bootstrap.Modal.getOrCreateInstance($('modalConfirm')).hide();
             $('doneTitle').textContent = pending === 'trial' ? 'Your free trial has started!' : 'You\'re subscribed!';
             $('doneText').innerHTML = pending === 'trial'
-                ? 'Enjoy MotorQuiz free for 1 day. Answer correctly to earn points and Lucky Draw entries.'
-                : '<b>' + pl.name + '</b> is active. You have ' + pl.questions + ' questions and ' + pl.entries + ' lucky draw entr' + (pl.entries === 1 ? 'y' : 'ies') + ' this ' + pl.per + '.';
-            setTimeout(function () { bootstrap.Modal.getOrCreateInstance($('modalDone')).show(); }, 250);
+                ? 'Answer correctly to earn points and Lucky Draw entries.'
+                : '<b>' + pl.name + '</b> is active: ' + pl.questions + ' questions and ' + entries(pl.entries) + ' ' + (pl.per === 'day' ? 'today' : 'this week') + '.';
+            setTimeout(function () { bootstrap.Modal.getOrCreateInstance($('modalDone')).show(); }, 300);
         });
     })();
     </script>
