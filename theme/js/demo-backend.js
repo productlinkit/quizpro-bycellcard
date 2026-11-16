@@ -67,9 +67,9 @@
 
     // A round is 10 questions, 20 seconds each (see theme/js/play.js)
     var LEVELS = [
-        { id: 1, title: 'Beginner', points: 10, entries: 1, icon: 'fa-leaf', tagline: 'Easy questions to warm up' },
-        { id: 2, title: 'Intermediate', points: 20, entries: 3, icon: 'fa-bolt', tagline: 'A bit more challenging' },
-        { id: 3, title: 'Advance', points: 30, entries: 3, icon: 'fa-fire', tagline: 'For true quiz masters' }
+        { id: 1, title: 'Beginner', points: 1, icon: 'fa-leaf', tagline: 'Easy questions to warm up' },
+        { id: 2, title: 'Intermediate', points: 1, icon: 'fa-bolt', tagline: 'A bit more challenging' },
+        { id: 3, title: 'Advance', points: 1, icon: 'fa-fire', tagline: 'For true quiz masters' }
     ];
 
     // Entries per level reset every day; a round uses one as soon as it starts. ?reset=1 clears them for demos.
@@ -297,16 +297,43 @@
             setTimeout(function () { location.href = c.getAttribute('href'); }, 220);
         });
 
-        // Home: Daily Competition card starts a round from the user's plan (login and a plan come first)
+        // Home: Daily Competition card -> Choose your level -> play (login and a plan come first)
         if (page === 'index.html') {
+            var homeList = document.getElementById('homeLevelList');
+            var renderLevels = function () {
+                var s = window.MQ && MQ.sub(), left = s ? s.left : 0;
+                homeList.innerHTML = LEVELS.map(function (l) {
+                    var tag = left ? 'a href="game-play.html?level=' + l.id + '"' : 'div aria-disabled="true"';
+                    return '<' + tag + ' class="lvl-card lvl-' + l.id + (left ? '' : ' is-out') + '">' +
+                        '<span class="lvl-ico"><span class="fa ' + l.icon + '"></span></span>' +
+                        '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + t(l.tagline) + '</small>' +
+                        '</span>' +
+                        '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span>' +
+                        (left ? '</a>' : '</div>');
+                }).join('');
+                var note = document.getElementById('levelLeft');
+                if (note) note.textContent = left ? f('{n} questions left in your plan', { n: left }) : t('No questions left in your plan');
+            };
+            var banner = document.getElementById('levelBanner'), grand = window.LD_CONFIG && LD_CONFIG.campaign.prizes[0];
+            if (banner && grand) banner.innerHTML = '<span class="lvl-banner-photo"><img src="' + grand.img + '" alt=""></span>' +
+                '<span class="lvl-banner-text"><em>' + t('Weekly Grand Prize') + '</em><b>' + t(grand.item) + '</b><small>' + t('Every 5 correct answers = +1 entry') + '</small></span>' +
+                '<span class="lvl-banner-go qf-icon-arrow-right"></span>';
+            var levelModal = document.getElementById('level');
+            if (levelModal) levelModal.addEventListener('show.bs.modal', renderLevels);
+            function canPlay() { var s = window.MQ && MQ.sub(); return !!(user && s && s.left > 0); }
+            function openLevels() { bootstrap.Modal.getOrCreateInstance(levelModal).show(); }
             var quickPlay = document.getElementById('quickPlay');
             if (quickPlay) quickPlay.addEventListener('click', function (e) {
                 if (e.target.closest('.comp-ill')) return;
                 e.preventDefault();
-                var mq = window.MQ, s = mq && mq.sub();
-                location.href = !user ? loginUrl('index.html') : !s ? 'subscribe.html' : s.left > 0 ? 'game-play.html' : 'profile.html';
+                var s = window.MQ && MQ.sub();
+                if (!user) location.href = loginUrl('index.html');
+                else if (!s) location.href = 'subscribe.html';
+                else if (s.left > 0) openLevels();
+                else location.href = 'profile.html';
             });
             var splash = document.getElementById('splash');
+            if (!splash && location.hash === '#play' && canPlay()) openLevels();   // from a Play button on another page
             if (splash) {
                 var splashEyes = splash.querySelector('.bike-eye');
                 ['pointerdown', 'pointermove'].forEach(function (type) {
@@ -316,6 +343,7 @@
                     });
                 });
                 setTimeout(function () {
+                    if (canPlay()) openLevels();   // fresh open: splash, then straight to the level picker (as before)
                     splash.classList.add('out');
                     setTimeout(function () { splash.remove(); }, 350);
                 }, 2500);

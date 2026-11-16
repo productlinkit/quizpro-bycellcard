@@ -54,7 +54,7 @@
                 <div class="res-stat"><span class="res-stat-ico blue"><span class="fa fa-bullseye"></span></span><b id="r-acc">0%</b><small>Accuracy</small></div>
                 <div class="res-stat"><span class="res-stat-ico orange"><span class="fa fa-ticket"></span></span><b id="r-bonus">0</b><small>Bonus entries</small></div>
             </div>
-            <div class="res-answered"><span id="r-answered">0/10</span> <span>Questions answered</span></div>
+            <div class="res-answered"><span id="r-answered">0/10</span> <span>Questions answered</span> · <span id="r-level">Beginner</span></div>
 
             <div class="mq-card text-start" id="r-mq">
                 <div class="mq-stats" style="margin-top:0">
@@ -87,7 +87,9 @@
         var p = new URLSearchParams(location.search), I = window.QP_I18N, C = MQ.CONFIG;
         var total = +p.get('total') || 10, answered = +p.get('answered') || 0, correct = +p.get('correct') || 0;
         var pass = Math.ceil(total * 0.6);
+        var level = QP_DEMO.LEVELS.filter(function (l) { return String(l.id) === p.get('level'); })[0] || QP_DEMO.LEVELS[0];
         document.getElementById('r-answered').textContent = answered + '/' + total;
+        document.getElementById('r-level').textContent = level.title;
         document.getElementById('r-bonus').textContent = '+' + (+p.get('bonus') || 0);
         document.getElementById('r-time').textContent = I.f('{n} sec', { n: +p.get('time') || 0 });
 
@@ -104,7 +106,7 @@
         // Play Again while the plan still has questions
         var again = document.getElementById('r-again');
         if (plan && plan.left > 0) {
-            again.href = 'game-play.html';
+            again.href = 'game-play.html?level=' + level.id;
             again.insertAdjacentHTML('beforeend', '<b class="res-left" aria-label="' + I.f('Questions left: {n}', { n: plan.left }) + '">' + plan.left + '</b>');
         } else if (plan && plan.plan.id !== 'weekly' && !plan.plan.trial) {
             again.href = 'subscribe.html?change=1';

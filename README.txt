@@ -78,6 +78,6 @@ TAMBAHAN (prototype, 1 Okt 2026)
 
 ALUR SEKARANG (Daily Competition)
   Buka link -> splash 2,5 detik -> pilih level -> 10 soal True/False (5 foto, 5 teks), 20 detik per soal.
-  Jatah main per hari: Beginner 1, Intermediate 3, Advance 3 (reset tengah malam; index.html?reset=1 untuk demo).
+  (lama) Jatah main per level   Jatah main per hari: Beginner 1, Intermediate 3, Advance 3 (reset tengah malam; index.html?reset=1 untuk demo). poin 10/20/30 diganti aturan MotorQuiz: jatah dari plan, 1 benar = 1 poin di semua level.
   Lucky Draw mingguan (Senin-Minggu), hanya grand prize. Poin tersimpan di Game History.
   Pergantian tampilan: theme/css/app.css (tombol, Home), theme/css/game.css (main quiz, hasil).

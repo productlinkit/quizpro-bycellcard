@@ -16,6 +16,8 @@
     var plan = MQ.sub();
     if (!plan || plan.left <= 0) { location.replace(plan ? 'index.html' : 'subscribe.html'); return; }
     var ROUND = Math.min(C.roundSize, plan.left);
+    var D = window.QP_DEMO, lp = parseInt(new URLSearchParams(location.search).get('level'), 10);
+    var level = D.LEVELS.filter(function (l) { return l.id === lp; })[0] || D.LEVELS[0];   // every level: 1 point per correct answer
 
     function text(v) { return typeof v === 'string' ? v : (v[li] || v[0]); }
     function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
@@ -189,10 +191,10 @@
         MQ.logRound({
             date: now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') +
                   ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
-            answered: answered, correct: correct, total: round.length, points: score, bonus: bonus
+            answered: answered, correct: correct, total: round.length, points: score, bonus: bonus, level: level.title
         });
         location.href = 'result.html?' + new URLSearchParams({
-            res: correct >= Math.ceil(round.length * 0.6) ? 'win' : 'lose',
+            res: correct >= Math.ceil(round.length * 0.6) ? 'win' : 'lose', level: level.id,
             real: score, correct: correct, answered: answered, total: round.length, time: used, bonus: bonus
         });
     }
