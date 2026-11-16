@@ -1,5 +1,5 @@
 /*
- * QuizPro demo backend (prototype only).
+ * MotorQuiz demo backend (prototype only, built on the QuizPro front-end).
  * Dummy login, profile, settings (theme, sound) and page wiring so the copied
  * front-end runs without the Laravel server. Load it right after jQuery.
  */
@@ -17,14 +17,9 @@
     // ---------- Settings: theme & sound (Profile menu) ----------
     function raw(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
     function setRaw(key, v) { try { localStorage.setItem(key, v); } catch (e) {} }
-    // First theme is the default (orange); the original QuizPro blue stays as a choice
+    // MotorQuiz uses one brand theme (Cellcard-inspired navy & blue); the old colour themes are retired
     var THEMES = [
-        { id: 'orange', name: 'Orange', bg: '#FFA048', top: '#F7731B' },
-        { id: 'blue', name: 'Ocean Blue', bg: '#3EA9F5', top: '#1888D8' },
-        { id: 'purple', name: 'Purple', bg: '#8E6CEF', top: '#6B46E0' },
-        { id: 'green', name: 'Mint Green', bg: '#2DBE8C', top: '#169A6E' },
-        { id: 'pink', name: 'Pink', bg: '#EE6FA6', top: '#D24887' },
-        { id: 'night', name: 'Night', bg: '#1B2340', top: '#0E1428' }
+        { id: 'motor', name: 'MotorQuiz', bg: '#0E2C7A', top: '#071649' }
     ];
     (function () {
         var css = THEMES.map(function (t) {
@@ -35,20 +30,21 @@
         var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
     })();
     function applyTheme(id) { document.documentElement.setAttribute('data-theme', id || THEMES[0].id); }
-    applyTheme(raw('qp_theme'));
+    applyTheme(THEMES[0].id);
 
     // ---------- Session (dummy login) ----------
-    // Guests can browse; login is asked only when they use a feature (play, Lucky Draw, profile).
+    // Guests can browse; login is asked when they subscribe, play or open their account.
+    // Journey: Login -> Choose Subscription -> Play Quiz -> Earn Points & Lucky Draw Entries
     var user = get(SESSION_KEY);
-    var MEMBER_PAGES = ['game-play.html', 'result.html', 'history.html', 'profile.html', 'profile-edit.html'];
+    var MEMBER_PAGES = ['subscribe.html', 'game-play.html', 'result.html', 'history.html', 'profile.html', 'profile-edit.html'];
     function loginUrl(next) { return 'login.html?next=' + encodeURIComponent(next || (page + location.search)); }
     function safeNext() {
         var n = param('next') || '';
         return /^[a-z-]+\.html(\?[^#]*)?$/.test(n) && n.indexOf('login.html') !== 0 ? n : 'index.html';
     }
-    // Quick Play (Play Now on Home) can be played without logging in
-    var quick = param('quick') === '1' && (page === 'game-play.html' || page === 'result.html');
-    if (!user && !quick && MEMBER_PAGES.indexOf(page) !== -1) {
+    // Playing needs an account and a plan, so there is no guest play any more
+    var quick = false;
+    if (!user && MEMBER_PAGES.indexOf(page) !== -1) {
         location.replace(loginUrl());
         return;
     }
@@ -60,7 +56,7 @@
     // The copied pages use this server photo for the demo account; members without their own photo get the orange default
     var DEFAULT_AVATAR = SERVER + 'uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg';
     var ORANGE_AVATAR = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#FE9E44"/>' +
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1F6BFF"/>' +
         '<circle cx="50" cy="40" r="17" fill="#fff"/><path d="M18 88c3-17 16-27 32-27s29 10 32 27z" fill="#fff"/></svg>');
     var USER_AVATAR = (user && user.avatar) || ORANGE_AVATAR;
 
@@ -141,7 +137,7 @@
                         '<div class="modal-dialog modal-dialog-centered"><div class="modal-content confirm-modal">' +
                             '<span class="confirm-ico"><span class="qf-icon-out"></span></span>' +
                             '<h3 class="modal-level-title mb-2">Log out?</h3>' +
-                            '<p class="confirm-text">You will need to log in again to play quizzes and collect Lucky Draw tickets.</p>' +
+                            '<p class="confirm-text">You will need to log in again to play MotorQuiz and collect Lucky Draw entries.</p>' +
                             '<button type="button" class="btn btn-lg button-primary w-100 mb-2" data-bs-dismiss="modal">Cancel</button>' +
                             '<button type="button" class="btn btn-lg confirm-danger w-100" id="btnLogoutConfirm">Yes, Log out</button>' +
                         '</div></div>';
@@ -177,7 +173,7 @@
                 '<div class="d-flex align-items-center">' +
                     '<div class="avatar guest-avatar"><span class="qf-icon-profile"></span></div>' +
                     '<div class="flex-grow-1 ms-2 min-w-0"><div class="home-profile-name">Hi, Guest!</div>' +
-                    '<div class="home-profile-status">Login to play quizzes &amp; win prizes</div></div>' +
+                    '<div class="home-profile-status">Login to play &amp; win a motorbike</div></div>' +
                     '<a href="' + loginUrl() + '" class="btn button-green guest-login">Login</a>' +
                 '</div>';
             // Profile tab: go to login, then come back to the profile
@@ -274,7 +270,8 @@
                 });
                 if (!ok) return;
                 set(SESSION_KEY, { msisdn: m.value.trim() });
-                location.href = safeNext();
+                // Next step is choosing a plan; subscribe.html moves on straight away when a plan is already active
+                location.href = 'subscribe.html?next=' + encodeURIComponent(safeNext());
             });
         }
 
@@ -295,53 +292,10 @@
             setTimeout(function () { location.href = c.getAttribute('href'); }, 220);
         });
 
-        // Home: Daily Competition card opens a level picker first (guests can play too, via quick=1)
-        if (page === 'index.html') {
-            var homeList = document.getElementById('homeLevelList');
-            if (homeList) {
-                var renderLevels = function () {
-                    homeList.innerHTML = LEVELS.map(function (l) {
-                        var left = entriesLeft(l.id), tag = left ? 'a href="game-play.html?quick=1&level=' + l.id + '"' : 'div aria-disabled="true"';
-                        return '<' + tag + ' class="lvl-card lvl-' + l.id + (left ? '' : ' is-out') + '">' +
-                            '<span class="lvl-ico"><span class="fa ' + l.icon + '"></span></span>' +
-                            '<span class="lvl-text"><b>' + t(l.title) + '</b><small>' + t(l.tagline) + '</small>' +
-                            '<em class="lvl-entries">' + (left ? f('Entries left: {n}/{m}', { n: left, m: l.entries }) : t('No entries left today')) + '</em></span>' +
-                            '<span class="lvl-pts"><span class="lvl-pts-badge qf-icon-crown"></span>+' + l.points + ' ' + t('Point') + '</span>' +
-                            (left ? '</a>' : '</div>');
-                    }).join('');
-                };
-                renderLevels();
-                document.getElementById('level').addEventListener('show.bs.modal', renderLevels);
-                var banner = document.getElementById('levelBanner'), grand = window.LD_CONFIG && LD_CONFIG.campaign.prizes[0];
-                if (banner && grand) banner.innerHTML = '<span class="lvl-banner-photo"><img src="' + grand.img + '" alt=""></span>' +
-                    '<span class="lvl-banner-text"><em>' + t('Weekly Grand Prize') + '</em><b>' + t(grand.item) + '</b><small>' + t('Every round earns tickets') + '</small></span>' +
-                    '<span class="lvl-banner-go qf-icon-arrow-right"></span>';
-                function openLevels() { bootstrap.Modal.getOrCreateInstance(document.getElementById('level')).show(); }
-                document.getElementById('quickPlay').addEventListener('click', function (e) { e.preventDefault(); openLevels(); });
-                // Fresh open or refresh: splash, then straight to the level picker
-                var splash = document.getElementById('splash');
-                if (!splash && location.hash === '#play') openLevels();   // from a Play button on another page
-                if (splash) {
-                    var splashEyes = splash.querySelector('.owl-pupils');
-                    ['pointerdown', 'pointermove'].forEach(function (type) {
-                        splash.addEventListener(type, function (e) {
-                            splash.classList.add('is-live');
-                            splashEyes.style.transform = 'translate(' + ((e.clientX / innerWidth - 0.5) * 6).toFixed(1) + 'px,' + ((e.clientY / innerHeight - 0.5) * 5).toFixed(1) + 'px)';
-                        });
-                    });
-                    setTimeout(function () {
-                        openLevels();
-                        splash.classList.add('out');
-                        setTimeout(function () { splash.remove(); }, 350);
-                    }, 2500);
-                }
-            }
-        }
-
         // Profile: theme picker and sound switch
         if (page === 'profile.html') {
             var themeRow = document.getElementById('menuTheme'), soundRow = document.getElementById('menuSound');
-            var cur = raw('qp_theme') || THEMES[0].id;
+            var cur = THEMES[0].id;
             function themeLabel() {
                 var th = THEMES.filter(function (x) { return x.id === cur; })[0] || THEMES[0];
                 document.getElementById('menuThemeVal').innerHTML = '<i style="background:' + th.bg + '"></i>' + t(th.name);
@@ -375,5 +329,5 @@
         }
     });
 
-    window.QP_DEMO = { LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl, quick: quick, entriesLeft: entriesLeft, useEntry: useEntry, USER_AVATAR: USER_AVATAR };
+    window.QP_DEMO = { LEVELS: LEVELS, SERVER: SERVER, user: user, loginUrl: loginUrl, safeNext: safeNext, quick: quick, entriesLeft: entriesLeft, useEntry: useEntry, USER_AVATAR: USER_AVATAR };
 })();

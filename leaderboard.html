@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizpro</title>
+    <title>MotorQuiz</title>
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="theme/css/leaderboard.css?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
-    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
     <link rel="stylesheet" href="theme/lucky-draw/ld.css">
+    <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body>
     
@@ -24,7 +25,7 @@
                     <div class="col-6 text-start">
                         <div class="logo">
                             <a href="index.html">
-                                <img src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" alt="Logo">
+                                <span class="mq-logo"><svg class="mq-logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1F6BFF"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="44.8 15" transform="rotate(135 16 16)"/><path d="M16 16 L21.5 10.5" stroke="#F6C445" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.8" fill="#F6C445"/><path d="M21.5 21.5 L26 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg><span>Motor<b>Quiz</b></span></span>
                             </a>
                         </div>
                     </div>
@@ -38,132 +39,17 @@
             </div>
 
 
-    <h2 class="lb-title">Leaderboard</h2>
-
+    <h2 class="lb-title">Monthly Leaderboard</h2>
+    <p class="mq-page-sub" id="lbMonth"></p>
     <div class="lb-search">
         <span class="qf-icon-search"></span>
         <input type="search" id="lbSearch" inputmode="numeric" autocomplete="off" placeholder="Search phone number..." aria-label="Find Player">
     </div>
     <div class="lb-empty" id="lbEmpty" hidden></div>
-
-    <div class="card-simple-outer lb-list">
-        <ul class="leaderboard">
-            <li class="leaderboard-winner top gold">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-medal gold"><span class="lb-medal-ribbon"></span><span class="lb-medal-face">1</span></span>
-                    <div class="leaderboard-winner-pict"><img src="https://demo.quizpro.mobi//uploads/user/1/ava-eissa.png" alt="Avatar"></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">9876543210</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>27380</b>, <span class="qf-icon-clock"></span> 721.33</div>
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 32,670</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner top silver is-you">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-medal silver"><span class="lb-medal-ribbon"></span><span class="lb-medal-face">2</span></span>
-                    <div class="leaderboard-winner-pict"><img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="Avatar"></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">1234567890 <span class="lb-you">You</span></h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>22260</b>, <span class="qf-icon-clock"></span> 580.67</div>
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 29,160</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner top bronze">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-medal bronze"><span class="lb-medal-ribbon"></span><span class="lb-medal-face">3</span></span>
-                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#a78bfa"><span class="qf-icon-profile"></span></span></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">8551234567</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>19840</b>, <span class="qf-icon-clock"></span> 512.40</div>
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 24,310</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-num"><span>4</span></span>
-                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#FE9E44"><span class="qf-icon-profile"></span></span></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">8559876543</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>17120</b>, <span class="qf-icon-clock"></span> 488.15</div>
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 21,050</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-num"><span>5</span></span>
-                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#14b8a6"><span class="qf-icon-profile"></span></span></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">8557654321</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>15300</b>, <span class="qf-icon-clock"></span> 455.02</div>
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 18,430</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-num"><span>6</span></span>
-                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#f472b6"><span class="qf-icon-profile"></span></span></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">8552468135</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>13890</b>, <span class="qf-icon-clock"></span> 430.71</div>
-                        
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 16,220</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-num"><span>7</span></span>
-                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#60a5fa"><span class="qf-icon-profile"></span></span></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">8551357924</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>11950</b>, <span class="qf-icon-clock"></span> 402.36</div>
-                        
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 14,080</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-num"><span>8</span></span>
-                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#47c475"><span class="qf-icon-profile"></span></span></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">8558642097</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>10420</b>, <span class="qf-icon-clock"></span> 377.90</div>
-                        
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 12,560</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-num"><span>9</span></span>
-                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#3EA9F5"><span class="qf-icon-profile"></span></span></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">8553692581</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>9010</b>, <span class="qf-icon-clock"></span> 351.24</div>
-                        
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 10,940</div>
-                </div>
-            </li>
-            <li class="leaderboard-winner">
-                <div class="d-flex align-items-center">
-                    <span class="lb-rank lb-num"><span>10</span></span>
-                    <div class="leaderboard-winner-pict"><span class="leaderboard-initial" style="background-color:#FF8FA3"><span class="qf-icon-profile"></span></span></div>
-                    <div class="leaderboard-winner-info">
-                        <h4 class="leaderboard-winner-info-name">8557418529</h4>
-                        <div class="leaderboard-winner-info-stats">Score <b>7640</b>, <span class="qf-icon-clock"></span> 322.58</div>
-                        
-                    </div>
-                    <div class="leaderboard-coin ms-auto"><span class="coin"></span> 9,370</div>
-                </div>
-            </li>
-        </ul>
+    <div class="mq-card lb-list">
+        <div class="mq-cash-grid" id="lbCash"></div>
+        <ul class="mq-lb leaderboard" id="lbList"></ul>
+        <p class="mb-0 mt-2" style="font-size:.75rem;color:var(--mq-muted)">1 point for every correct answer this month. Top 5 win cash prizes. <span class="mq-tbc">tie-break &amp; payout TBC</span></p>
     </div>
 
 
@@ -173,34 +59,9 @@
         <div class="bottom-spacer" style="height: 65px;"></div>
 <div class="bottom-nav">
     <div class="bottom-nav-bg row gx-0 box-wrapper mx-auto container-fluid">
-        <div class="col ">
-            <div class="nav-box">
-                <a href="index.html" class="nav-box-ico">
-                    <span class="qf-icon-home"></span>
-                </a>
-            </div>
-        </div>
-        <div class="col ">
-            <div class="nav-box">
-                <a href="lucky-draw.html" class="nav-box-ico">
-                    <svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7M12 8v13M12 8S10.6 3.4 7.9 3.7C5.9 4 6.2 7.5 9 8M12 8s1.4-4.6 4.1-4.3c2 .3 1.7 3.8-1.1 4.3"/></svg>
-                </a>
-            </div>
-        </div>
-        <div class="col active">
-            <div class="nav-box">
-                <a href="leaderboard.html" class="nav-box-ico">
-                    <span class="qf-icon-leaderboard"></span>
-                </a>
-            </div>
-        </div>
-        <div class="col ">
-                                        <div class="nav-box">
-                    <a href="profile.html" class="nav-box-ico">
-                        <span class="qf-icon-profile"></span>
-                    </a>
-                </div>
-                    </div>
+        <div class="col"><div class="nav-box"><a href="index.html" class="nav-box-ico"><svg class="mq-nav-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M10 8.5v7l5.5-3.5z" fill="currentColor"/></svg><span class="nav-label">Play</span></a></div></div>
+        <div class="col active"><div class="nav-box"><a href="lucky-draw.html" class="nav-box-ico"><svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg><span class="nav-label">Prize</span></a></div></div>
+        <div class="col"><div class="nav-box"><a href="profile.html" class="nav-box-ico"><svg class="mq-nav-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg><span class="nav-label">Account</span></a></div></div>
     </div>
 </div> </div>
 
@@ -208,8 +69,8 @@
     <div class="modal fade modal-standard" tabindex="-1" role="dialog" id="modalLang">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header" style="background: #3EA9F5;">
-                    <img src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" width="80" alt="Logo">
+                <div class="modal-header" style="background: #1F6BFF;">
+                    <span class="mq-logo"><svg class="mq-logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1F6BFF"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="44.8 15" transform="rotate(135 16 16)"/><path d="M16 16 L21.5 10.5" stroke="#F6C445" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.8" fill="#F6C445"/><path d="M21.5 21.5 L26 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg><span>Motor<b>Quiz</b></span></span>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <select name="lang" id="lang" style="font-size: 20px;">
@@ -224,10 +85,24 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/motorquiz.js"></script>
     <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
     <script src="theme/js/custom.js"></script>
+    <script>
+    (function () {
+        var M = MQ.CONFIG, list = MQ.leaderboard(), now = new Date();
+        document.getElementById('lbMonth').textContent = now.toLocaleString('en-GB', { month: 'long', year: 'numeric' }) + ' · resets on the 1st';
+        document.getElementById('lbCash').innerHTML = M.leaderboardPrizes.map(function (v, i) { return '<div><small>' + ['1st', '2nd', '3rd', '4th', '5th'][i] + '</small><b>' + MQ.money(v) + '</b></div>'; }).join('');
+        document.getElementById('lbList').innerHTML = list.map(function (p) {
+            return '<li class="leaderboard-winner' + (p.me ? ' me is-you' : '') + '"><span class="mq-lb-rank' + (p.rank <= 3 ? ' r' + p.rank : '') + '">' + p.rank + '</span>' +
+                (p.me ? '<img class="mq-lb-ava" src="' + QP_DEMO.USER_AVATAR + '" alt="">' : '<span class="mq-lb-ava" style="background:' + p.color + ';color:#fff"><span class="qf-icon-profile"></span></span>') +
+                '<span class="mq-lb-name"><b class="leaderboard-winner-info-name">' + p.name + (p.me ? '<span class="mq-you lb-you">You</span>' : '') + '</b><small>' + p.points.toLocaleString('en-US') + ' points</small></span>' +
+                '<span class="mq-cash' + (p.prize ? '' : ' none') + '">' + (p.prize ? MQ.money(p.prize) : '–') + '</span></li>';
+        }).join('');
+    })();
+    </script>
     <script src="theme/js/search-suggest.js?v=3"></script>
 
 </body>

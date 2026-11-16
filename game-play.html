@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizpro</title>
+    <title>MotorQuiz</title>
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="theme/css/pages.css">
     <link rel="stylesheet" href="theme/css/game.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
+    <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body class="play-page">
     <div class="play-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -24,7 +25,7 @@
                     <div class="play-score" id="gp-me">
                         <span class="play-score-ico"><span class="fa fa-star"></span></span>
                         <span class="play-score-body">
-                            <span class="play-score-label">Score</span>
+                            <span class="play-score-label">Points</span>
                             <span class="play-score-value" id="gp-score">0</span>
                         </span>
                         <span class="game-gain" id="gp-gain"></span>
@@ -36,6 +37,11 @@
                 </div>
                 <div class="play-progress" id="gp-dots" aria-hidden="true"></div>
                 <div class="play-count"><span id="gp-num">1</span> of <span id="gp-total">10</span></div>
+                <div class="mq-hud">
+                    <span class="mq-hud-chip"><span class="fa fa-question-circle"></span> <b id="gp-left">0</b> left</span>
+                    <span class="mq-hud-chip gold" id="gp-entry-chip"><span class="fa fa-ticket"></span> <b id="gp-entries">0</b> entries</span>
+                    <span class="mq-hud-bonus" aria-label="Progress to next bonus entry"><span class="mq-hud-bonus-label">Bonus <b id="gp-bonus">0/5</b></span><span class="mq-hud-bar"><i id="gp-bonus-fill"></i></span></span>
+                </div>
             </div>
         </div>
 
@@ -56,7 +62,7 @@
             <div class="modal-content confirm-modal">
                 <span class="confirm-ico"><span class="fa fa-sign-out"></span></span>
                 <h3 class="modal-level-title mb-2">Exit quiz?</h3>
-                <p class="confirm-text">Your progress in this round will be lost.</p>
+                <p class="confirm-text">Points and entries you've earned are kept. Questions already shown count as used.</p>
                 <button type="button" class="btn btn-lg button-primary w-100 mb-2" data-bs-dismiss="modal">Keep Playing</button>
                 <button type="button" class="btn btn-lg confirm-danger w-100" id="gp-exit-yes">Yes, Exit</button>
             </div>
@@ -65,6 +71,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/motorquiz.js"></script>
     <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
     <script src="theme/js/questions.js"></script>

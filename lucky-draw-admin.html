@@ -9,15 +9,15 @@
     <link rel="stylesheet" href="theme/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="theme/lucky-draw/ld.css">
-    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
     <style>
         body{background:#F4F7FB}
         body::before{display:none}
-        .adm-top{background:#3EA9F5;color:#fff;padding:14px 0}
+        .adm-top{background:#1F6BFF;color:#fff;padding:14px 0}
         .adm-top img{height:28px}
         .adm-wrap{max-width:1100px}
         .adm-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 2px 6px rgba(12,9,42,.05)}
-        .adm-card h2{font-size:1.0625rem;font-weight:bold;margin-bottom:4px;color:#0C092A}
+        .adm-card h2{font-size:1.0625rem;font-weight:bold;margin-bottom:4px;color:#0B1840}
         .adm-card .sub{color:#969696;font-size:.875rem;margin-bottom:16px}
         .adm-label{font-size:.75rem;font-weight:bold;color:#969696;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;display:block}
         .adm-card .form-control,.adm-card .form-select{font-size:.875rem;border-radius:8px}
@@ -34,11 +34,11 @@
         .steps li{counter-increment:s;position:relative;padding:0 0 14px 40px;font-size:.875rem}
         .steps li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:#DFDFDF;color:#fff;font-weight:bold;font-size:.75rem;display:flex;align-items:center;justify-content:center}
         .steps li.done::before{background:#47c475;content:'\2713'}
-        .steps li.current::before{background:#FE9E44}
-        .steps li b{display:block;color:#0C092A}
+        .steps li.current::before{background:#1F6BFF}
+        .steps li b{display:block;color:#0B1840}
         .steps li span{color:#969696}
         .stat{background:#F4F7FB;border-radius:12px;padding:12px;text-align:center}
-        .stat b{display:block;font-size:1.375rem;color:#0C092A}
+        .stat b{display:block;font-size:1.375rem;color:#0B1840}
         .stat span{font-size:.75rem;color:#969696}
         .mono{font-family:ui-monospace,Menlo,monospace;font-size:.75rem}
         .rule-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:.875rem}
@@ -46,12 +46,13 @@
         body.ld-notes .ld-note{margin-bottom:10px}
         .adm-notes-toggle{font-size:.8125rem;color:#fff}
     </style>
+    <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body>
     <div class="adm-top">
         <div class="container adm-wrap d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
-                <img src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" alt="QuizPro">
+                <span class="mq-logo"><svg class="mq-logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1F6BFF"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="44.8 15" transform="rotate(135 16 16)"/><path d="M16 16 L21.5 10.5" stroke="#F6C445" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.8" fill="#F6C445"/><path d="M21.5 21.5 L26 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg><span>Motor<b>Quiz</b></span></span>
                 <span class="fw-bold">Admin · Lucky Draw</span>
             </div>
             <div class="d-flex align-items-center gap-3">
@@ -82,9 +83,9 @@
                 <div class="col-md-3 col-6"><span class="adm-label">Winners / backups</span>
                     <div class="d-flex gap-2"><input class="form-control" type="number" min="1" id="f-winners"><input class="form-control" type="number" min="0" id="f-backups"></div></div>
                 <div class="col-md-6">
-                    <span class="adm-label">Ticket rule <span class="ld-flag">not confirmed</span></span>
+                    <span class="adm-label">Bonus entry rule (confirmed: 1 per 5 correct)</span>
                     <div class="d-flex align-items-center gap-2 flex-wrap" style="font-size:.875rem">
-                        <input class="form-control" style="width:70px" type="number" min="1" id="f-tickets"> ticket(s) per
+                        <input class="form-control" style="width:70px" type="number" min="1" id="f-tickets"> entry per
                         <input class="form-control" style="width:70px" type="number" min="1" id="f-every">
                         <select class="form-select" style="width:auto" id="f-basis">
                             <option value="answered">questions answered</option>
@@ -117,7 +118,7 @@
                     <div class="row g-2 my-3" id="stats"></div>
                     <div class="table-responsive">
                         <table class="table adm-table">
-                            <thead><tr><th>MSISDN</th><th>Tickets</th><th>Entries</th><th>Checks</th><th>Result</th></tr></thead>
+                            <thead><tr><th>MSISDN</th><th>Bonus entries</th><th>Entries</th><th>Checks</th><th>Result</th></tr></thead>
                             <tbody id="participants"></tbody>
                         </table>
                     </div>
@@ -173,7 +174,7 @@
         var draw = null, published = false;
         var audit = [
             ['2026-09-20 10:02', 'admin@linkit360', 'Campaign created', C.campaign.name],
-            ['2026-09-20 10:05', 'admin@linkit360', 'Ticket rule set', 'Sample rule – pending business confirmation'],
+            ['2026-09-20 10:05', 'admin@linkit360', 'Ticket rule set', '1 bonus entry per 5 correct answers (MotorQuiz brief)'],
             ['2026-10-01 00:00', 'system', 'Campaign started', 'Ticket earning enabled'],
             ['2026-11-01 00:00', 'system', 'Campaign closed', 'Ticket earning disabled'],
             ['2026-11-01 00:05', 'system', 'Entry snapshot frozen', USERS.length + ' participants · sha256 ' + hash()]

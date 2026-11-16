@@ -1,29 +1,30 @@
 /*
- * Quiz round (prototype only): solo play, 10 True/False statements, 20 seconds for each one.
- * Each answer shows right/wrong straight away, then moves to the next question.
- * Statements come from the whole question bank.
- * Needs demo-backend.js, i18n.js and questions.js.
+ * MotorQuiz round (prototype only): True/False statements, 20 seconds for each one.
+ * A round is up to 10 questions, taken from the questions left in the user's plan.
+ * Each correct answer = 1 point; every 5 correct answers = 1 bonus Lucky Draw entry (see motorquiz.js).
+ * Needs demo-backend.js, motorquiz.js, i18n.js and questions.js.
  */
 (function () {
     var QUESTION_SECONDS = 20, FEEDBACK_MS = 880, FEEDBACK_OUT_MS = 120;   // 1 second in total
     // I = photo question, T = text only: 5 of each, switching every 2 (10 can't split evenly, so the last pair is I + T)
     var ROUND_PATTERN = 'IITTIITTIT';
 
-    var D = window.QP_DEMO, I = window.QP_I18N, BANK = window.QP_QUESTIONS || {};
-    var p = new URLSearchParams(location.search);
-    var level = D.LEVELS.filter(function (l) { return l.id === (parseInt(p.get('level'), 10) || 1); })[0] || D.LEVELS[0];
+    var I = window.QP_I18N, BANK = window.QP_QUESTIONS || {}, C = MQ.CONFIG, POINTS = C.pointsPerCorrect;
     var li = Math.max(0, I.LANGS.indexOf(I.current()));   // 0 en, 1 km, 2 zh
 
-    if (D.entriesLeft(level.id) <= 0) { location.replace('index.html#play'); return; }
-    D.useEntry(level.id);
+    // No plan or no questions left: back to the Play tab, which explains what to do
+    var plan = MQ.sub();
+    if (!plan || plan.left <= 0) { location.replace(plan ? 'index.html' : 'subscribe.html'); return; }
+    var ROUND = Math.min(C.roundSize, plan.left);
 
     function text(v) { return typeof v === 'string' ? v : (v[li] || v[0]); }
     function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
     function $(id) { return document.getElementById(id); }
 
     // A text slot simply doesn't show the photo
-    var pool = shuffle([].concat.apply([], Object.keys(BANK).map(function (k) { return BANK[k]; })));
-    var round = ROUND_PATTERN.split('').map(function (slot) {
+    var all = [].concat.apply([], Object.keys(BANK).map(function (k) { return BANK[k]; })), pool = shuffle(all);
+    var round = ROUND_PATTERN.slice(0, ROUND).split('').map(function (slot) {
+        if (!pool.length) pool = shuffle(all);
         var at = slot === 'I' ? pool.findIndex(function (x) { return x.img; }) : 0;
         var q = pool.splice(Math.max(at, 0), 1)[0];
         return { q: text(q.s), answer: q.a ? 0 : 1, img: slot === 'I' ? q.img : null };   // button 0 = True, 1 = False
@@ -57,9 +58,17 @@
     };
 
     // ---------- State & UI ----------
-    var idx = 0, score = 0, correct = 0, answered = 0, left = QUESTION_SECONDS, used = 0, timer = null, nextTimer = null, locked = false, streak = 0, done = false;
+    var idx = 0, score = 0, correct = 0, answered = 0, bonus = 0, left = QUESTION_SECONDS, used = 0, timer = null, nextTimer = null, locked = false, streak = 0, done = false;
 
     $('gp-total').textContent = round.length;
+    function drawPlan() {
+        var st = MQ.stats(), need = C.bonus.everyCorrect, s = MQ.sub();
+        $('gp-left').textContent = s ? s.left : 0;
+        $('gp-entries').textContent = st.entries;
+        $('gp-bonus').textContent = st.progress + '/' + need;
+        $('gp-bonus-fill').style.width = (st.progress / need * 100) + '%';
+    }
+    drawPlan();
     $('gp-dots').innerHTML = round.map(function () { return '<i></i>'; }).join('');
 
     function drawTimer() {
@@ -84,6 +93,7 @@
         }).join('');
         var dots = $('gp-dots').children;
         for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('now', d === idx);
+        MQ.useQuestion(); drawPlan();   // placeholder: a question counts as used once it is shown
         startTimer();
     }
 
@@ -129,7 +139,7 @@
 
     // Small burst under the chip; stays above the question card
     function sparks() {
-        var colors = ['#FFCC5F', '#34d399', '#60a5fa', '#f472b6'], out = '';
+        var colors = ['#F6C445', '#34d399', '#60a5fa', '#f472b6'], out = '';
         for (var n = 0; n < 10; n++) {
             var a = Math.PI * n / 9, d = 44 + Math.random() * 26;
             out += '<i style="--x:' + Math.round(Math.cos(a) * d * 1.6) + 'px;--y:' + Math.round(Math.sin(a) * d * 0.5) + 'px;background:' + colors[n % colors.length] + '"></i>';
@@ -152,38 +162,38 @@
         btns[q.answer].classList.add('is-correct');
         if (!ok) btns[i].classList.add('is-wrong');
         $('gp-dots').children[idx].className = ok ? 'ok' : 'bad';
+        var gotBonus = false;
         if (ok) {
-            correct++; streak++; score += level.points;
+            correct++; streak++; score += POINTS;
+            gotBonus = MQ.addCorrect(); if (gotBonus) bonus += C.bonus.entries;
+            drawPlan();
+            if (gotBonus) { $('gp-entry-chip').classList.remove('pop'); void $('gp-entry-chip').offsetWidth; $('gp-entry-chip').classList.add('pop'); }
             $('gp-score').textContent = score;
             $('gp-score').classList.remove('pop'); void $('gp-score').offsetWidth; $('gp-score').classList.add('pop');
-            $('gp-gain').textContent = '+' + level.points;
+            $('gp-gain').textContent = '+' + POINTS;
             $('gp-gain').classList.remove('show'); void $('gp-gain').offsetWidth; $('gp-gain').classList.add('show');
             sfx.correct();
         } else { streak = 0; sfx.wrong(); }
         $('gp-me').classList.remove('flash-ok', 'flash-bad'); void $('gp-me').offsetWidth;
         $('gp-me').classList.add(ok ? 'flash-ok' : 'flash-bad');
-        feedback(ok ? 'ok' : 'bad', I.t(ok ? 'Correct!' : 'Wrong'), ok ?
-            (streak >= 2 ? I.f('🔥 {n} in a row · +{p}', { n: streak, p: level.points }) : I.f('+{p} points', { p: level.points })) : answerLine(q));
+        feedback(ok ? 'ok' : 'bad', I.t(ok ? (gotBonus ? 'Bonus entry!' : 'Correct!') : 'Wrong'), ok ?
+            (gotBonus ? I.f('+{p} point · 🎟 +{e} Lucky Draw entry', { p: POINTS, e: C.bonus.entries }) :
+             streak >= 2 ? I.f('🔥 {n} in a row · +{p}', { n: streak, p: POINTS }) : I.f('+{p} point', { p: POINTS })) : answerLine(q));
         next();
     }
 
     function finish() {
         if (done) return;
         done = true; clearInterval(timer); sfx.end();
-        // Lucky Draw ticket history keeps answered + correct so either ticket rule works (members only)
-        if (D.user) try {
-            var log = JSON.parse(localStorage.getItem('qp_ld_activity')) || [], now = new Date();
-            log.unshift({
-                date: now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') +
-                      ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
-                answered: answered, correct: correct, level: level.title, points: score
-            });
-            localStorage.setItem('qp_ld_activity', JSON.stringify(log.slice(0, 50)));
-        } catch (e) {}
+        var now = new Date();
+        MQ.logRound({
+            date: now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') +
+                  ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'),
+            answered: answered, correct: correct, total: round.length, points: score, bonus: bonus
+        });
         location.href = 'result.html?' + new URLSearchParams({
-            res: correct >= Math.ceil(round.length * 0.6) ? 'win' : 'lose', level: level.id,
-            real: score, correct: correct, answered: answered, total: round.length, time: used,
-            quick: D.quick ? 1 : 0
+            res: correct >= Math.ceil(round.length * 0.6) ? 'win' : 'lose',
+            real: score, correct: correct, answered: answered, total: round.length, time: used, bonus: bonus
         });
     }
 

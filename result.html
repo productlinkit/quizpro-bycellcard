@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizpro</title>
+    <title>MotorQuiz</title>
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="theme/lucky-draw/ld.css">
     <link rel="stylesheet" href="theme/css/game.css">
-    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
+    <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body class="result-page">
     <!-- Prototype preview toggle (not part of the product UI) -->
@@ -36,12 +37,12 @@
                 </div>
                 <div class="res-ribbon"><span id="r-status">You Win!</span></div>
                 <p class="res-ann" id="r-ann">Great job, keep it up</p>
-                <span class="res-points"><span class="res-points-ico"><span class="qf-icon-crown"></span></span><span>+<span id="r-points">0</span> Points</span></span>
+                <span class="res-points"><span class="res-points-ico"><span class="fa fa-star"></span></span><span>+<span id="r-points">0</span> Points</span></span>
             </div>
 
             <!-- Score -->
             <div class="res-card res-score">
-                <div class="res-card-title">Final Score</div>
+                <div class="res-card-title">Points earned</div>
                 <div class="res-big"><span id="r-real">0</span><small>Points</small></div>
                 <div class="res-dots" id="r-dots" aria-hidden="true"></div>
                 <div class="res-score-sub"><span class="fa fa-clock-o"></span> <span id="r-time">0 sec</span></div>
@@ -51,49 +52,67 @@
             <div class="res-stats">
                 <div class="res-stat"><span class="res-stat-ico green"><span class="fa fa-check"></span></span><b id="r-correct">0</b><small>Correct answers</small></div>
                 <div class="res-stat"><span class="res-stat-ico blue"><span class="fa fa-bullseye"></span></span><b id="r-acc">0%</b><small>Accuracy</small></div>
-                <div class="res-stat"><span class="res-stat-ico orange"><span class="fa fa-signal"></span></span><b id="r-level">-</b><small>Level</small></div>
+                <div class="res-stat"><span class="res-stat-ico orange"><span class="fa fa-ticket"></span></span><b id="r-bonus">0</b><small>Bonus entries</small></div>
             </div>
             <div class="res-answered"><span id="r-answered">0/10</span> <span>Questions answered</span></div>
 
-            <a href="lucky-draw.html" class="ld-entry ld-entry-home text-start" id="r-ld">
-                <span class="ld-entry-ico"><img class="ld-ill" src="theme/lucky-draw/img/ticket.png" alt=""></span>
-                <span>
-                    <span class="ld-entry-title d-block" id="r-ld-title">+0 Lucky Draw tickets</span>
-                    <span class="ld-entry-sub d-block">See your Ticket History</span>
-                </span>
-                <span class="ld-entry-go qf-icon-arrow-right"></span>
-            </a>
+            <div class="mq-card text-start" id="r-mq">
+                <div class="mq-stats" style="margin-top:0">
+                    <div class="mq-stat"><span class="mq-stat-ico q"><span class="fa fa-question"></span></span><b id="r-left">0</b><small>Questions left</small></div>
+                    <div class="mq-stat"><span class="mq-stat-ico p"><span class="fa fa-star"></span></span><b id="r-total">0</b><small>Total points</small></div>
+                    <div class="mq-stat"><span class="mq-stat-ico e"><span class="fa fa-ticket"></span></span><b id="r-entries">0</b><small>Draw entries</small></div>
+                </div>
+                <div class="mq-bonus">
+                    <div class="mq-bonus-top"><span><span class="fa fa-ticket"></span> Next bonus entry</span><b id="r-prog">0/5 correct</b></div>
+                    <div class="mq-bonus-dots" id="r-prog-dots"></div>
+                    <div class="mq-bonus-note" id="r-prog-note"></div>
+                </div>
+                <a href="lucky-draw.html" class="d-flex align-items-center justify-content-between mt-3 text-decoration-none fw-bold" style="color:var(--mq-blue)"><span><span class="fa fa-trophy"></span> Weekly Motorbike Lucky Draw</span><span class="fa fa-angle-right"></span></a>
+            </div>
 
             <div class="res-actions">
                 <a href="#" class="btn btn-lg btn-on-bg res-btn" id="r-again"><span class="qf-icon-replay"></span> Play Again</a>
-                <a href="index.html" class="btn btn-lg res-btn res-btn-ghost"><span class="qf-icon-home"></span> Home</a>
+                <a href="index.html" class="btn btn-lg res-btn res-btn-ghost"><span class="fa fa-play-circle"></span> Play tab</a>
             </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/motorquiz.js"></script>
     <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
-    <script src="theme/lucky-draw/ld-config.js"></script>
     <script>
     (function () {
-        var p = new URLSearchParams(location.search), I = window.QP_I18N;
-        var level = QP_DEMO.LEVELS.filter(function (l) { return String(l.id) === p.get('level'); })[0] || QP_DEMO.LEVELS[0];
+        var p = new URLSearchParams(location.search), I = window.QP_I18N, C = MQ.CONFIG;
         var total = +p.get('total') || 10, answered = +p.get('answered') || 0, correct = +p.get('correct') || 0;
         var pass = Math.ceil(total * 0.6);
         document.getElementById('r-answered').textContent = answered + '/' + total;
-        document.getElementById('r-level').textContent = level.title;
+        document.getElementById('r-bonus').textContent = '+' + (+p.get('bonus') || 0);
         document.getElementById('r-time').textContent = I.f('{n} sec', { n: +p.get('time') || 0 });
-        // Play Again spends one of this level's entries, so it stops when they run out
-        var again = document.getElementById('r-again'), left = QP_DEMO.entriesLeft(level.id);
-        if (left) {
-            again.href = 'game-play.html?quick=1&level=' + level.id;
-            again.insertAdjacentHTML('beforeend', '<b class="res-left" aria-label="' + I.f('Entries left: {n}/{m}', { n: left, m: level.entries }) + '">' + left + '</b>');
+
+        // Plan, points and entries after this round
+        var plan = MQ.sub(), st = MQ.stats(), need = C.bonus.everyCorrect;
+        document.getElementById('r-left').textContent = plan ? plan.left : 0;
+        document.getElementById('r-total').textContent = st.points.toLocaleString('en-US');
+        document.getElementById('r-entries').textContent = st.entries;
+        document.getElementById('r-prog').textContent = st.progress + '/' + need + ' correct';
+        document.getElementById('r-prog-dots').style.gridTemplateColumns = 'repeat(' + need + ',1fr)';
+        document.getElementById('r-prog-dots').innerHTML = Array.apply(null, Array(need)).map(function (x, i) { return '<i class="' + (i < st.progress ? 'on' : '') + '"></i>'; }).join('');
+        document.getElementById('r-prog-note').textContent = (need - st.progress) + ' more correct answer' + (need - st.progress === 1 ? '' : 's') + ' = +' + C.bonus.entries + ' Lucky Draw entry';
+
+        // Play Again while the plan still has questions
+        var again = document.getElementById('r-again');
+        if (plan && plan.left > 0) {
+            again.href = 'game-play.html';
+            again.insertAdjacentHTML('beforeend', '<b class="res-left" aria-label="' + I.f('Questions left: {n}', { n: plan.left }) + '">' + plan.left + '</b>');
+        } else if (plan && plan.plan.id !== 'weekly' && !plan.plan.trial) {
+            again.href = 'subscribe.html?change=1';
+            again.textContent = 'Get the Weekly Plan';
         } else {
             again.classList.add('disabled');
             again.setAttribute('aria-disabled', 'true');
-            again.textContent = I.t('No entries left');
+            again.textContent = 'No questions left';
         }
 
         // Broken heart for the lose badge (Font Awesome 4.7 has none)
@@ -105,7 +124,7 @@
         function show(win) {
             // Demo preview: the other outcome uses sample numbers that fit it
             var c = win === (p.get('res') === 'win') ? correct : (win ? Math.max(pass, correct) : Math.min(pass - 1, correct));
-            var pts = c * level.points;
+            var pts = c * C.pointsPerCorrect;
             document.body.classList.toggle('is-win', win);
             document.body.classList.toggle('is-lose', !win);
             document.getElementById('r-status').textContent = win ? 'Well done!' : 'Keep practicing';
@@ -128,15 +147,6 @@
             b.addEventListener('click', function () { show(b.getAttribute('data-res') === 'win'); });
         });
         show(p.get('res') === 'win');
-        var t = LD.ticketsFor({ answered: answered, correct: correct }, LD_CONFIG.ticketRule);
-        document.getElementById('r-ld-title').textContent = '+' + t + ' Lucky Draw ticket' + (t === 1 ? '' : 's');
-        // Guests don't collect tickets: invite them to log in instead
-        if (!QP_DEMO.user) {
-            var ld = document.getElementById('r-ld');
-            ld.href = QP_DEMO.loginUrl('index.html');
-            document.getElementById('r-ld-title').textContent = 'Login to earn Lucky Draw tickets';
-            ld.querySelector('.ld-entry-sub').textContent = 'Your score is not saved as a guest';
-        }
     })();
     </script>
 </body>

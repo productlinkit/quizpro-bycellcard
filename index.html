@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizpro</title>
+    <title>MotorQuiz</title>
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
@@ -11,57 +11,26 @@
     <link rel="stylesheet" href="theme/css/guest.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
-    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
     <link rel="stylesheet" href="theme/lucky-draw/ld.css">
+    <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body>
     <div class="splash" id="splash" aria-hidden="true">
         <span class="splash-glow"></span>
-        <span class="splash-owl"><svg viewBox="0 0 120 100">
-                <g class="owl-all">
-                <!-- wings -->
-                <ellipse cx="33" cy="76" rx="10" ry="18" fill="#7A4A2A" stroke="#3B2A20" stroke-width="2.5" transform="rotate(14 33 76)"/>
-                <g class="owl-wing"><ellipse cx="89" cy="70" rx="10" ry="17" fill="#7A4A2A" stroke="#3B2A20" stroke-width="2.5" transform="rotate(-38 89 70)"/></g>
-                <!-- body -->
-                <path d="M30 70 C30 40 44 30 60 30 C76 30 90 40 90 70 C90 92 78 104 60 104 C42 104 30 92 30 70 Z" fill="#A0673E" stroke="#3B2A20" stroke-width="2.5"/>
-                <!-- ear tufts -->
-                <path d="M36 40 L34 22 L48 33 Z" fill="#A0673E" stroke="#3B2A20" stroke-width="2.5" stroke-linejoin="round"/>
-                <path d="M84 40 L86 22 L72 33 Z" fill="#A0673E" stroke="#3B2A20" stroke-width="2.5" stroke-linejoin="round"/>
-                <!-- belly -->
-                <ellipse cx="60" cy="84" rx="18" ry="18" fill="#F6DDB6"/>
-                <path d="M52 80 q4 4 8 0 q4 4 8 0 M48 89 q4 4 8 0 q4 4 8 0 q4 4 8 0" fill="none" stroke="#D9B07E" stroke-width="2" stroke-linecap="round"/>
-                <!-- eyes -->
-                <circle cx="48" cy="56" r="12" fill="#fff" stroke="#3B2A20" stroke-width="2.5"/>
-                <circle cx="72" cy="56" r="12" fill="#fff" stroke="#3B2A20" stroke-width="2.5"/>
-                <g class="owl-pupils">
-                <circle cx="49" cy="57" r="5.5" fill="#2B1D14"/><circle cx="50.8" cy="55" r="1.8" fill="#fff"/>
-                <circle cx="71" cy="57" r="5.5" fill="#2B1D14"/><circle cx="72.8" cy="55" r="1.8" fill="#fff"/>
-                </g>
-                <g class="owl-lids"><ellipse cx="48" cy="56" rx="12" ry="12" fill="#A0673E"/><ellipse cx="72" cy="56" rx="12" ry="12" fill="#A0673E"/></g>
-                <!-- beak & cheeks -->
-                <path d="M55.5 66 L64.5 66 L60 73 Z" fill="#FE9E44" stroke="#3B2A20" stroke-width="2" stroke-linejoin="round"/>
-                <circle cx="38" cy="68" r="3.6" fill="#FF8FA3" opacity=".6"/>
-                <circle cx="82" cy="68" r="3.6" fill="#FF8FA3" opacity=".6"/>
-                <!-- graduation cap -->
-                <path d="M60 12 L88 22 L60 32 L32 22 Z" fill="#2B2F5B" stroke="#3B2A20" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M46 27 v7 q14 6 28 0 v-7" fill="#2B2F5B" stroke="#3B2A20" stroke-width="2" stroke-linejoin="round"/>
-                <g class="owl-tassel">
-                <path d="M84 21.5 v11" stroke="#FFCC5F" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="84" cy="34" r="3" fill="#FFCC5F" stroke="#3B2A20" stroke-width="1.5"/>
-                </g>
-                </g>
-            </svg></span>
-        <img class="splash-logo" src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" alt="">
+        <img class="splash-bike" src="theme/images/motorbike.svg" alt="">
+        <span class="mq-logo lg splash-logo"><svg class="mq-logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1F6BFF"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="44.8 15" transform="rotate(135 16 16)"/><path d="M16 16 L21.5 10.5" stroke="#F6C445" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.8" fill="#F6C445"/><path d="M21.5 21.5 L26 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg><span>Motor<b>Quiz</b></span></span>
         <span class="splash-bar"><i></i></span>
     </div>
     <script>
         // Splash on every fresh open or refresh; skipped only when coming back from another page of the app
         (function () {
             var nav = performance.getEntriesByType('navigation')[0];
-            if (document.referrer.indexOf(location.origin) === 0 && !(nav && nav.type === 'reload')) document.getElementById('splash').remove();
+            var s = document.getElementById('splash');
+            if (document.referrer.indexOf(location.origin) === 0 && !(nav && nav.type === 'reload')) s.remove();
+            else setTimeout(function () { s.classList.add('out'); setTimeout(function () { s.remove(); }, 350); }, 2200);
         })();
     </script>
-
 
     <div class="content-wrapper">
         <div class="container box-wrapper">
@@ -69,222 +38,154 @@
                 <div class="row align-items-center">
                     <div class="col-6 text-start">
                         <div class="logo">
-                            <a href="index.html">
-                                <img src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" alt="Logo">
+                            <a href="index.html" class="text-decoration-none">
+                                <span class="mq-logo"><svg class="mq-logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1F6BFF"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="44.8 15" transform="rotate(135 16 16)"/><path d="M16 16 L21.5 10.5" stroke="#F6C445" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.8" fill="#F6C445"/><path d="M21.5 21.5 L26 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg><span>Motor<b>Quiz</b></span></span>
                             </a>
                         </div>
                     </div>
-
-
-
-
-
-
                 </div>
             </div>
 
-
-    <div class="home-profile">
-        <div class="row gx-0">
-            <div class="col-7 text-start">
-                <div class="d-flex align-items-center">
-                    <div class="avatar">
-
-                                            <img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="Avatar">
+            <div class="home-profile">
+                <div class="row gx-0">
+                    <div class="col-7 text-start">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar">
+                                <img src="https://demo.quizpro.mobi//uploads/user/2/91819a12c87646f315a23b80fbf283ea.jpg" alt="Avatar">
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <div class="home-profile-name">1234567890</div>
+                                <div class="home-profile-status" id="homeStatus">Subscriber</div>
+                            </div>
+                        </div>
                     </div>
-                                            <div class="flex-grow-1 ms-2">
-                            <div class="home-profile-name">1234567890</div>
-                            <div class="home-profile-status">Subscriber</div>
+                    <div class="col-5 text-end">
+                        <div class="h-100 d-flex align-items-center justify-content-end">
+                            <div class="home-profile-points" aria-label="Total points">
+                                <span class="home-profile-points-badge"><span class="fa fa-star"></span></span>
+                                <span id="homePoints">0</span>
+                            </div>
                         </div>
-                                    </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-5 text-end">
-                <div class="h-100 d-flex align-items-center justify-content-end">
-                                            <div class="home-profile-points">
-                            <span class="home-profile-points-badge"><span class="qf-icon-crown"></span></span>
-                            29160
-                        </div>
-                                    </div>
-            </div>
+
+            <!-- Weekly grand prize -->
+            <a href="lucky-draw.html" class="mq-prize d-block text-decoration-none" id="homePrize">
+                <span class="mq-prize-value"><small>Worth</small><span id="prizeValue">$2,500</span></span>
+                <span class="mq-prize-tag"><span class="fa fa-trophy"></span> Weekly Grand Prize</span>
+                <div class="mq-prize-title">Win a <b>Motorbike</b><br>every week</div>
+                <div class="mq-prize-sub">1 winner every week from the Lucky Draw</div>
+                <img class="mq-prize-bike" src="theme/images/motorbike.svg" alt="Motorbike grand prize">
+                <div class="mq-prize-foot">
+                    <span><span class="d-block" style="opacity:.75">My entries this week</span><b id="prizeEntries">–</b></span>
+                    <span class="text-end"><span class="d-block" style="opacity:.75">Next draw in</span><span class="mq-count" id="prizeCount"></span></span>
+                </div>
+            </a>
+
+            <!-- Play: filled in by the script below for guests, members without a plan and subscribers -->
+            <div id="playRoot"></div>
         </div>
-    </div>
-
-    <a href="#" class="comp-card" id="quickPlay">
-        <span class="comp-shell" aria-hidden="true"></span>
-        <span class="comp-time"><span class="fa fa-clock-o"></span> <span id="compCountdown">--:--:--</span></span>
-        <span class="comp-ill" aria-hidden="true">
-            <svg viewBox="0 0 120 100">
-                <g class="owl-all">
-                <!-- wings -->
-                <ellipse cx="33" cy="76" rx="10" ry="18" fill="#7A4A2A" stroke="#3B2A20" stroke-width="2.5" transform="rotate(14 33 76)"/>
-                <g class="owl-wing"><ellipse cx="89" cy="70" rx="10" ry="17" fill="#7A4A2A" stroke="#3B2A20" stroke-width="2.5" transform="rotate(-38 89 70)"/></g>
-                <!-- body -->
-                <path d="M30 70 C30 40 44 30 60 30 C76 30 90 40 90 70 C90 92 78 104 60 104 C42 104 30 92 30 70 Z" fill="#A0673E" stroke="#3B2A20" stroke-width="2.5"/>
-                <!-- ear tufts -->
-                <path d="M36 40 L34 22 L48 33 Z" fill="#A0673E" stroke="#3B2A20" stroke-width="2.5" stroke-linejoin="round"/>
-                <path d="M84 40 L86 22 L72 33 Z" fill="#A0673E" stroke="#3B2A20" stroke-width="2.5" stroke-linejoin="round"/>
-                <!-- belly -->
-                <ellipse cx="60" cy="84" rx="18" ry="18" fill="#F6DDB6"/>
-                <path d="M52 80 q4 4 8 0 q4 4 8 0 M48 89 q4 4 8 0 q4 4 8 0 q4 4 8 0" fill="none" stroke="#D9B07E" stroke-width="2" stroke-linecap="round"/>
-                <!-- eyes -->
-                <circle cx="48" cy="56" r="12" fill="#fff" stroke="#3B2A20" stroke-width="2.5"/>
-                <circle cx="72" cy="56" r="12" fill="#fff" stroke="#3B2A20" stroke-width="2.5"/>
-                <g class="owl-pupils">
-                <circle cx="49" cy="57" r="5.5" fill="#2B1D14"/><circle cx="50.8" cy="55" r="1.8" fill="#fff"/>
-                <circle cx="71" cy="57" r="5.5" fill="#2B1D14"/><circle cx="72.8" cy="55" r="1.8" fill="#fff"/>
-                </g>
-                <g class="owl-lids"><ellipse cx="48" cy="56" rx="12" ry="12" fill="#A0673E"/><ellipse cx="72" cy="56" rx="12" ry="12" fill="#A0673E"/></g>
-                <!-- beak & cheeks -->
-                <path d="M55.5 66 L64.5 66 L60 73 Z" fill="#FE9E44" stroke="#3B2A20" stroke-width="2" stroke-linejoin="round"/>
-                <circle cx="38" cy="68" r="3.6" fill="#FF8FA3" opacity=".6"/>
-                <circle cx="82" cy="68" r="3.6" fill="#FF8FA3" opacity=".6"/>
-                <!-- graduation cap -->
-                <path d="M60 12 L88 22 L60 32 L32 22 Z" fill="#2B2F5B" stroke="#3B2A20" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M46 27 v7 q14 6 28 0 v-7" fill="#2B2F5B" stroke="#3B2A20" stroke-width="2" stroke-linejoin="round"/>
-                <g class="owl-tassel">
-                <path d="M84 21.5 v11" stroke="#FFCC5F" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="84" cy="34" r="3" fill="#FFCC5F" stroke="#3B2A20" stroke-width="1.5"/>
-                </g>
-                </g>
-            </svg>
-        </span>
-        <span class="comp-title">Daily Competition</span>
-        <span class="comp-rules">
-            <span><span class="fa fa-bolt"></span> 10 questions</span>
-            <span><span class="fa fa-clock-o"></span> 20 sec</span>
-            <span><span class="fa fa-check-circle"></span> True or False</span>
-        </span>
-        <span class="comp-btn"><span class="fa fa-play"></span> Play Now</span>
-    </a>
-
-    <a href="lucky-draw.html" class="ld-entry ld-entry-home" id="homeTickets">
-        <span class="ld-entry-ico"><img class="ld-ill" src="theme/lucky-draw/img/ticket.png" alt=""></span>
-        <span>
-            <span class="ld-entry-title d-block">My tickets</span>
-            <span class="ld-entry-sub d-block" id="homeTicketCount">Collect tickets, win prizes</span>
-        </span>
-        <span class="ld-entry-go qf-icon-arrow-right"></span>
-    </a>
-
-
-
-
-        </div>
-
 
         <div class="bottom-spacer" style="height: 65px;"></div>
 <div class="bottom-nav">
     <div class="bottom-nav-bg row gx-0 box-wrapper mx-auto container-fluid">
-        <div class="col active ">
-            <div class="nav-box">
-                <a href="index.html" class="nav-box-ico">
-                    <span class="qf-icon-home"></span>
-                </a>
-            </div>
-        </div>
-        <div class="col ">
-            <div class="nav-box">
-                <a href="lucky-draw.html" class="nav-box-ico">
-                    <svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7M12 8v13M12 8S10.6 3.4 7.9 3.7C5.9 4 6.2 7.5 9 8M12 8s1.4-4.6 4.1-4.3c2 .3 1.7 3.8-1.1 4.3"/></svg>
-                </a>
-            </div>
-        </div>
-        <div class="col ">
-            <div class="nav-box">
-                <a href="leaderboard.html" class="nav-box-ico">
-                    <span class="qf-icon-leaderboard"></span>
-                </a>
-            </div>
-        </div>
-        <div class="col ">
-                                        <div class="nav-box">
-                    <a href="profile.html" class="nav-box-ico">
-                        <span class="qf-icon-profile"></span>
-                    </a>
-                </div>
-                    </div>
+        <div class="col active"><div class="nav-box"><a href="index.html" class="nav-box-ico"><svg class="mq-nav-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M10 8.5v7l5.5-3.5z" fill="currentColor"/></svg><span class="nav-label">Play</span></a></div></div>
+        <div class="col"><div class="nav-box"><a href="lucky-draw.html" class="nav-box-ico"><svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg><span class="nav-label">Prize</span></a></div></div>
+        <div class="col"><div class="nav-box"><a href="profile.html" class="nav-box-ico"><svg class="mq-nav-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg><span class="nav-label">Account</span></a></div></div>
     </div>
-</div> </div>
-
-    <!-- Choose your level, before the Daily Competition starts -->
-    <div class="modal" tabindex="-1" id="level">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-body modal-level">
-                    <div class="modal-level-header">
-                        <a href="#" class="modal-level-header-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span class="qf-icon-close"></span>
-                        </a>
-                    </div>
-                    <div class="container-fluid box-wrapper">
-                        <h3 class="modal-level-title">Choose your level</h3>
-                        <div class="modal-level-option" id="homeLevelList"></div>
-                        <a href="lucky-draw.html" class="lvl-banner" id="levelBanner"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+</div>
     </div>
-    <!-- Choose your level -->
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/motorquiz.js"></script>
     <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
-
     <script src="theme/js/custom.js"></script>
     <script src="theme/lucky-draw/ld-config.js"></script>
     <script>
-        // Home: members see how many Lucky Draw tickets they have collected
-        (function () {
-            var el = document.getElementById('homeTicketCount');
-            if (!QP_DEMO.user) { document.getElementById('homeTickets').href = QP_DEMO.loginUrl('index.html'); el.textContent = 'Login to earn Lucky Draw tickets'; return; }
-            var n = LD_DEMO_ACTIVITY.reduce(function (t, a) { return t + LD.ticketsFor(a, LD_CONFIG.ticketRule); }, 0);
-            el.textContent = n + ' ticket' + (n === 1 ? '' : 's');
-        })();
-    </script>
-    <script>
-        // Daily Competition card: countdown to the next challenge, tilt and owl eyes follow the pointer, tap effects
-        (function () {
-            var card = document.getElementById('quickPlay'), ill = card.querySelector('.comp-ill'), btn = card.querySelector('.comp-btn');
-            var eyes = card.querySelector('.owl-pupils'), clock = document.getElementById('compCountdown');
-            function tick() {
-                var now = new Date(), end = new Date(now); end.setHours(24, 0, 0, 0);
-                var s = Math.floor((end - now) / 1000);
-                clock.textContent = [s / 3600, s / 60 % 60, s % 60].map(function (n) { return String(Math.floor(n)).padStart(2, '0'); }).join(':');
-            }
-            tick(); setInterval(tick, 1000);
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-            function follow(e) {
-                var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-                card.style.setProperty('--px', x.toFixed(3));
-                card.style.setProperty('--py', y.toFixed(3));
-                card.classList.add('is-live');
-                eyes.style.transform = 'translate(' + (x * 5).toFixed(1) + 'px,' + ((y + 0.2) * 4).toFixed(1) + 'px)';
-            }
-            function rest() {
-                card.classList.remove('is-live');
-                card.style.removeProperty('--px'); card.style.removeProperty('--py');
-                eyes.style.transform = '';
-            }
-            card.addEventListener('pointermove', follow);
-            card.addEventListener('pointerdown', follow);
-            card.addEventListener('pointerleave', rest);
-            card.addEventListener('pointercancel', rest);
-            ill.addEventListener('click', function (e) {
-                e.preventDefault(); e.stopPropagation();
-                card.classList.remove('hop'); void card.offsetWidth; card.classList.add('hop');
-            });
-            ill.addEventListener('animationend', function (e) { if (e.animationName === 'owlJump') card.classList.remove('hop'); });
-            btn.addEventListener('pointerdown', function (e) {
-                var r = btn.getBoundingClientRect(), w = document.createElement('i');
-                w.className = 'comp-ripple';
-                w.style.left = (e.clientX - r.left) + 'px'; w.style.top = (e.clientY - r.top) + 'px';
-                btn.appendChild(w);
-                setTimeout(function () { w.remove(); }, 600);
-            });
-        })();
-    </script>
+    // Play tab: subscription status, remaining questions, points, entries and bonus progress
+    (function () {
+        var C = MQ.CONFIG, user = QP_DEMO.user, s = user && MQ.sub(), st = MQ.stats(), root = document.getElementById('playRoot');
+        function $(id) { return document.getElementById(id); }
+        function dateTime(ms) { return QP_I18N.date(new Date(ms), { time: true, noYear: true }); }
 
+        $('prizeValue').textContent = MQ.money(C.grandPrize.value);
+        $('homePoints').textContent = st.points.toLocaleString('en-US');
+        $('prizeEntries').textContent = user ? st.entries : 'Login to join';
+        if (user) $('homeStatus').textContent = s ? (s.plan.trial ? 'Free Trial' : s.plan.name) : 'No active plan';
+
+        // Countdown to the next weekly draw
+        function tick() {
+            var sec = Math.max(0, Math.floor((new Date(LD_CONFIG.campaign.drawDate) - Date.now()) / 1000));
+            $('prizeCount').innerHTML = [[sec / 86400, 'd'], [sec % 86400 / 3600, 'h'], [sec % 3600 / 60, 'm']].map(function (p) {
+                return '<div><b>' + String(Math.floor(p[0])).padStart(2, '0') + '</b><span>' + p[1] + '</span></div>';
+            }).join('');
+        }
+        tick(); setInterval(tick, 30000);
+
+        var steps = '<div class="mq-card"><div class="mq-card-head"><h3 class="mq-card-title">How it works</h3></div><div class="mq-steps">' +
+            '<div class="mq-step"><span class="mq-step-ico"><span class="fa fa-mobile"></span><i>1</i></span><b>Choose a plan</b>Daily or Weekly</div>' +
+            '<div class="mq-step"><span class="mq-step-ico"><span class="fa fa-question"></span><i>2</i></span><b>Play the quiz</b>1 point per correct answer</div>' +
+            '<div class="mq-step"><span class="mq-step-ico"><span class="fa fa-ticket"></span><i>3</i></span><b>Collect entries</b>+1 entry every ' + C.bonus.everyCorrect + ' correct</div>' +
+            '</div></div>';
+
+        // Guests: start the journey at login
+        if (!user) {
+            root.innerHTML = '<div class="mq-card text-center">' +
+                '<h3 class="mq-card-title mb-1">Play. Score. Ride home a motorbike.</h3>' +
+                '<p class="mq-empty mt-0 mb-0">Answer quiz questions to earn points and Lucky Draw entries.</p>' +
+                '<a href="' + QP_DEMO.loginUrl('index.html') + '" class="btn btn-lg button-gold mq-play-btn"><span class="fa fa-gift"></span> Start Free Trial</a>' +
+                '<a href="' + QP_DEMO.loginUrl('index.html') + '" class="d-block mt-3 fw-bold text-decoration-none" style="color:var(--mq-blue)">Already subscribed? Login</a>' +
+                '</div>' + steps;
+            return;
+        }
+
+        // Logged in without an active plan: choose a subscription
+        if (!s) {
+            var trial = MQ.trialAvailable();
+            root.innerHTML = '<div class="mq-card">' +
+                '<div class="mq-sub"><span class="mq-sub-ico off"><span class="fa fa-lock"></span></span>' +
+                    '<div class="mq-sub-text"><b>Choose a plan to start playing</b><small>Daily ' + MQ.money(C.plans[0].price) + '/day · Weekly ' + MQ.money(C.plans[1].price) + '/week</small></div>' +
+                    '<span class="mq-pill off">No plan</span></div>' +
+                '<a href="subscribe.html" class="btn btn-lg ' + (trial ? 'button-gold' : 'button-primary') + ' mq-play-btn">' +
+                    (trial ? '<span class="fa fa-gift"></span> Start Free Trial' : '<span class="fa fa-bolt"></span> Subscribe Now') + '</a>' +
+                (trial ? '<a href="subscribe.html" class="d-block text-center mt-3 fw-bold text-decoration-none" style="color:var(--mq-blue)">See Daily &amp; Weekly plans</a>' : '') +
+                '</div>' + steps;
+            return;
+        }
+
+        // Subscriber or trial user
+        var p = s.plan, need = C.bonus.everyCorrect, prog = st.progress;
+        var status = p.trial ? '<span class="mq-pill trial">Free Trial</span>' : s.cancelled ? '<span class="mq-pill ending">Ends soon</span>' : '<span class="mq-pill on">Active</span>';
+        var allowance = p.trial ? (C.trial.confirmed ? '' : '<span class="mq-tbc">trial allowance TBC</span>') : '';
+        var play = s.left > 0
+            ? '<a href="game-play.html" class="btn btn-lg button-primary mq-play-btn" id="playNow"><span class="fa fa-play"></span> Play Now</a>' +
+              '<div class="mq-empty">' + Math.min(C.roundSize, s.left) + ' questions per round · 20 sec each · True or False</div>'
+            : '<span class="btn btn-lg button-grey mq-play-btn disabled"><span class="fa fa-check"></span> All questions played</span>' +
+              '<div class="mq-empty">' + (s.cancelled || p.trial ? 'Your plan ends ' : 'New questions on ') + dateTime(s.periodEnd) + '</div>' +
+              (p.id !== 'weekly' ? '<a href="subscribe.html?change=1" class="d-block text-center mt-2 fw-bold text-decoration-none" style="color:var(--mq-blue)">Get ' + C.plans[1].questions + ' questions with the Weekly Plan</a>' : '');
+        root.innerHTML = '<div class="mq-card">' +
+            '<div class="mq-sub"><span class="mq-sub-ico' + (p.trial ? ' trial' : '') + '"><span class="fa ' + (p.trial ? 'fa-gift' : 'fa-check-circle') + '"></span></span>' +
+                '<div class="mq-sub-text"><b>' + (p.trial ? 'Free 1-Day Trial' : p.name) + '</b><small>' +
+                    (p.trial ? 'Ends ' + dateTime(s.periodEnd) : MQ.money(p.price) + '/' + p.per + ' · ' + (s.cancelled ? 'ends ' : 'renews ') + dateTime(s.periodEnd)) + '</small></div>' +
+                status + '</div>' +
+            '<div class="mq-stats">' +
+                '<div class="mq-stat"><span class="mq-stat-ico q"><span class="fa fa-question"></span></span><b>' + s.left + '<small style="display:inline;font-size:.75rem">/' + p.questions + '</small></b><small>Questions left</small></div>' +
+                '<div class="mq-stat"><span class="mq-stat-ico p"><span class="fa fa-star"></span></span><b>' + st.points.toLocaleString('en-US') + '</b><small>Total points</small></div>' +
+                '<div class="mq-stat"><span class="mq-stat-ico e"><span class="fa fa-ticket"></span></span><b>' + st.entries + '</b><small>Draw entries</small></div>' +
+            '</div>' + (allowance ? '<div class="text-center mt-2">' + allowance + '</div>' : '') +
+            '<div class="mq-bonus">' +
+                '<div class="mq-bonus-top"><span><span class="fa fa-ticket"></span> Next bonus entry</span><b>' + prog + '/' + need + ' correct</b></div>' +
+                '<div class="mq-bonus-dots" style="grid-template-columns:repeat(' + need + ',1fr)">' + Array.apply(null, Array(need)).map(function (x, i) { return '<i class="' + (i < prog ? 'on' : '') + '"></i>'; }).join('') + '</div>' +
+                '<div class="mq-bonus-note">' + (need - prog) + ' more correct answer' + (need - prog === 1 ? '' : 's') + ' = +' + C.bonus.entries + ' Lucky Draw entry</div>' +
+            '</div>' + play + '</div>' +
+            '<div class="mq-card"><div class="mq-card-head"><h3 class="mq-card-title">This week\'s entries</h3><a class="mq-card-link" href="lucky-draw.html">See Prize <span class="fa fa-angle-right"></span></a></div>' +
+                '<div class="d-flex justify-content-between small"><span>From your plan</span><b>' + st.planEntries + '</b></div>' +
+                '<div class="d-flex justify-content-between small mt-1"><span>Bonus (every ' + need + ' correct)</span><b>' + st.bonusEntries + '</b></div>' +
+            '</div>';
+    })();
+    </script>
 </body>
 </html>

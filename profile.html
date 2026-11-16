@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizpro</title>
+    <title>MotorQuiz</title>
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
@@ -12,8 +12,9 @@
     <link rel="stylesheet" href="theme/css/pages.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
-    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
     <link rel="stylesheet" href="theme/lucky-draw/ld.css">
+    <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body>
     
@@ -25,7 +26,7 @@
                     <div class="col-6 text-start">
                         <div class="logo">
                             <a href="index.html">
-                                <img src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" alt="Logo">
+                                <span class="mq-logo"><svg class="mq-logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1F6BFF"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="44.8 15" transform="rotate(135 16 16)"/><path d="M16 16 L21.5 10.5" stroke="#F6C445" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.8" fill="#F6C445"/><path d="M21.5 21.5 L26 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg><span>Motor<b>Quiz</b></span></span>
                             </a>
                         </div>
                     </div>
@@ -52,20 +53,18 @@
                 </a>
                 <div class="home-profile-status">1234567890</div>
             </div>
-            <span class="badge background-success profile-sub-badge" id="subBadge">Subscriber</span>
-        </div>
-        <div class="profile-sub">
-            <div class="profile-sub-text" id="subText">Daily subscription active · unlimited quizzes &amp; Lucky Draw tickets</div>
-            <button type="button" class="profile-unsub" id="btnUnsub" data-bs-toggle="modal" data-bs-target="#modalUnsub">Unsubscribe</button>
         </div>
     </div>
+
+    <!-- Subscription & play status -->
+    <div class="mq-card" id="acctSub"></div>
 
     <div class="card-simple-outer">
         <ul class="menu">
             <li class="menu-list">
                 <a href="history.html">
                     <span class="menu-list-ico qf-icon-game"></span>
-                    History
+                    Game History
                 </a>
             </li>
             <li class="menu-list">
@@ -76,13 +75,6 @@
                 </a>
             </li>
 
-            <li class="menu-list">
-                <a href="#" id="menuTheme">
-                    <span class="menu-list-ico fa fa-paint-brush"></span>
-                    Theme
-                    <span class="menu-lang menu-theme" id="menuThemeVal"></span>
-                </a>
-            </li>
             <li class="menu-list menu-switch">
                 <a href="#" id="menuSound">
                     <span class="menu-list-ico fa fa-volume-up"></span>
@@ -118,34 +110,9 @@
         <div class="bottom-spacer" style="height: 65px;"></div>
 <div class="bottom-nav">
     <div class="bottom-nav-bg row gx-0 box-wrapper mx-auto container-fluid">
-        <div class="col ">
-            <div class="nav-box">
-                <a href="index.html" class="nav-box-ico">
-                    <span class="qf-icon-home"></span>
-                </a>
-            </div>
-        </div>
-        <div class="col ">
-            <div class="nav-box">
-                <a href="lucky-draw.html" class="nav-box-ico">
-                    <svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7M12 8v13M12 8S10.6 3.4 7.9 3.7C5.9 4 6.2 7.5 9 8M12 8s1.4-4.6 4.1-4.3c2 .3 1.7 3.8-1.1 4.3"/></svg>
-                </a>
-            </div>
-        </div>
-        <div class="col ">
-            <div class="nav-box">
-                <a href="leaderboard.html" class="nav-box-ico">
-                    <span class="qf-icon-leaderboard"></span>
-                </a>
-            </div>
-        </div>
-        <div class="col active">
-                                        <div class="nav-box">
-                    <a href="profile.html" class="nav-box-ico">
-                        <span class="qf-icon-profile"></span>
-                    </a>
-                </div>
-                    </div>
+        <div class="col"><div class="nav-box"><a href="index.html" class="nav-box-ico"><svg class="mq-nav-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M10 8.5v7l5.5-3.5z" fill="currentColor"/></svg><span class="nav-label">Play</span></a></div></div>
+        <div class="col"><div class="nav-box"><a href="lucky-draw.html" class="nav-box-ico"><svg class="ld-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg><span class="nav-label">Prize</span></a></div></div>
+        <div class="col active"><div class="nav-box"><a href="profile.html" class="nav-box-ico"><svg class="mq-nav-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg><span class="nav-label">Account</span></a></div></div>
     </div>
 </div> </div>
 
@@ -153,8 +120,8 @@
     <div class="modal fade modal-standard" tabindex="-1" role="dialog" id="modalLang">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header" style="background: #3EA9F5;">
-                    <img src="https://demo.quizpro.mobi//theme/images/logo_quizypro.png" width="80" alt="Logo">
+                <div class="modal-header" style="background: #1F6BFF;">
+                    <span class="mq-logo"><svg class="mq-logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1F6BFF"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="44.8 15" transform="rotate(135 16 16)"/><path d="M16 16 L21.5 10.5" stroke="#F6C445" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="2.8" fill="#F6C445"/><path d="M21.5 21.5 L26 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg><span>Motor<b>Quiz</b></span></span>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <select name="lang" id="lang" style="font-size: 20px;">
@@ -171,13 +138,12 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content unsub-modal">
                 <h3 class="modal-level-title mb-2">Unsubscribe?</h3>
-                <p class="unsub-modal-text">You will stop being charged, but you will lose unlimited quizzes and won't earn Lucky Draw tickets anymore.</p>
+                <p class="unsub-modal-text" id="unsubText">You will stop being charged and stop getting new questions and Lucky Draw entries. <span class="mq-tbc">cancellation rule TBC</span></p>
                 <button type="button" class="btn btn-lg button-primary w-100 mb-2" data-bs-dismiss="modal">Stay Subscribed</button>
                 <button type="button" class="btn btn-lg unsub-confirm w-100" id="btnUnsubConfirm" data-bs-dismiss="modal">Yes, Unsubscribe</button>
             </div>
         </div>
     </div>
-
     <div class="modal fade" tabindex="-1" id="modalTheme">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content theme-sheet">
@@ -191,6 +157,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/motorquiz.js"></script>
     <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
@@ -202,21 +169,43 @@
         })();
     </script>
     <script>
-        // Demo only: toggle subscription state locally
+        // Account: active plan, management, remaining plays and entries
         (function () {
-            var KEY = 'qp_demo_unsub', badge = document.getElementById('subBadge'), text = document.getElementById('subText'), btn = document.getElementById('btnUnsub');
-            function isUnsub() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
+            var C = MQ.CONFIG, root = document.getElementById('acctSub');
+            function when(ms) { return QP_I18N.date(new Date(ms), { time: true }); }
             function paint() {
-                var off = isUnsub();
-                badge.textContent = off ? 'Not Subscribed' : 'Subscriber';
-                badge.className = 'badge profile-sub-badge ' + (off ? 'button-grey' : 'background-success');
-                text.textContent = off ? 'Subscribe to play unlimited quizzes and collect Lucky Draw tickets' : 'Daily subscription active · unlimited quizzes & Lucky Draw tickets';
-                btn.textContent = off ? 'Subscribe' : 'Unsubscribe';
-                btn.classList.toggle('is-subscribe', off);
-                if (off) { btn.removeAttribute('data-bs-toggle'); } else { btn.setAttribute('data-bs-toggle', 'modal'); }
+                var s = MQ.sub(), st = MQ.stats(), html;
+                if (!s) {
+                    var trial = MQ.trialAvailable();
+                    html = '<div class="mq-sub"><span class="mq-sub-ico off"><span class="fa fa-lock"></span></span>' +
+                        '<div class="mq-sub-text"><b>No active plan</b><small>Subscribe to play and collect Lucky Draw entries</small></div><span class="mq-pill off">Inactive</span></div>' +
+                        '<a href="subscribe.html" class="btn btn-lg ' + (trial ? 'button-gold' : 'button-primary') + ' w-100 mt-3">' + (trial ? 'Start Free Trial' : 'Subscribe Now') + '</a>';
+                } else {
+                    var p = s.plan;
+                    html = '<div class="mq-card-head"><h3 class="mq-card-title">My Subscription</h3>' +
+                            (p.trial ? '<span class="mq-pill trial">Free Trial</span>' : s.cancelled ? '<span class="mq-pill ending">Unsubscribed</span>' : '<span class="mq-pill on">Active</span>') + '</div>' +
+                        '<div class="mq-sub"><span class="mq-sub-ico' + (p.trial ? ' trial' : '') + '"><span class="fa ' + (p.trial ? 'fa-gift' : 'fa-check-circle') + '"></span></span>' +
+                            '<div class="mq-sub-text"><b>' + (p.trial ? 'Free 1-Day Trial' : p.name + ' · ' + MQ.money(p.price) + '/' + p.per) + '</b><small>' +
+                            (p.trial || s.cancelled ? 'Ends ' : 'Renews ') + when(s.periodEnd) + '</small></div></div>' +
+                        '<div class="mq-stats">' +
+                            '<div class="mq-stat"><span class="mq-stat-ico q"><span class="fa fa-question"></span></span><b>' + s.left + '<small style="display:inline;font-size:.75rem">/' + p.questions + '</small></b><small>Plays left</small></div>' +
+                            '<div class="mq-stat"><span class="mq-stat-ico p"><span class="fa fa-star"></span></span><b>' + st.points.toLocaleString('en-US') + '</b><small>Total points</small></div>' +
+                            '<div class="mq-stat"><span class="mq-stat-ico e"><span class="fa fa-ticket"></span></span><b>' + st.entries + '</b><small>Entries this week</small></div>' +
+                        '</div>' +
+                        (p.trial && !C.trial.confirmed ? '<div class="text-center mt-2"><span class="mq-tbc">trial allowance TBC</span></div>' : '') +
+                        '<div class="d-flex justify-content-between small mt-3"><span>Plan entries · Bonus entries</span><b>' + st.planEntries + ' · ' + st.bonusEntries + '</b></div>' +
+                        '<div class="d-flex justify-content-between small mt-1"><span>Next bonus entry</span><b>' + st.progress + '/' + C.bonus.everyCorrect + ' correct</b></div>' +
+                        '<div class="d-flex gap-2 mt-3">' +
+                            (p.trial ? '<a href="subscribe.html?change=1" class="btn button-primary flex-fill">Subscribe Now</a>'
+                             : s.cancelled ? '<button type="button" class="btn button-primary flex-fill" id="btnResume">Resubscribe</button>'
+                             : '<a href="subscribe.html?change=1" class="btn button-primary flex-fill">Change Plan</a><button type="button" class="btn button-grey flex-fill" data-bs-toggle="modal" data-bs-target="#modalUnsub">Unsubscribe</button>') +
+                        '</div>';
+                }
+                root.innerHTML = html;
+                var r = document.getElementById('btnResume');
+                if (r) r.addEventListener('click', function () { MQ.resume(); paint(); });
             }
-            btn.addEventListener('click', function () { if (isUnsub()) { try { localStorage.removeItem(KEY); } catch (e) {} paint(); } });
-            document.getElementById('btnUnsubConfirm').addEventListener('click', function () { try { localStorage.setItem(KEY, '1'); } catch (e) {} paint(); });
+            document.getElementById('btnUnsubConfirm').addEventListener('click', function () { MQ.cancel(); paint(); });
             paint();
         })();
     </script>

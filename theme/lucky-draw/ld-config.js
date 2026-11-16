@@ -1,5 +1,5 @@
 /*
- * Lucky Draw – prototype config.
+ * MotorQuiz Weekly Lucky Draw – prototype config.
  * Everything marked confirmed:false is NOT an agreed business rule yet.
  * Change values here; both the user page and the admin page read this file.
  */
@@ -16,20 +16,21 @@ window.LD_WEEK = (function () {
 
 window.LD_CONFIG = {
   campaign: {
-    name: 'QuizPro Lucky Draw',
+    name: 'MotorQuiz Weekly Lucky Draw',
     periodStart: LD_WEEK.start(0),
     periodEnd: LD_WEEK.end(0),
     drawDate: LD_WEEK.start(1) + 'T15:00:00',
-    // Prize items are placeholders until the business confirms them
+    // Confirmed: 1 motorbike every week, valued at $2,500. Draw dates/times are still placeholders.
     prizes: [
-      { rank: 'Grand Prize', item: 'Smartphone', icon: 'phone', img: 'theme/lucky-draw/img/prize-phone.jpg', qty: 1 }
+      { rank: 'Grand Prize', item: 'Motorbike', value: 2500, icon: 'gift', img: 'theme/images/motorbike.svg', qty: 1 }
     ],
-    confirmed: false
+    confirmed: true,
+    datesConfirmed: false
   },
 
-  // How tickets are earned. basis: 'answered' (questions answered) or 'correct' (correct answers).
-  // every/tickets: N tickets for every X questions. Values below are SAMPLE ONLY.
-  ticketRule: { basis: 'answered', every: 5, tickets: 1, dailyCap: null, confirmed: false },
+  // Bonus entries from gameplay (confirmed): 1 entry for every 5 correct answers.
+  // Plan entries (Daily 1, Weekly 7) are added on top, see theme/js/motorquiz.js.
+  ticketRule: { basis: 'correct', every: 5, tickets: 1, dailyCap: null, confirmed: true },
 
   // 'weighted' = each ticket is one entry (more tickets, more chances)
   // 'one-per-user' = every eligible user gets one entry regardless of ticket count
@@ -37,9 +38,9 @@ window.LD_CONFIG = {
 
   // Proposed eligibility checks (admin side). confirmed:false = proposal from wireframe.
   eligibility: [
-    { id: 'sub', label: 'Active QuizPro subscription on draw date', confirmed: false },
+    { id: 'sub', label: 'Active MotorQuiz subscription on draw date', confirmed: false },
     { id: 'billing', label: 'At least one successful billing during the campaign period', confirmed: false },
-    { id: 'tickets', label: 'Has at least 1 ticket in this campaign', confirmed: false },
+    { id: 'tickets', label: 'Has at least 1 entry in this draw week', confirmed: false },
     { id: 'blacklist', label: 'MSISDN not on test / staff / blacklist', confirmed: false },
     { id: 'onewin', label: 'Max one prize per MSISDN per campaign', confirmed: false }
   ],
@@ -67,7 +68,7 @@ window.LD_CONFIG = {
 // Previous periods for the Ticket Tracker "History" tab (sample data)
 window.LD_PAST_PERIODS = [
   { start: LD_WEEK.start(-1), end: LD_WEEK.end(-1), draw: LD_WEEK.start(0), tickets: 14, result: 'Not won' },
-  { start: LD_WEEK.start(-2), end: LD_WEEK.end(-2), draw: LD_WEEK.start(-1), tickets: 6, result: 'Won · Smartphone' },
+  { start: LD_WEEK.start(-2), end: LD_WEEK.end(-2), draw: LD_WEEK.start(-1), tickets: 6, result: 'Won · Motorbike' },
   { start: LD_WEEK.start(-3), end: LD_WEEK.end(-3), draw: LD_WEEK.start(-2), tickets: 3, result: 'Not won' }
 ];
 

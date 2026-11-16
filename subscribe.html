@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotorQuiz</title>
+    <link rel="stylesheet" href="theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
+    <link rel="stylesheet" href="theme/css/style.css">
+    <link rel="stylesheet" href="theme/css/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
+    <link rel="stylesheet" href="theme/css/motorquiz.css">
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="page-header">
+            <div class="box-wrapper mx-auto text-center position-relative">
+                <a href="index.html" class="page-header-back" id="subBack"><span class="qf-icon-back"></span></a>
+                <span id="subHeading">Choose Your Plan</span>
+            </div>
+        </div>
+
+        <div class="container box-wrapper pb-4">
+            <div class="mq-flow" aria-label="Steps">
+                <span class="on"><i class="fa fa-check" style="font-size:.5625rem;opacity:1"></i> Login</span><span class="fa fa-chevron-right"></span>
+                <span class="on"><i>2</i> Choose plan</span><span class="fa fa-chevron-right"></span>
+                <span><i>3</i> Play quiz</span><span class="fa fa-chevron-right"></span>
+                <span><i>4</i> Win prizes</span>
+            </div>
+
+            <div class="mq-prize" style="padding-bottom:12px">
+                <span class="mq-prize-value"><small>Worth</small><span id="prizeValue">$2,500</span></span>
+                <span class="mq-prize-tag"><span class="fa fa-trophy"></span> Every week</span>
+                <div class="mq-prize-title" style="font-size:1.25rem">Win a <b>Motorbike</b></div>
+                <div class="mq-prize-sub">Every plan earns Lucky Draw entries</div>
+                <img class="mq-prize-bike" src="theme/images/motorbike.svg" alt="Motorbike grand prize" style="width:62%">
+            </div>
+
+            <!-- New user promotion -->
+            <div id="trialBox"></div>
+
+            <div class="mq-or" id="orLine">or subscribe</div>
+            <div class="mq-plans" id="plans" role="radiogroup" aria-label="Subscription plans"></div>
+
+            <button type="button" class="btn btn-lg button-primary w-100 mt-3" id="btnSubscribe" style="padding:14px">Subscribe Now</button>
+            <p class="mq-legal">Charged to your Cellcard balance. Plans renew automatically until you unsubscribe in Account. <span class="mq-tbc" style="background:rgba(255,241,214,.9)">billing T&amp;C TBC</span></p>
+        </div>
+    </div>
+
+    <!-- Confirm -->
+    <div class="modal fade modal-standard" tabindex="-1" id="modalConfirm">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content confirm-modal">
+                <span class="confirm-ico" style="background:var(--mq-sky);color:var(--mq-blue)"><span class="fa fa-mobile"></span></span>
+                <h3 class="modal-level-title mb-2" id="cfTitle">Confirm plan</h3>
+                <p class="confirm-text" id="cfText"></p>
+                <button type="button" class="btn btn-lg button-primary w-100 mb-2" id="cfYes">Confirm</button>
+                <button type="button" class="btn btn-lg button-grey w-100" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Done -->
+    <div class="modal fade modal-standard" tabindex="-1" id="modalDone" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content confirm-modal">
+                <span class="confirm-ico" style="background:#E3F7EE;color:#128A55"><span class="fa fa-check"></span></span>
+                <h3 class="modal-level-title mb-2" id="doneTitle">You're in!</h3>
+                <p class="confirm-text" id="doneText"></p>
+                <a href="game-play.html" class="btn btn-lg button-primary w-100 mb-2"><span class="fa fa-play"></span> Play Now</a>
+                <a href="index.html" class="btn btn-lg button-grey w-100">Go to Play tab</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/motorquiz.js"></script>
+    <script src="theme/js/i18n.js"></script>
+    <script src="theme/js/bootstrap.bundle.min.js"></script>
+    <script>
+    (function () {
+        var C = MQ.CONFIG, p = new URLSearchParams(location.search), change = p.get('change') === '1', s = MQ.sub();
+        function $(id) { return document.getElementById(id); }
+
+        // Coming from login with a plan already active: carry on to where the user was going
+        if (s && !change) { location.replace(QP_DEMO.safeNext()); return; }
+        if (p.get('next')) $('subBack').href = QP_DEMO.safeNext();
+        if (change) { $('subHeading').textContent = 'Change Plan'; $('subBack').href = 'profile.html'; document.querySelector('.mq-flow').remove(); }
+
+        $('prizeValue').textContent = MQ.money(C.grandPrize.value);
+
+        // Free 1-Day Trial for new users (what it includes is pending confirmation)
+        var trial = MQ.trialAvailable() && !s;
+        if (trial) {
+            $('trialBox').innerHTML = '<div class="mq-trial flex-wrap">' +
+                '<span class="mq-trial-ico"><span class="fa fa-gift"></span></span>' +
+                '<span class="flex-grow-1" style="min-width:0"><small style="font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:.625rem">New user promotion</small>' +
+                '<b>Free 1-Day Trial</b><small>Try MotorQuiz free for 1 day' + (C.trial.confirmed ? '' : ' <span class="mq-tbc">trial details TBC</span>') + '</small></span>' +
+                '<button type="button" class="btn btn-lg button-gold w-100" id="btnTrial"><span class="fa fa-gift"></span> Start Free Trial</button></div>';
+            $('btnTrial').addEventListener('click', function () { ask('trial'); });
+        } else $('orLine').textContent = change ? 'Your options' : 'Choose a plan';
+
+        // Plans: only the confirmed benefits are listed
+        var current = s && !s.plan.trial ? s.plan.id : null, chosen = current === 'daily' ? 'weekly' : 'daily';
+        function render() {
+            $('plans').innerHTML = C.plans.map(function (pl) {
+                var on = pl.id === chosen, mine = pl.id === current;
+                return '<button type="button" class="mq-plan' + (on ? ' on' : '') + '" role="radio" aria-checked="' + on + '" data-plan="' + pl.id + '"' + (mine ? ' disabled style="opacity:.6"' : '') + '>' +
+                    (mine ? '<span class="mq-plan-badge" style="background:#128A55">Current plan</span>' : pl.id === 'weekly' ? '<span class="mq-plan-badge">Most questions</span>' : '') +
+                    '<div class="mq-plan-top"><div><div class="mq-plan-name">' + pl.name + '</div></div>' +
+                        '<div class="mq-plan-price"><b>' + MQ.money(pl.price) + '</b><small>per ' + pl.per + '</small></div></div>' +
+                    '<ul><li><span class="fa fa-question"></span>' + pl.questions + ' quiz questions</li>' +
+                        '<li><span class="fa fa-ticket gold"></span>' + pl.entries + ' lucky draw entr' + (pl.entries === 1 ? 'y' : 'ies') + '</li></ul>' +
+                '</button>';
+            }).join('');
+            var pl = MQ.plan(chosen);
+            $('btnSubscribe').textContent = (change ? 'Switch to ' : 'Subscribe Now · ') + (change ? pl.name : MQ.money(pl.price) + '/' + pl.per);
+        }
+        $('plans').addEventListener('click', function (e) {
+            var b = e.target.closest('[data-plan]'); if (!b || b.disabled) return;
+            chosen = b.getAttribute('data-plan'); render();
+        });
+        render();
+
+        var pending = null;
+        function ask(id) {
+            pending = id;
+            var pl = MQ.plan(id);
+            $('cfTitle').textContent = id === 'trial' ? 'Start your free trial?' : (change ? 'Switch to ' : 'Subscribe to ') + pl.name + '?';
+            $('cfText').innerHTML = id === 'trial'
+                ? 'Free for 1 day. You will not be charged during the trial.'
+                : 'You will be charged <b>' + MQ.money(pl.price) + ' per ' + pl.per + '</b> from your Cellcard balance. Each ' + pl.per + ' you get ' + pl.questions + ' quiz questions and ' + pl.entries + ' lucky draw entr' + (pl.entries === 1 ? 'y' : 'ies') + '.' +
+                  (change ? ' <span class="mq-tbc">plan switch rule TBC</span>' : '');
+            $('cfYes').textContent = id === 'trial' ? 'Start Free Trial' : 'Confirm & Subscribe';
+            bootstrap.Modal.getOrCreateInstance($('modalConfirm')).show();
+        }
+        $('btnSubscribe').addEventListener('click', function () { ask(chosen); });
+        $('cfYes').addEventListener('click', function () {
+            MQ.subscribe(pending);
+            var pl = MQ.plan(pending);
+            bootstrap.Modal.getOrCreateInstance($('modalConfirm')).hide();
+            $('doneTitle').textContent = pending === 'trial' ? 'Your free trial has started!' : 'You\'re subscribed!';
+            $('doneText').innerHTML = pending === 'trial'
+                ? 'Enjoy MotorQuiz free for 1 day. Answer correctly to earn points and Lucky Draw entries.'
+                : '<b>' + pl.name + '</b> is active. You have ' + pl.questions + ' questions and ' + pl.entries + ' lucky draw entr' + (pl.entries === 1 ? 'y' : 'ies') + ' this ' + pl.per + '.';
+            setTimeout(function () { bootstrap.Modal.getOrCreateInstance($('modalDone')).show(); }, 250);
+        });
+    })();
+    </script>
+</body>
+</html>

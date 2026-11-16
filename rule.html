@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizpro</title>
+    <title>MotorQuiz</title>
     <link rel="stylesheet" href="theme/css/bootstrap.min.css">
     <link rel="stylesheet" href="theme/fontello/css/quizy-flash.css">
     <link rel="stylesheet" href="theme/css/style.css">
@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="theme/css/pages.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="csrf-token" content="CSRF_PLACEHOLDER" />
-    <link rel="shortcut icon" type="image/x-icon" href="https://demo.quizpro.mobi//theme/images/favicon-quizpro.ico">
+    <link rel="icon" type="image/svg+xml" href="theme/images/motorquiz-icon.svg">
+    <link rel="stylesheet" href="theme/css/motorquiz.css">
 </head>
 <body>
     <div class="content-wrapper">
@@ -37,7 +38,8 @@
                     </button>
                     <div id="rule1" class="collapse show" data-bs-parent="#rulesAcc">
                         <ul class="rules-body">
-                            <li>Guests can play, but you need an account to save your points, appear on the leaderboard and collect Lucky Draw tickets.</li>
+                            <li>You need a Cellcard number and an active MotorQuiz plan (Daily, Weekly or the Free 1-Day Trial for new users) to play.</li>
+                            <li>Daily Plan: $0.15/day for 10 quiz questions and 1 lucky draw entry. Weekly Plan: $0.75/week for 70 quiz questions and 7 lucky draw entries.</li>
                             <li>Users are responsible for the accuracy of their account information.</li>
                             <li>Only one account per user is allowed. Multiple accounts will result in disqualification.</li>
                         </ul>
@@ -51,7 +53,7 @@
                     </button>
                     <div id="rule2" class="collapse" data-bs-parent="#rulesAcc">
                         <ul class="rules-body">
-                            <li>Each Daily Competition has 10 True or False questions, with 20 seconds for each question. A question not answered in time counts as missed.</li>
+                            <li>Each round has up to 10 True or False questions from your plan, with 20 seconds for each question. A question not answered in time counts as missed.</li>
                             <li>Users must answer all questions without external help or resources unless stated otherwise.</li>
                             <li>Use of automated tools, bots, or third-party software is strictly prohibited.</li>
                         </ul>
@@ -65,8 +67,8 @@
                     </button>
                     <div id="rule3" class="collapse" data-bs-parent="#rulesAcc">
                         <ul class="rules-body">
-                            <li>Each correct answer earns 10, 20 or 30 points, depending on the level you choose.</li>
-                            <li>You can enter Beginner once a day, and Intermediate and Advance 3 times a day each. Entries reset at midnight.</li>
+                            <li>Each correct answer earns 1 point.</li>
+                            <li>Every 5 correct answers earn 1 additional lucky draw entry, on top of the entries from your plan.</li>
                             <li>Your points are saved in Game History; any discrepancies must be reported within 24 hours.</li>
                         </ul>
                     </div>
@@ -79,9 +81,10 @@
                     </button>
                     <div id="rule4" class="collapse" data-bs-parent="#rulesAcc">
                         <ul class="rules-body">
-                            <li>One grand prize is drawn every week from that week's Lucky Draw tickets.</li>
+                            <li>Weekly Lucky Draw: 1 motorbike, valued at $2,500, is given away every week.</li>
+                            <li>Monthly Leaderboard: the Top 5 players by points win cash prizes: 1st $50, 2nd $30, 3rd $20, 4th $10, 5th $10.</li>
                             <li>Users must verify their identity before claiming prizes.</li>
-                            <li>Prizes are non-transferable and cannot be exchanged for cash.</li>
+                            <li>Prizes are non-transferable. The motorbike cannot be exchanged for cash.</li>
                         </ul>
                     </div>
                 </div>
@@ -146,6 +149,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="theme/js/demo-backend.js"></script>
+    <script src="theme/js/motorquiz.js"></script>
     <script src="theme/js/i18n.js"></script>
     <script src="theme/js/bootstrap.bundle.min.js"></script>
 
