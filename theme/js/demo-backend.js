@@ -337,8 +337,7 @@
                         splashEyes.style.transform = 'translate(' + ((e.clientX / innerWidth - 0.5) * 6).toFixed(1) + 'px,' + ((e.clientY / innerHeight - 0.5) * 5).toFixed(1) + 'px)';
                     });
                 });
-                setTimeout(function () {
-                    if (canPlay()) openLevels();   // fresh open: splash, then straight to the level picker (as before)
+                setTimeout(function () {   // splash, then Home; the level picker only opens from Play Now
                     splash.classList.add('out');
                     setTimeout(function () { splash.remove(); }, 350);
                 }, 2500);
