@@ -426,3 +426,11 @@
 .mq-stage-in{margin:16px -4px 0;border-radius:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
 .mq-lb-card .mq-stage-in+.mq-rows{border-top:0}
 .mq-hero .comp-ill{width:172px;height:143px;margin-left:-86px;bottom:22px}
+
+/* Grand prize: big product photo on top, details below */
+.ld-prize-grand{flex-direction:column;align-items:stretch;text-align:center;padding:14px 14px 16px}
+.ld-prize-grand .ld-prize-ico.lg.photo{width:100%;height:auto;aspect-ratio:16/11;padding:10px;border-radius:14px;background:radial-gradient(70% 70% at 50% 45%,#fff 0,#FFF3E2 100%);box-shadow:inset 0 -14px 22px -14px rgba(247,115,27,.35)}
+.ld-prize-grand .ld-prize-ico.lg.photo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 12px 12px rgba(12,9,42,.25));animation:mqPrizeFloat 4s ease-in-out infinite}
+@keyframes mqPrizeFloat{50%{transform:translateY(-4px)}}
+.ld-prize-grand .ld-prize-name{font-size:1.5rem}
+@media (prefers-reduced-motion:reduce){.ld-prize-grand .ld-prize-ico.lg.photo img{animation:none}}

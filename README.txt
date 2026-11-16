@@ -17,7 +17,7 @@ BELUM TERKONFIRMASI  (CONFIG.pending, tampil di UI dengan label "TBC")
   ganti plan, unsubscribe, syarat billing. Semua nilai sementara diatur di motorquiz.js / lucky-draw/ld-config.js.
 
 FILE BARU   theme/js/motorquiz.js (plan, sisa soal, poin, entry, leaderboard), theme/css/motorquiz.css (komponen baru, warna lama),
-            subscribe.html, theme/images/motorbike.svg, motorquiz-logo-white.png, motorquiz-icon.png
+            subscribe.html, theme/images/prize-motorbike.webp (foto hadiah, AI), bike-happy/sad.svg (maskot), motorquiz-logo-white.png, motorquiz-icon.png
 CATATAN     Teks baru MotorQuiz baru dalam Bahasa Inggris (terjemahan Khmer/Chinese belum ditambahkan di i18n.js).
 
 ========================================================================
