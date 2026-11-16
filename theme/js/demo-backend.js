@@ -325,8 +325,7 @@
                 var s = window.MQ && MQ.sub();
                 if (!user) location.href = loginUrl('index.html');
                 else if (!s) location.href = 'subscribe.html';
-                else if (s.left > 0) openLevels();
-                else location.href = 'profile.html';
+                else if (s.left > 0) openLevels();   // no questions left: the disabled button does nothing
             });
             var splash = document.getElementById('splash');
             if (!splash && location.hash === '#play' && canPlay()) openLevels();   // from a Play button on another page

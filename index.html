@@ -164,6 +164,8 @@
     <script>
         // Home: plan status and questions left (rules in theme/js/motorquiz.js)
         (function () {
+            var nav = performance.getEntriesByType('navigation')[0];
+            if (QP_DEMO.user && nav && nav.type === 'reload') MQ.demoRefill();   // demo: refresh = questions refilled
             var user = QP_DEMO.user, s = user && MQ.sub(), st = MQ.stats();
             function $(id) { return document.getElementById(id); }
             var pts = document.querySelector('.home-profile-points');
@@ -175,7 +177,11 @@
             $('compQs').textContent = s.left + '/' + s.plan.questions;
             $('compFuel').style.width = Math.round(s.left / s.plan.questions * 100) + '%';
             $('compFuelBox').classList.toggle('low', s.left / s.plan.questions <= 0.3);
-            if (!s.left) $('compBtn').textContent = 'All questions played';
+            if (!s.left) {   // nothing left to play: the button stays visible but disabled
+                $('compBtn').textContent = 'All questions played';
+                document.querySelector('.comp-btn').classList.add('is-disabled');
+                $('quickPlay').setAttribute('aria-disabled', 'true');
+            }
         })();
     </script>
     <script>

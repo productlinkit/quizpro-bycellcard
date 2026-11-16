@@ -112,6 +112,9 @@
     function cancel() { if (S.sub) { S.sub.cancelled = true; save(S); } }
     function resume() { if (S.sub) { delete S.sub.cancelled; save(S); } }
 
+    // Demo only: refreshing the Play tab refills the plan's questions so the prototype can be played again
+    function demoRefill() { if (S.sub) { S.sub.used = 0; save(S); } }
+
     function useQuestion() { var s = sub(); if (s) { S.sub.used = (S.sub.used || 0) + 1; save(S); } }
 
     // Called once per correct answer; returns true when it completes a bonus entry
@@ -157,7 +160,7 @@
         leaderboard: leaderboard,
         CONFIG: CONFIG, plan: plan, money: money, sub: sub, subscribe: subscribe, cancel: cancel, resume: resume,
         trialAvailable: function () { return !S.trialUsed; },
-        useQuestion: useQuestion, addCorrect: addCorrect, logRound: logRound, stats: stats,
+        useQuestion: useQuestion, demoRefill: demoRefill, addCorrect: addCorrect, logRound: logRound, stats: stats,
         weekStart: weekStart,
         canPlay: function () { var s = sub(); return !!(s && s.left > 0); }
     };
