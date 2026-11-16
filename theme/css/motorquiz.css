@@ -479,3 +479,10 @@
 .mq-level-prize-text small{display:block;font-size:.8125rem;color:var(--mq-muted)}
 .mq-level-prize-go{position:absolute;right:16px;bottom:22px;width:30px;height:30px;border-radius:50%;background:var(--mq-soft);color:#F7731B;display:flex;align-items:center;justify-content:center}
 @media (prefers-reduced-motion:reduce){.mq-level-prize-img::after{animation:none}}
+/* compact: small banner thumbnail on the left, text on the right (one row like the level cards) */
+.mq-level-prize{display:flex;align-items:center;gap:12px;padding:10px;border-radius:20px}
+.mq-level-prize-img{flex-shrink:0;width:118px;border-radius:14px}
+.mq-level-prize-text{flex:1;min-width:0;padding:0 34px 0 0}
+.mq-level-prize-text b{font-size:1.0625rem;margin-top:3px}
+.mq-level-prize-text small{font-size:.75rem}
+.mq-level-prize-go{top:50%;bottom:auto;right:12px;margin-top:-15px}
