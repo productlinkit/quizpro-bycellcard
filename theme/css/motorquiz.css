@@ -434,3 +434,11 @@
 @keyframes mqPrizeFloat{50%{transform:translateY(-4px)}}
 .ld-prize-grand .ld-prize-name{font-size:1.5rem}
 @media (prefers-reduced-motion:reduce){.ld-prize-grand .ld-prize-ico.lg.photo img{animation:none}}
+
+/* Home: Daily Competition banner (replaces the road scene) */
+.mq-banner{position:relative;z-index:1;display:block;width:calc(100% + 1rem);margin:0 -.5rem 14px;border-radius:18px;overflow:hidden;box-shadow:0 10px 18px -12px rgba(160,60,0,.6);transform:translate(calc(var(--px)*-6px),calc(var(--py)*-4px));transition:transform .3s ease-out}
+.mq-banner img{display:block;width:100%;height:auto;aspect-ratio:900/507;object-fit:cover}
+.mq-banner-shine{position:absolute;top:0;bottom:0;left:-50%;width:35%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);animation:mqShine 5s ease-in-out infinite}
+.mq-hero .comp-time{top:20px;right:20px}
+@media (prefers-reduced-motion:reduce){.mq-banner-shine{animation:none}}
+.mq-chip-time{font-variant-numeric:tabular-nums}
