@@ -184,3 +184,13 @@
 .mq-level-left{color:#fff;text-align:center;font-size:.875rem;font-weight:bold;margin:-8px 0 18px;opacity:.95}
 .mq-acct-plays{display:flex;align-items:center;justify-content:space-between;background:#F7F7FA;border-radius:14px;padding:10px 14px;margin:12px 0;font-size:.875rem;color:var(--mq-muted)}
 .mq-acct-plays b{color:var(--mq-ink);font-size:1rem}
+
+/* Prize tab: A. Weekly Lucky Draw / B. Monthly Leaderboard Rewards */
+.mq-prize-section{color:#fff;font-size:1.125rem;font-weight:bold;margin:8px 4px 12px}
+.mq-prize-section+*{margin-top:0}
+.mq-rewards{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:14px}
+.mq-rewards div{background:var(--mq-soft);border-radius:12px;padding:8px 2px;text-align:center;line-height:1.2}
+.mq-rewards div:first-child{background:#FFF1C9}
+.mq-rewards span{display:block;font-size:.625rem;font-weight:bold;color:var(--mq-muted)}
+.mq-rewards b{display:block;font-size:1rem;color:#2E9A57}
+.mq-standings-label{font-size:.75rem;font-weight:bold;letter-spacing:.05em;text-transform:uppercase;color:var(--mq-muted);margin:16px 0 -6px}
